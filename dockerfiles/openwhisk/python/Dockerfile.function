@@ -1,0 +1,11 @@
+ARG BASE_IMAGE
+FROM $BASE_IMAGE
+ARG VERSION
+ARG PIP_INDEX_URL=https://mirrors.aliyun.com/pypi/simple/
+ARG PIP_TRUSTED_HOST=mirrors.aliyun.com
+ENV PYTHON_VERSION=${VERSION}
+ENV PYTHONPATH=/:/function
+COPY . function/
+
+RUN touch function/__init__.py \
+    && if test -f "function/requirements.txt.${PYTHON_VERSION}"; then pip install --no-cache-dir --index-url ${PIP_INDEX_URL} --trusted-host ${PIP_TRUSTED_HOST} --target function/ -r function/requirements.txt -r function/requirements.txt.${PYTHON_VERSION}; else pip install --no-cache-dir --index-url ${PIP_INDEX_URL} --trusted-host ${PIP_TRUSTED_HOST} --target function/ -r function/requirements.txt; fi

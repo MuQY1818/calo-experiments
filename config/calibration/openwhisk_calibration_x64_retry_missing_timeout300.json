@@ -1,0 +1,214 @@
+{
+  "deployment": {
+    "name": "openwhisk",
+    "openwhisk": {
+      "shutdownStorage": false,
+      "removeCluster": false,
+      "wskExec": "wsk",
+      "wskBypassSecurity": true,
+      "experimentalManifest": false,
+      "docker_registry": {
+        "registry": "",
+        "username": "",
+        "password": ""
+      },
+      "storage": {
+        "object": {
+          "type": "minio",
+          "minio": {
+            "mapped_port": 9011,
+            "version": "RELEASE.2024-07-16T23-46-41Z",
+            "data_volume": "minio-volume"
+          }
+        },
+        "nosql": {
+          "type": "scylladb",
+          "scylladb": {
+            "mapped_port": 9012,
+            "version": "2025.2",
+            "cpus": 1,
+            "memory": 750,
+            "data_volume": "scylladb-volume"
+          }
+        }
+      }
+    }
+  },
+  "experiments": {
+    "update_code": false,
+    "update_storage": false,
+    "download_results": false,
+    "runtime": {
+      "language": "python",
+      "version": "3.11"
+    },
+    "architecture": "x64",
+    "container_deployment": true
+  },
+  "calibration": {
+    "architectures": [
+      "x64"
+    ],
+    "benchmarks": [
+      "110.dynamic-html",
+      "120.uploader",
+      "210.thumbnailer",
+      "311.compression",
+      "411.image-recognition"
+    ],
+    "input_size": "test",
+    "trigger": "library",
+    "cache_dir": "./cache/openwhisk_calibration_x64_stage2_prime",
+    "output_dir": "./results/openwhisk_calibration_x64_stage2_prime",
+    "resource_prefix": "calo-calib",
+    "verbose": true,
+    "continue_on_error": true,
+    "max_failures_per_target": 4,
+    "skip_measured_on_warmup_failure": true,
+    "benchmark_overrides": {
+      "110.dynamic-html": {
+        "cold_start": {
+          "memory_mb": [
+            128
+          ],
+          "timeout_sec": 300,
+          "initial_warmup_repetitions": 3,
+          "prime_repetitions": 1,
+          "idle_gaps_sec": [
+            0
+          ],
+          "measured_repetitions": 1,
+          "mode": "enforced_update",
+          "post_enforce_sleep_sec": 2.0
+        }
+      },
+      "120.uploader": {
+        "cold_start": {
+          "memory_mb": [
+            128
+          ],
+          "timeout_sec": 300,
+          "initial_warmup_repetitions": 3,
+          "prime_repetitions": 1,
+          "idle_gaps_sec": [
+            0
+          ],
+          "measured_repetitions": 1,
+          "mode": "enforced_update",
+          "post_enforce_sleep_sec": 2.0
+        },
+        "burst": {
+          "memory_mb": [
+            128
+          ],
+          "timeout_sec": 300,
+          "concurrency": [
+            1,
+            2,
+            4
+          ],
+          "rounds": 5,
+          "pre_round_warmups": 4,
+          "prime_concurrency_rounds": 1,
+          "pre_round_idle_sec": 0
+        }
+      },
+      "210.thumbnailer": {
+        "cold_start": {
+          "memory_mb": [
+            128
+          ],
+          "timeout_sec": 300,
+          "initial_warmup_repetitions": 3,
+          "prime_repetitions": 1,
+          "idle_gaps_sec": [
+            0
+          ],
+          "measured_repetitions": 1,
+          "mode": "enforced_update",
+          "post_enforce_sleep_sec": 2.0
+        }
+      },
+      "311.compression": {
+        "cold_start": {
+          "memory_mb": [
+            128
+          ],
+          "timeout_sec": 300,
+          "initial_warmup_repetitions": 3,
+          "prime_repetitions": 1,
+          "idle_gaps_sec": [
+            0
+          ],
+          "measured_repetitions": 1,
+          "mode": "enforced_update",
+          "post_enforce_sleep_sec": 2.0
+        }
+      },
+      "411.image-recognition": {
+        "cold_start": {
+          "memory_mb": [
+            128,
+            256
+          ],
+          "timeout_sec": 300,
+          "initial_warmup_repetitions": 3,
+          "prime_repetitions": 1,
+          "idle_gaps_sec": [
+            0
+          ],
+          "measured_repetitions": 1,
+          "mode": "enforced_update",
+          "post_enforce_sleep_sec": 2.0
+        },
+        "burst": {
+          "memory_mb": [
+            128,
+            256
+          ],
+          "timeout_sec": 300,
+          "concurrency": [
+            1,
+            2,
+            4
+          ],
+          "rounds": 5,
+          "pre_round_warmups": 4,
+          "prime_concurrency_rounds": 1,
+          "pre_round_idle_sec": 0
+        }
+      }
+    },
+    "warm_matrix": {
+      "memory_mb": [],
+      "timeout_sec": [],
+      "warmup_repetitions": 3,
+      "measured_repetitions": 3
+    },
+    "cold_start": {
+      "memory_mb": [],
+      "mode": "enforced_update",
+      "post_enforce_sleep_sec": 2.0,
+      "timeout_sec": 300,
+      "initial_warmup_repetitions": 3,
+      "prime_repetitions": 1,
+      "idle_gaps_sec": [
+        0
+      ],
+      "measured_repetitions": 1
+    },
+    "burst": {
+      "memory_mb": [],
+      "timeout_sec": 300,
+      "concurrency": [
+        1,
+        2,
+        4
+      ],
+      "rounds": 5,
+      "pre_round_warmups": 4,
+      "prime_concurrency_rounds": 1,
+      "pre_round_idle_sec": 0
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "shared_overrides": {
+    "policies": [
+      "ppo",
+      "default"
+    ],
+    "real_invoke_mode": "parallel",
+    "stabilize_actions": true,
+    "stabilization_min_dwell_steps": 2,
+    "stabilization_downgrade_patience": 3,
+    "stabilization_load_drop_threshold": 0.8,
+    "steps": 6,
+    "total_timesteps": 12000,
+    "min_real_invocations_per_step": 1,
+    "max_real_invocations_per_step": 6
+  },
+  "cases": [
+    {
+      "name": "411_spike_seed42_guarded_strict",
+      "benchmark": "411.image-recognition",
+      "load_pattern": "spike",
+      "seed": 42
+    },
+    {
+      "name": "411_spike_seed52_guarded_strict",
+      "benchmark": "411.image-recognition",
+      "load_pattern": "spike",
+      "seed": 52
+    },
+    {
+      "name": "411_spike_seed62_guarded_strict",
+      "benchmark": "411.image-recognition",
+      "load_pattern": "spike",
+      "seed": 62
+    }
+  ]
+}

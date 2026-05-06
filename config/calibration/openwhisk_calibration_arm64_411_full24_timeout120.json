@@ -1,0 +1,113 @@
+{
+  "deployment": {
+    "name": "openwhisk",
+    "openwhisk": {
+      "shutdownStorage": false,
+      "removeCluster": false,
+      "wskExec": "wsk",
+      "wskBypassSecurity": true,
+      "experimentalManifest": false,
+      "docker_registry": {
+        "registry": "",
+        "username": "",
+        "password": ""
+      },
+      "storage": {
+        "object": {
+          "type": "minio",
+          "minio": {
+            "mapped_port": 9011,
+            "version": "RELEASE.2024-07-16T23-46-41Z",
+            "data_volume": "minio-volume"
+          }
+        },
+        "nosql": {
+          "type": "scylladb",
+          "scylladb": {
+            "mapped_port": 9012,
+            "version": "2025.2",
+            "cpus": 1,
+            "memory": 750,
+            "data_volume": "scylladb-volume"
+          }
+        }
+      }
+    }
+  },
+  "experiments": {
+    "update_code": false,
+    "update_storage": false,
+    "download_results": false,
+    "runtime": {
+      "language": "python",
+      "version": "3.11"
+    },
+    "architecture": "arm64",
+    "container_deployment": true
+  },
+  "calibration": {
+    "architectures": [
+      "arm64"
+    ],
+    "benchmarks": [
+      "411.image-recognition"
+    ],
+    "input_size": "test",
+    "trigger": "library",
+    "cache_dir": "./cache/openwhisk_calibration_arm64_stage1",
+    "output_dir": "./results/openwhisk_calibration_arm64_stage1",
+    "resource_prefix": "calo-calib",
+    "verbose": true,
+    "continue_on_error": true,
+    "max_failures_per_target": 2,
+    "skip_measured_on_warmup_failure": true,
+    "benchmark_overrides": {},
+    "warm_matrix": {
+      "memory_mb": [],
+      "timeout_sec": [
+        120
+      ],
+      "warmup_repetitions": 3,
+      "measured_repetitions": 3
+    },
+    "cold_start": {
+      "memory_mb": [
+        128,
+        256,
+        512,
+        1024,
+        2048,
+        3008
+      ],
+      "mode": "enforced_update",
+      "post_enforce_sleep_sec": 2.0,
+      "timeout_sec": 120,
+      "initial_warmup_repetitions": 1,
+      "prime_repetitions": 1,
+      "idle_gaps_sec": [
+        0
+      ],
+      "measured_repetitions": 1
+    },
+    "burst": {
+      "memory_mb": [
+        128,
+        256,
+        512,
+        1024,
+        2048,
+        3008
+      ],
+      "timeout_sec": 120,
+      "concurrency": [
+        1,
+        2,
+        4
+      ],
+      "rounds": 5,
+      "pre_round_warmups": 3,
+      "prime_concurrency_rounds": 1,
+      "pre_round_idle_sec": 0
+    }
+  }
+}

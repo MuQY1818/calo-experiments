@@ -1,0 +1,44 @@
+{
+  "shared_overrides": {
+    "policies": [
+      "ppo",
+      "default"
+    ],
+    "real_invoke_mode": "parallel",
+    "stabilize_actions": true,
+    "stabilization_min_dwell_steps": 2,
+    "stabilization_downgrade_patience": 3,
+    "stabilization_load_drop_threshold": 0.85,
+    "steps": 6,
+    "total_timesteps": 12000,
+    "min_real_invocations_per_step": 1,
+    "max_real_invocations_per_step": 6,
+    "initial_prime_repetitions": 6
+  },
+  "cases": [
+    {
+      "name": "120_decay_seed42_guarded_primed",
+      "benchmark": "120.uploader",
+      "load_pattern": "decay",
+      "seed": 42
+    },
+    {
+      "name": "120_decay_seed52_guarded_primed",
+      "benchmark": "120.uploader",
+      "load_pattern": "decay",
+      "seed": 52
+    },
+    {
+      "name": "120_random_seed42_guarded_primed",
+      "benchmark": "120.uploader",
+      "load_pattern": "random",
+      "seed": 42
+    },
+    {
+      "name": "120_random_seed52_guarded_primed",
+      "benchmark": "120.uploader",
+      "load_pattern": "random",
+      "seed": 52
+    }
+  ]
+}

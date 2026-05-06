@@ -1,0 +1,74 @@
+{
+  "description": "Reviewer quick probe for 64-D code embedding under shared training",
+  "benchmarks": [
+    "110.dynamic-html",
+    "210.thumbnailer",
+    "411.image-recognition"
+  ],
+  "algorithms": [
+    "ppo"
+  ],
+  "shared_training": {
+    "enabled": true,
+    "benchmarks": [
+      "110.dynamic-html",
+      "210.thumbnailer",
+      "411.image-recognition"
+    ],
+    "load_patterns": [
+      "sine",
+      "spike",
+      "random"
+    ],
+    "exclude_eval_benchmark": true
+  },
+  "environment": {
+    "episode_length": 60,
+    "load_change_freq": 5,
+    "calibration_dir": "results/openwhisk_calibration_x64_stage2_prime",
+    "action_space": {
+      "preset": "calibrated_x64_8"
+    },
+    "code_feature_dim": 64,
+    "switch_penalty": 0.02,
+    "adaptation_penalty": 0.01,
+    "normalize_reward": true,
+    "reward_weights": {
+      "latency": 0.7,
+      "cost": 0.3
+    },
+    "success_bonus": 0.7,
+    "cost_normalization": "log",
+    "load_patterns": [
+      "spike"
+    ]
+  },
+  "training": {
+    "total_timesteps": 20000,
+    "ppo_kwargs": {
+      "learning_rate": 0.00015,
+      "n_steps": 1024,
+      "batch_size": 128,
+      "n_epochs": 8,
+      "gamma": 0.995,
+      "gae_lambda": 0.97,
+      "clip_range": 0.2,
+      "ent_coef": 0.005,
+      "vf_coef": 0.6,
+      "max_grad_norm": 0.5,
+      "verbose": 0
+    }
+  },
+  "evaluation": {
+    "n_episodes": 6
+  },
+  "baseline": {
+    "reoptimize_freq": 10,
+    "default_memory": 512
+  },
+  "reproducibility": {
+    "seeds": [
+      42
+    ]
+  }
+}
