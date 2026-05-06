@@ -1,36 +1,30 @@
-"""LLM-based function analyzer built on CodeBERT."""
+"""CodeBERT-based source-code feature extraction for CALO."""
 
-import os
-import pickle
-import hashlib
+from __future__ import annotations
+
 from contextlib import contextmanager
-import numpy as np
-from typing import Dict, Optional
+import hashlib
+import os
 from pathlib import Path
+import pickle
+from typing import Dict, Optional
+
+import numpy as np
 
 
 class CodeBERTAnalyzer:
-    """
-    使用CodeBERT提取函数代码的语义特征
-    """
+    """Extract and cache reduced CodeBERT embeddings for function source code."""
 
     _SHARED_ANALYZERS: Dict[tuple[str, str, int], "CodeBERTAnalyzer"] = {}
 
     def __init__(
         self,
-        model_name='microsoft/codebert-base',
-        cache_dir='.cache/codebert_embeddings',
-        embed_dim=32
+        model_name: str = "microsoft/codebert-base",
+        cache_dir: str = ".cache/codebert_embeddings",
+        embed_dim: int = 32,
     ):
-        """
-        初始化CodeBERT分析器
-
-        Args:
-            model_name: HuggingFace模型名称
-            cache_dir: embedding缓存目录
-            embed_dim: 降维后的embedding维度
-        """
-        print(f"[CodeBERT] Loading model: {model_name}")
+        """Initialize the analyzer and load the Hugging Face model."""
+        print(f"[CodeBERT] Loading model: {model_name}", flush=True)
 
         self.model_name = model_name
         self.cache_dir = Path(cache_dir)
@@ -40,8 +34,7 @@ class CodeBERTAnalyzer:
         self.raw_cache_dir.mkdir(parents=True, exist_ok=True)
         self.reduced_cache_dir.mkdir(parents=True, exist_ok=True)
         self.pca_state_path = self.cache_dir / f"pca_{embed_dim}d.pkl"
-
-        self.embed_dim = embed_dim
+        self.embed_dim = int(embed_dim)
 
         try:
             import torch
@@ -49,36 +42,31 @@ class CodeBERTAnalyzer:
         except ModuleNotFoundError as exc:
             raise ModuleNotFoundError(
                 "CodeBERTAnalyzer requires torch and transformers. "
-                "Install them in the active environment before use."
+                "Install the project requirements in an isolated environment."
             ) from exc
 
         self.torch = torch
-
         self.tokenizer = self._load_pretrained_component(
             AutoTokenizer,
             model_name,
-            component_name='tokenizer',
+            component_name="tokenizer",
         )
         self.model = self._load_pretrained_component(
             AutoModel,
             model_name,
-            component_name='model',
+            component_name="model",
         )
 
-        # 设置为评估模式，冻结参数
         self.model.eval()
         for param in self.model.parameters():
             param.requires_grad = False
 
-        # 如果有GPU就用GPU
         self.device = self.torch.device(
-            'cuda' if self.torch.cuda.is_available() else 'cpu'
+            "cuda" if self.torch.cuda.is_available() else "cpu"
         )
         self.model.to(self.device)
+        print(f"[CodeBERT] Model ready on device: {self.device}", flush=True)
 
-        print(f"[CodeBERT] Model ready on device: {self.device}")
-
-        # PCA状态（延迟加载）
         self.pca_components = None
         self.pca_mean = None
         self.pca_explained_variance_ratio = None
@@ -89,11 +77,11 @@ class CodeBERTAnalyzer:
     @classmethod
     def get_shared(
         cls,
-        model_name: str = 'microsoft/codebert-base',
-        cache_dir: str = '.cache/codebert_embeddings',
+        model_name: str = "microsoft/codebert-base",
+        cache_dir: str = ".cache/codebert_embeddings",
         embed_dim: int = 32,
     ) -> "CodeBERTAnalyzer":
-        """Return one shared analyzer instance for the current process."""
+        """Return one process-local analyzer for a model/cache/dimension tuple."""
         key = (str(model_name), str(cache_dir), int(embed_dim))
         analyzer = cls._SHARED_ANALYZERS.get(key)
         if analyzer is None:
@@ -111,19 +99,23 @@ class CodeBERTAnalyzer:
         model_name: str,
         component_name: str,
     ):
-        """Load one Hugging Face component with a local-first strategy."""
+        """Load one Hugging Face component with a cache-first strategy."""
         try:
             with self._offline_hf_hub():
                 component = auto_class.from_pretrained(
                     model_name,
                     local_files_only=True,
                 )
-            print(f"[CodeBERT] Loaded {component_name} from local cache")
+            print(
+                f"[CodeBERT] Loaded {component_name} from local cache",
+                flush=True,
+            )
             return component
         except Exception as local_error:
             print(
                 f"[CodeBERT] Local cache load failed for {component_name}; "
-                "falling back to default resolution"
+                "falling back to the default Hugging Face resolver",
+                flush=True,
             )
             try:
                 return auto_class.from_pretrained(model_name)
@@ -132,7 +124,7 @@ class CodeBERTAnalyzer:
 
     @contextmanager
     def _offline_hf_hub(self):
-        """Temporarily force offline Hugging Face resolution for cache-only loads."""
+        """Temporarily force offline Hugging Face resolution."""
         previous_values = {
             "HF_HUB_OFFLINE": os.environ.get("HF_HUB_OFFLINE"),
             "HF_HUB_DISABLE_TELEMETRY": os.environ.get("HF_HUB_DISABLE_TELEMETRY"),
@@ -149,76 +141,64 @@ class CodeBERTAnalyzer:
                     os.environ[key] = value
 
     def _get_cache_key(self, code: str) -> str:
-        """生成代码的哈希键"""
-        return hashlib.md5(code.encode('utf-8')).hexdigest()
+        """Return a stable content hash for source code."""
+        return hashlib.md5(code.encode("utf-8")).hexdigest()
 
-    def _load_pickle(self, cache_path: Path) -> Optional[np.ndarray]:
-        """从缓存文件加载对象"""
+    def _load_pickle(self, cache_path: Path):
+        """Load a pickle object if it exists."""
         if cache_path.exists():
-            with open(cache_path, 'rb') as f:
+            with open(cache_path, "rb") as f:
                 return pickle.load(f)
         return None
 
-    def _save_pickle(self, cache_path: Path, obj):
-        """将对象保存到缓存文件"""
-        with open(cache_path, 'wb') as f:
+    def _save_pickle(self, cache_path: Path, obj) -> None:
+        """Store one pickle object."""
+        with open(cache_path, "wb") as f:
             pickle.dump(obj, f)
 
     def _load_raw_from_cache(self, cache_key: str) -> Optional[np.ndarray]:
-        """加载原始768维embedding缓存"""
+        """Load a raw 768-dimensional embedding from cache."""
         return self._load_pickle(self.raw_cache_dir / f"{cache_key}.pkl")
 
-    def _save_raw_to_cache(self, cache_key: str, embedding: np.ndarray):
-        """保存原始768维embedding缓存"""
+    def _save_raw_to_cache(self, cache_key: str, embedding: np.ndarray) -> None:
+        """Save a raw 768-dimensional embedding to cache."""
         self._save_pickle(self.raw_cache_dir / f"{cache_key}.pkl", embedding)
 
     def _load_reduced_from_cache(self, cache_key: str) -> Optional[np.ndarray]:
-        """加载降维后的特征缓存"""
+        """Load a reduced embedding from cache."""
         return self._load_pickle(
             self.reduced_cache_dir / f"{self.pca_model_id}_{cache_key}.pkl"
         )
 
-    def _save_reduced_to_cache(self, cache_key: str, embedding: np.ndarray):
-        """保存降维后的特征缓存"""
+    def _save_reduced_to_cache(self, cache_key: str, embedding: np.ndarray) -> None:
+        """Save a reduced embedding to cache."""
         self._save_pickle(
             self.reduced_cache_dir / f"{self.pca_model_id}_{cache_key}.pkl",
             embedding,
         )
 
     def extract_raw_embedding(self, code: str) -> np.ndarray:
-        """
-        提取原始的768维embedding
-
-        Args:
-            code: 函数源代码
-
-        Returns:
-            768维numpy数组
-        """
-        # Tokenize代码
+        """Extract the raw CodeBERT CLS embedding for a source snippet."""
         inputs = self.tokenizer(
             code,
-            return_tensors='pt',
+            return_tensors="pt",
             max_length=512,
             truncation=True,
-            padding='max_length'
+            padding="max_length",
         )
-
-        # 移动到正确的设备
-        inputs = {k: v.to(self.device) for k, v in inputs.items()}
-
-        # 提取embedding
+        inputs = {key: value.to(self.device) for key, value in inputs.items()}
         with self.torch.no_grad():
             outputs = self.model(**inputs)
-            # 使用[CLS] token的表示
             embedding = outputs.last_hidden_state[:, 0, :].cpu().numpy()
+        return embedding.squeeze(0)
 
-        return embedding.squeeze(0)  # (768,)
-
-    def extract_raw_from_file(self, file_path: str, use_cache: bool = True) -> np.ndarray:
-        """从文件提取原始768维embedding。"""
-        with open(file_path, 'r', encoding='utf-8') as f:
-            code = f.read()
+    def extract_raw_from_file(
+        self,
+        file_path: str,
+        use_cache: bool = True,
+    ) -> np.ndarray:
+        """Extract a raw CodeBERT embedding from a source file."""
+        code = Path(file_path).read_text(encoding="utf-8")
         cache_key = self._get_cache_key(code)
 
         if use_cache:
@@ -232,15 +212,15 @@ class CodeBERTAnalyzer:
         return embedding
 
     def normalize_features(self, embedding: np.ndarray) -> np.ndarray:
-        """对降维后的特征做 L2 归一化。"""
+        """Apply L2 normalization to a reduced embedding."""
         embedding = np.asarray(embedding, dtype=np.float32)
         l2_norm = float(np.linalg.norm(embedding))
         if l2_norm <= 1e-12:
             return embedding
         return embedding / l2_norm
 
-    def fit_pca(self, embeddings: np.ndarray):
-        """基于一批原始 embedding 拟合 PCA。"""
+    def fit_pca(self, embeddings: np.ndarray) -> None:
+        """Fit a deterministic PCA projection with NumPy SVD."""
         matrix = np.asarray(embeddings, dtype=np.float32)
         if matrix.ndim != 2:
             raise ValueError(
@@ -251,7 +231,7 @@ class CodeBERTAnalyzer:
         max_components = min(n_samples, n_features)
         n_components = min(self.embed_dim, max_components)
         if n_components <= 0:
-            raise ValueError("PCA requires at least one valid sample")
+            raise ValueError("PCA requires at least one sample")
 
         self.pca_mean = matrix.mean(axis=0, dtype=np.float64).astype(np.float32)
         centered = matrix - self.pca_mean
@@ -264,15 +244,18 @@ class CodeBERTAnalyzer:
             ratios = explained_variance[:n_components] / max(total_variance, 1e-12)
             self.pca_explained_variance_ratio = ratios.astype(np.float32)
         else:
-            self.pca_explained_variance_ratio = np.ones(n_components, dtype=np.float32)
+            self.pca_explained_variance_ratio = np.ones(
+                n_components,
+                dtype=np.float32,
+            )
 
         state_bytes = self.pca_components.tobytes() + self.pca_mean.tobytes()
         self.pca_model_id = hashlib.md5(state_bytes).hexdigest()[:12]
 
-    def save_pca_state(self, output_path: str | Path | None = None):
-        """保存 PCA 状态。"""
+    def save_pca_state(self, output_path: str | Path | None = None) -> None:
+        """Save the fitted PCA projection."""
         if self.pca_components is None or self.pca_mean is None:
-            raise ValueError("PCA is not fitted yet and cannot be saved")
+            raise ValueError("PCA is not fitted yet")
         path = Path(output_path) if output_path is not None else self.pca_state_path
         self._save_pickle(
             path,
@@ -285,8 +268,8 @@ class CodeBERTAnalyzer:
             },
         )
 
-    def load_pca_state(self, input_path: str | Path | None = None):
-        """加载 PCA 状态。"""
+    def load_pca_state(self, input_path: str | Path | None = None) -> bool:
+        """Load a fitted PCA projection when available."""
         path = Path(input_path) if input_path is not None else self.pca_state_path
         state = self._load_pickle(path)
         if state is None:
@@ -304,13 +287,12 @@ class CodeBERTAnalyzer:
         return True
 
     def project_embedding(self, embedding: np.ndarray) -> np.ndarray:
-        """用已拟合的 PCA 将768维 embedding 投影到目标维度。"""
+        """Project a raw embedding to the configured reduced dimension."""
         vector = np.asarray(embedding, dtype=np.float32)
         if self.pca_components is None or self.pca_mean is None:
             if self.embed_dim >= vector.shape[0]:
                 return self.normalize_features(vector)
-            truncated = vector[:self.embed_dim]
-            return self.normalize_features(truncated)
+            return self.normalize_features(vector[:self.embed_dim])
 
         reduced = (vector - self.pca_mean) @ self.pca_components.T
         if reduced.shape[0] < self.embed_dim:
@@ -319,16 +301,7 @@ class CodeBERTAnalyzer:
         return self.normalize_features(reduced.astype(np.float32))
 
     def extract_features(self, code: str, use_cache: bool = True) -> np.ndarray:
-        """
-        提取降维后的特征向量
-
-        Args:
-            code: 函数源代码
-            use_cache: 是否使用缓存
-
-        Returns:
-            降维后的特征向量
-        """
+        """Extract a reduced embedding for source code."""
         cache_key = self._get_cache_key(code)
 
         if use_cache:
@@ -347,182 +320,123 @@ class CodeBERTAnalyzer:
             self._save_reduced_to_cache(cache_key, reduced_embedding)
         return reduced_embedding
 
-    def extract_from_file(self, file_path: str, use_cache: bool = True) -> np.ndarray:
-        """
-        从文件中提取特征
-
-        Args:
-            file_path: 源代码文件路径
-            use_cache: 是否使用缓存
-
-        Returns:
-            特征向量
-        """
-        with open(file_path, 'r', encoding='utf-8') as f:
-            code = f.read()
-
+    def extract_from_file(
+        self,
+        file_path: str,
+        use_cache: bool = True,
+    ) -> np.ndarray:
+        """Extract a reduced embedding from a source file."""
+        code = Path(file_path).read_text(encoding="utf-8")
         return self.extract_features(code, use_cache)
 
 
 class BenchmarkFeatureExtractor:
-    """
-    为SeBS的所有benchmark提取特征
-    """
+    """Extract CodeBERT features for SeBS-style benchmark directories."""
 
-    def __init__(self, sebs_root: str = '.', analyzer: Optional[CodeBERTAnalyzer] = None):
-        """
-        Args:
-            sebs_root: SeBS项目根目录
-            analyzer: CodeBERT分析器（可选，不提供则创建新的）
-        """
+    DEFAULT_BENCHMARKS = [
+        "110.dynamic-html",
+        "120.uploader",
+        "130.crud-api",
+        "210.thumbnailer",
+        "220.video-processing",
+        "311.compression",
+        "411.image-recognition",
+        "501.graph-pagerank",
+        "502.graph-mst",
+        "503.graph-bfs",
+        "504.dna-visualisation",
+    ]
+
+    def __init__(
+        self,
+        sebs_root: str = ".",
+        analyzer: Optional[CodeBERTAnalyzer] = None,
+    ):
+        """Initialize a benchmark-level feature extractor."""
         self.sebs_root = Path(sebs_root)
-        self.benchmarks_dir = self.sebs_root / 'benchmarks'
-
-        if analyzer is None:
-            self.analyzer = CodeBERTAnalyzer.get_shared()
-        else:
-            self.analyzer = analyzer
-
-        # Benchmark列表
-        self.benchmark_list = [
-            '110.dynamic-html',
-            '120.uploader',
-            '130.crud-api',
-            '210.thumbnailer',
-            '220.video-processing',
-            '311.compression',
-            '411.image-recognition',
-            '501.graph-pagerank',
-            '502.graph-mst',
-            '503.graph-bfs',
-            '504.dna-visualisation',
-        ]
-
+        self.benchmarks_dir = self.sebs_root / "benchmarks"
+        self.analyzer = analyzer or CodeBERTAnalyzer.get_shared()
+        self.benchmark_list = list(self.DEFAULT_BENCHMARKS)
         self.pca_state_path = self.analyzer.pca_state_path
 
     def _find_main_function(self, benchmark_path: Path) -> Optional[Path]:
-        """
-        查找benchmark的主函数文件
-
-        Args:
-            benchmark_path: benchmark目录路径
-
-        Returns:
-            主函数文件路径，如果找不到返回None
-        """
-        # 可能的文件名
+        """Return the main Python function file for one benchmark."""
         possible_files = [
-            'handler.py',
-            'function.py',
-            'index.py',
-            '__init__.py',
+            "handler.py",
+            "function.py",
+            "index.py",
+            "__init__.py",
         ]
 
-        # 首先尝试python目录
-        python_dir = benchmark_path / 'python'
+        python_dir = benchmark_path / "python"
         if python_dir.exists():
-            for fname in possible_files:
-                fpath = python_dir / fname
-                if fpath.exists():
-                    return fpath
+            for filename in possible_files:
+                path = python_dir / filename
+                if path.exists():
+                    return path
 
-        # 如果python目录没有，尝试benchmark根目录
-        for fname in possible_files:
-            fpath = benchmark_path / fname
-            if fpath.exists():
-                return fpath
-
+        for filename in possible_files:
+            path = benchmark_path / filename
+            if path.exists():
+                return path
         return None
 
     def extract_single_benchmark(self, benchmark_name: str) -> Optional[np.ndarray]:
-        """
-        提取单个benchmark的特征
-
-        Args:
-            benchmark_name: benchmark名称，如 '110.dynamic-html'
-
-        Returns:
-            特征向量，如果失败返回None
-        """
-        # 构建路径
-        category = benchmark_name.split('.')[0]
-        if category.startswith('0'):
-            category_dir = '000.microbenchmarks'
-        elif category.startswith('1'):
-            category_dir = '100.webapps'
-        elif category.startswith('2'):
-            category_dir = '200.multimedia'
-        elif category.startswith('3'):
-            category_dir = '300.utilities'
-        elif category.startswith('4'):
-            category_dir = '400.inference'
-        elif category.startswith('5'):
-            category_dir = '500.scientific'
-        else:
-            print(f"[Error] Unrecognized benchmark category: {benchmark_name}")
+        """Extract reduced source-code features for one benchmark."""
+        benchmark_path = self._get_benchmark_path(benchmark_name)
+        if benchmark_path is None:
             return None
 
-        benchmark_path = self.benchmarks_dir / category_dir / benchmark_name
-
-        if not benchmark_path.exists():
-            print(f"[Error] Benchmark path does not exist: {benchmark_path}")
-            return None
-
-        # 查找主函数文件
         main_file = self._find_main_function(benchmark_path)
         if main_file is None:
-            print(f"[Error] Main function file not found: {benchmark_name}")
+            print(
+                f"[Error] Main function file not found: {benchmark_name}",
+                flush=True,
+            )
             return None
 
-        print(f"[Extract] {benchmark_name}: {main_file}")
-
-        # 提取特征
+        print(f"[Extract] {benchmark_name}: {main_file}", flush=True)
         try:
             if self._supports_pca_pipeline():
                 self._ensure_pca_ready()
                 raw_embedding = self.analyzer.extract_raw_from_file(str(main_file))
                 features = self.analyzer.project_embedding(raw_embedding)
-                with open(main_file, 'r', encoding='utf-8') as f:
-                    code = f.read()
+                code = main_file.read_text(encoding="utf-8")
                 cache_key = self.analyzer._get_cache_key(code)
                 self.analyzer._save_reduced_to_cache(cache_key, features)
             else:
                 features = self.analyzer.extract_from_file(str(main_file))
-            print(f"[Success] {benchmark_name}: feature shape {features.shape}")
+            print(
+                f"[Success] {benchmark_name}: feature shape {features.shape}",
+                flush=True,
+            )
             return features
-        except Exception as e:
-            print(f"[Error] {benchmark_name}: {e}")
+        except Exception as exc:
+            print(f"[Error] {benchmark_name}: {exc}", flush=True)
             return None
 
     def extract_all_benchmarks(self, use_pca: bool = True) -> Dict[str, np.ndarray]:
-        """
-        提取所有benchmark的特征（改进版：使用PCA统一降维）
+        """Extract features for all available benchmarks in ``benchmark_list``."""
+        print("=" * 60, flush=True)
+        print("Extracting benchmark CodeBERT features", flush=True)
+        print("=" * 60, flush=True)
 
-        Args:
-            use_pca: 是否使用PCA降维（推荐True以获得更好的区分度）
-
-        Returns:
-            字典: {benchmark_name: features}
-        """
-        print("=" * 60)
-        print("开始提取所有benchmark的特征 (两阶段PCA方法)")
-        print("=" * 60)
-
-        raw_embeddings_dict = self._collect_raw_embeddings()
-        if len(raw_embeddings_dict) == 0:
-            print("[Error] 没有成功提取任何特征")
+        raw_embeddings = self._collect_raw_embeddings()
+        if not raw_embeddings:
+            print("[Error] No benchmark features were extracted", flush=True)
             return {}
 
-        names = list(raw_embeddings_dict.keys())
-        raw_embeddings_matrix = np.array([raw_embeddings_dict[name] for name in names])
-        print(f"目标benchmark特征矩阵: {raw_embeddings_matrix.shape}")
+        names = list(raw_embeddings.keys())
+        raw_matrix = np.array([raw_embeddings[name] for name in names])
+        print(f"Raw benchmark matrix: {raw_matrix.shape}", flush=True)
 
         if use_pca and self._supports_pca_pipeline():
             pca_corpus = self._collect_pca_corpus_embeddings()
             pca_matrix = np.array(pca_corpus)
             print(
-                f"\n[阶段2] 基于 {pca_matrix.shape[0]} 个语料样本拟合真实PCA并投影到"
-                f"{self.analyzer.embed_dim}维..."
+                f"[PCA] Fitting projection from {pca_matrix.shape[0]} samples "
+                f"to {self.analyzer.embed_dim} dimensions",
+                flush=True,
             )
             self.analyzer.fit_pca(pca_matrix)
             self.analyzer.save_pca_state(self.pca_state_path)
@@ -531,88 +445,74 @@ class BenchmarkFeatureExtractor:
                 if self.analyzer.pca_explained_variance_ratio is not None
                 else 0.0
             )
-            print(f"PCA降维完成: 768维 → {self.analyzer.embed_dim}维")
-            print(f"保留方差比例: {explained_var:.4f}")
-            normalized_embeddings = np.vstack(
-                [self.analyzer.project_embedding(raw_embeddings_dict[name]) for name in names]
+            print(f"[PCA] Cumulative explained variance: {explained_var:.4f}")
+            reduced_matrix = np.vstack(
+                [self.analyzer.project_embedding(raw_embeddings[name]) for name in names]
             )
         else:
-            print(f"\n[阶段2] 回退到简单截断 + L2 归一化")
-            normalized_embeddings = np.vstack(
+            print("[PCA] Falling back to truncation plus L2 normalization", flush=True)
+            reduced_matrix = np.vstack(
                 [
-                    self._normalize_vector(raw_embeddings_dict[name][:self.analyzer.embed_dim])
+                    self._normalize_vector(raw_embeddings[name][:self.analyzer.embed_dim])
                     for name in names
                 ]
             )
 
-        # 构建特征字典
-        features_dict = {name: normalized_embeddings[i] for i, name in enumerate(names)}
-
-        # 更新缓存（用新的特征覆盖旧的）
-        print("\n[更新缓存]")
-        for name, features in features_dict.items():
-            benchmark_path = self._get_benchmark_path(name)
-            if benchmark_path is None:
-                continue
-            main_file = self._find_main_function(benchmark_path)
-            if main_file is None:
-                continue
-            with open(main_file, 'r', encoding='utf-8') as f:
-                code = f.read()
-            cache_key = self.analyzer._get_cache_key(code)
-            if self._supports_pca_pipeline():
-                self.analyzer._save_reduced_to_cache(cache_key, features)
-            print(f"  {name}: 已缓存")
-
-        print("\n" + "=" * 60)
-        print(f"提取完成: {len(features_dict)}/{len(self.benchmark_list)} 个benchmark")
-        print("=" * 60)
-
-        return features_dict
+        features = {name: reduced_matrix[index] for index, name in enumerate(names)}
+        self._cache_reduced_features(features)
+        print(
+            f"[Done] Extracted {len(features)}/{len(self.benchmark_list)} benchmarks",
+            flush=True,
+        )
+        return features
 
     def _get_benchmark_path(self, benchmark_name: str) -> Optional[Path]:
-        """获取benchmark的路径"""
-        category = benchmark_name.split('.')[0]
-        if category.startswith('0'):
-            category_dir = '000.microbenchmarks'
-        elif category.startswith('1'):
-            category_dir = '100.webapps'
-        elif category.startswith('2'):
-            category_dir = '200.multimedia'
-        elif category.startswith('3'):
-            category_dir = '300.utilities'
-        elif category.startswith('4'):
-            category_dir = '400.inference'
-        elif category.startswith('5'):
-            category_dir = '500.scientific'
+        """Resolve the directory for a SeBS benchmark name."""
+        category = benchmark_name.split(".")[0]
+        if category.startswith("0"):
+            category_dir = "000.microbenchmarks"
+        elif category.startswith("1"):
+            category_dir = "100.webapps"
+        elif category.startswith("2"):
+            category_dir = "200.multimedia"
+        elif category.startswith("3"):
+            category_dir = "300.utilities"
+        elif category.startswith("4"):
+            category_dir = "400.inference"
+        elif category.startswith("5"):
+            category_dir = "500.scientific"
         else:
-            print(f"[Error] Unrecognized benchmark category: {benchmark_name}")
+            print(
+                f"[Error] Unrecognized benchmark category: {benchmark_name}",
+                flush=True,
+            )
             return None
 
         benchmark_path = self.benchmarks_dir / category_dir / benchmark_name
-
         if not benchmark_path.exists():
-            print(f"[Error] Benchmark path does not exist: {benchmark_path}")
+            print(
+                f"[Error] Benchmark path does not exist: {benchmark_path}",
+                flush=True,
+            )
             return None
-
         return benchmark_path
 
     def _supports_pca_pipeline(self) -> bool:
-        """检查分析器是否支持原始embedding + PCA 投影流程。"""
+        """Return whether the analyzer exposes raw-embedding PCA utilities."""
         required_methods = [
-            'extract_raw_from_file',
-            'project_embedding',
-            'fit_pca',
-            'save_pca_state',
-            'load_pca_state',
-            'normalize_features',
+            "extract_raw_from_file",
+            "project_embedding",
+            "fit_pca",
+            "save_pca_state",
+            "load_pca_state",
+            "normalize_features",
         ]
         return all(hasattr(self.analyzer, method) for method in required_methods)
 
     def _collect_raw_embeddings(self) -> Dict[str, np.ndarray]:
-        """收集全部 benchmark 的原始 768 维 embedding。"""
-        print("\n[阶段1] 提取原始768维embedding...")
-        raw_embeddings_dict = {}
+        """Collect raw CodeBERT embeddings for available benchmarks."""
+        print("[Stage 1] Extracting raw CodeBERT embeddings", flush=True)
+        raw_embeddings = {}
 
         for benchmark_name in self.benchmark_list:
             benchmark_path = self._get_benchmark_path(benchmark_name)
@@ -621,50 +521,57 @@ class BenchmarkFeatureExtractor:
 
             main_file = self._find_main_function(benchmark_path)
             if main_file is None:
-                print(f"[Error] 找不到主函数文件: {benchmark_name}")
+                print(
+                    f"[Error] Main function file not found: {benchmark_name}",
+                    flush=True,
+                )
                 continue
 
-            print(f"[Extract] {benchmark_name}: {main_file}")
+            print(f"[Extract] {benchmark_name}: {main_file}", flush=True)
             try:
                 if self._supports_pca_pipeline():
                     raw_embedding = self.analyzer.extract_raw_from_file(str(main_file))
                 else:
                     raw_embedding = self.analyzer.extract_from_file(str(main_file))
-                raw_embeddings_dict[benchmark_name] = raw_embedding
-                print(f"[Success] {benchmark_name}: 原始特征 {raw_embedding.shape}")
-            except Exception as e:
-                print(f"[Error] {benchmark_name}: {e}")
+                raw_embeddings[benchmark_name] = raw_embedding
+                print(
+                    f"[Success] {benchmark_name}: raw shape {raw_embedding.shape}",
+                    flush=True,
+                )
+            except Exception as exc:
+                print(f"[Error] {benchmark_name}: {exc}", flush=True)
 
-        return raw_embeddings_dict
+        return raw_embeddings
 
     def _collect_pca_corpus_embeddings(self) -> list[np.ndarray]:
-        """收集用于拟合 PCA 的 benchmark Python 语料 embedding。"""
-        print("\n[PCA语料] 收集 benchmark 目录中的 Python 源文件...")
+        """Collect raw embeddings over benchmark Python files for PCA fitting."""
+        print("[PCA] Collecting source-code corpus", flush=True)
         corpus_embeddings = []
         seen_cache_keys = set()
 
         for source_file in self._iter_pca_corpus_files():
             try:
-                with open(source_file, 'r', encoding='utf-8') as f:
-                    code = f.read()
-                snippets = self._build_pca_snippets(code)
-                for snippet in snippets:
+                code = source_file.read_text(encoding="utf-8")
+                for snippet in self._build_pca_snippets(code):
                     cache_key = self.analyzer._get_cache_key(snippet)
                     if cache_key in seen_cache_keys:
                         continue
                     embedding = self._extract_raw_embedding_from_code(snippet)
                     corpus_embeddings.append(embedding)
                     seen_cache_keys.add(cache_key)
-            except Exception as e:
-                print(f"[Warn] 跳过 PCA 语料文件 {source_file}: {e}")
+            except Exception as exc:
+                print(
+                    f"[Warning] Skipping PCA corpus file {source_file}: {exc}",
+                    flush=True,
+                )
 
         if not corpus_embeddings:
-            raise ValueError("无法收集 PCA 语料 embedding")
-        print(f"[PCA语料] 有效样本数: {len(corpus_embeddings)}")
+            raise ValueError("No PCA corpus embeddings could be collected")
+        print(f"[PCA] Corpus samples: {len(corpus_embeddings)}", flush=True)
         return corpus_embeddings
 
     def _iter_pca_corpus_files(self) -> list[Path]:
-        """返回用于 PCA 拟合的源码文件列表。"""
+        """Return Python source files used to fit the PCA projection."""
         files = []
         for path in sorted(self.benchmarks_dir.rglob("*.py")):
             relative_parts = path.relative_to(self.benchmarks_dir).parts
@@ -674,7 +581,7 @@ class BenchmarkFeatureExtractor:
         return files
 
     def _build_pca_snippets(self, code: str) -> list[str]:
-        """将源码切成适合 PCA 语料的去重片段。"""
+        """Split a source file into deduplicated snippets for PCA fitting."""
         stripped = code.strip()
         if not stripped:
             return []
@@ -704,7 +611,7 @@ class BenchmarkFeatureExtractor:
         return deduplicated
 
     def _extract_raw_embedding_from_code(self, code: str) -> np.ndarray:
-        """提取一段源码的原始 embedding，并写入原始缓存。"""
+        """Extract and cache a raw embedding for one source snippet."""
         cache_key = self.analyzer._get_cache_key(code)
         cached = self.analyzer._load_raw_from_cache(cache_key)
         if cached is not None:
@@ -713,30 +620,29 @@ class BenchmarkFeatureExtractor:
         self.analyzer._save_raw_to_cache(cache_key, embedding)
         return embedding
 
-    def _ensure_pca_ready(self):
-        """确保单 benchmark 提取时已有可用 PCA 状态。"""
+    def _ensure_pca_ready(self) -> None:
+        """Fit or load PCA before extracting an individual benchmark feature."""
         if not self._supports_pca_pipeline():
             return
         if self.analyzer.pca_components is not None:
             return
         if self.analyzer.load_pca_state(self.pca_state_path):
-            print(f"[PCA] 已加载缓存状态: {self.pca_state_path}")
+            print(f"[PCA] Loaded cached state: {self.pca_state_path}", flush=True)
             return
 
-        print("[PCA] 未找到缓存状态，开始基于 benchmark 语料拟合 PCA...")
+        print("[PCA] No cached state found; fitting from benchmark corpus", flush=True)
         corpus_embeddings = self._collect_pca_corpus_embeddings()
-        matrix = np.array(corpus_embeddings)
-        self.analyzer.fit_pca(matrix)
+        self.analyzer.fit_pca(np.array(corpus_embeddings))
         self.analyzer.save_pca_state(self.pca_state_path)
         explained = (
             float(self.analyzer.pca_explained_variance_ratio.sum())
             if self.analyzer.pca_explained_variance_ratio is not None
             else 0.0
         )
-        print(f"[PCA] 拟合完成，累计解释方差: {explained:.4f}")
+        print(f"[PCA] Fit complete, explained variance: {explained:.4f}", flush=True)
 
     def _normalize_vector(self, vector: np.ndarray) -> np.ndarray:
-        """在 analyzer 不提供 normalize_features 时做本地 L2 归一化。"""
+        """Apply analyzer normalization or local L2 normalization."""
         if hasattr(self.analyzer, "normalize_features"):
             return self.analyzer.normalize_features(vector)
         array = np.asarray(vector, dtype=np.float32)
@@ -745,147 +651,85 @@ class BenchmarkFeatureExtractor:
             return array
         return array / l2_norm
 
-    def save_features(self, features_dict: Dict[str, np.ndarray], output_path: str):
-        """
-        保存所有特征到文件
+    def _cache_reduced_features(self, features: Dict[str, np.ndarray]) -> None:
+        """Write reduced embeddings into the analyzer cache."""
+        print("[Cache] Updating reduced feature cache", flush=True)
+        for name, vector in features.items():
+            benchmark_path = self._get_benchmark_path(name)
+            if benchmark_path is None:
+                continue
+            main_file = self._find_main_function(benchmark_path)
+            if main_file is None:
+                continue
+            code = main_file.read_text(encoding="utf-8")
+            cache_key = self.analyzer._get_cache_key(code)
+            if self._supports_pca_pipeline():
+                self.analyzer._save_reduced_to_cache(cache_key, vector)
+            print(f"  {name}: cached", flush=True)
 
-        Args:
-            features_dict: 特征字典
-            output_path: 输出文件路径
-        """
-        with open(output_path, 'wb') as f:
+    def save_features(
+        self,
+        features_dict: Dict[str, np.ndarray],
+        output_path: str,
+    ) -> None:
+        """Save a feature dictionary to a pickle file."""
+        output = Path(output_path)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        with open(output, "wb") as f:
             pickle.dump(features_dict, f)
-
-        print(f"[Save] 特征已保存到: {output_path}")
+        print(f"[Save] Features saved to: {output}", flush=True)
 
     def load_features(self, input_path: str) -> Dict[str, np.ndarray]:
-        """
-        从文件加载特征
-
-        Args:
-            input_path: 输入文件路径
-
-        Returns:
-            特征字典
-        """
-        with open(input_path, 'rb') as f:
+        """Load a feature dictionary from a pickle file."""
+        with open(input_path, "rb") as f:
             features_dict = pickle.load(f)
-
-        print(f"[Load] 从 {input_path} 加载了 {len(features_dict)} 个特征")
+        print(
+            f"[Load] Loaded {len(features_dict)} feature vectors from {input_path}",
+            flush=True,
+        )
         return features_dict
 
 
-def visualize_embeddings(features_dict: Dict[str, np.ndarray], output_path: str = 'results/figures/embeddings_tsne.png'):
-    """
-    可视化embeddings（使用t-SNE降维到2D）
-
-    Args:
-        features_dict: 特征字典
-        output_path: 输出图片路径
-    """
-    try:
-        from sklearn.manifold import TSNE
-        import matplotlib.pyplot as plt
-    except ImportError:
-        print("[Error] 需要安装 matplotlib: pip install matplotlib")
-        return
-
-    # 准备数据
-    names = list(features_dict.keys())
-    features = np.array([features_dict[name] for name in names])
-
-    # 提取类别信息（用于着色）
-    categories = []
-    category_names = {
-        '1': 'Webapps',
-        '2': 'Multimedia',
-        '3': 'Utilities',
-        '4': 'Inference',
-        '5': 'Scientific',
-    }
-
-    for name in names:
-        first_digit = name[0]
-        categories.append(category_names.get(first_digit, 'Unknown'))
-
-    # t-SNE降维
-    print("[Visualize] 使用t-SNE降维到2D...")
-    # perplexity需要小于样本数量，建议为样本数的1/3左右
-    perplexity = min(30, len(features) - 1)
-    perplexity = max(5, perplexity // 3)  # 至少为5
-    tsne = TSNE(n_components=2, random_state=42, perplexity=perplexity)
-    features_2d = tsne.fit_transform(features)
-
-    # 绘图
-    plt.figure(figsize=(12, 8))
-
-    # 为每个类别分配颜色
-    unique_categories = list(set(categories))
-    colors = plt.cm.tab10(np.linspace(0, 1, len(unique_categories)))
-    category_to_color = {cat: colors[i] for i, cat in enumerate(unique_categories)}
-
-    for i, name in enumerate(names):
-        cat = categories[i]
-        plt.scatter(
-            features_2d[i, 0],
-            features_2d[i, 1],
-            color=category_to_color[cat],
-            label=cat if cat not in [categories[j] for j in range(i)] else '',
-            s=100,
-            alpha=0.7
-        )
-        plt.annotate(
-            name,
-            (features_2d[i, 0], features_2d[i, 1]),
-            fontsize=8,
-            alpha=0.8
-        )
-
-    plt.xlabel('t-SNE Dimension 1')
-    plt.ylabel('t-SNE Dimension 2')
-    plt.title('CodeBERT Embeddings of Serverless Functions (t-SNE Visualization)')
-    plt.legend()
-    plt.grid(True, alpha=0.3)
-    plt.tight_layout()
-
-    # 保存
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    plt.savefig(output_path, dpi=300)
-    print(f"[Save] 可视化图已保存到: {output_path}")
-
-
-if __name__ == '__main__':
+def main() -> None:
+    """CLI entry point for feature extraction."""
     import argparse
 
-    parser = argparse.ArgumentParser(description='提取Serverless函数的CodeBERT特征')
-    parser.add_argument('--benchmark', type=str, help='提取单个benchmark')
-    parser.add_argument('--extract-all', action='store_true', help='提取所有benchmark')
-    parser.add_argument('--visualize', action='store_true', help='可视化embeddings')
-    parser.add_argument('--sebs-root', type=str, default='.', help='SeBS项目根目录')
-    parser.add_argument('--output', type=str, default='.cache/codebert_embeddings/all_features.pkl', help='输出文件路径')
+    parser = argparse.ArgumentParser(
+        description="Extract CodeBERT features for CALO benchmark functions."
+    )
+    parser.add_argument("--benchmark", type=str, help="Extract one benchmark.")
+    parser.add_argument(
+        "--extract-all",
+        action="store_true",
+        help="Extract every benchmark in the default list.",
+    )
+    parser.add_argument(
+        "--sebs-root",
+        type=str,
+        default=".",
+        help="Repository root that contains the benchmarks directory.",
+    )
+    parser.add_argument(
+        "--output",
+        type=str,
+        default=".cache/codebert_embeddings/all_features.pkl",
+        help="Output pickle path for --extract-all.",
+    )
 
     args = parser.parse_args()
-
-    # 创建特征提取器
     extractor = BenchmarkFeatureExtractor(sebs_root=args.sebs_root)
 
     if args.benchmark:
-        # 提取单个benchmark
         features = extractor.extract_single_benchmark(args.benchmark)
         if features is not None:
-            print(f"\n特征向量 ({features.shape[0]}维):")
+            print(f"\nFeature vector ({features.shape[0]} dimensions):")
             print(features)
-
     elif args.extract_all:
-        # 提取所有benchmark
-        features_dict = extractor.extract_all_benchmarks()
-
-        # 保存
-        extractor.save_features(features_dict, args.output)
-
-        # 可视化
-        if args.visualize:
-            visualize_embeddings(features_dict)
-
+        features = extractor.extract_all_benchmarks()
+        extractor.save_features(features, args.output)
     else:
         parser.print_help()
+
+
+if __name__ == "__main__":
+    main()

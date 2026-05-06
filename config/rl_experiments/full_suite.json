@@ -1,5 +1,5 @@
 {
-  "description": "CALO 全量组合实验默认配置",
+  "description": "Default CALO simulator suite",
   "benchmarks": [
     "110.dynamic-html",
     "120.uploader",
@@ -17,7 +17,7 @@
   "environment": {
     "episode_length": 60,
     "load_change_freq": 5,
-    "calibration_dir": "results/openwhisk_calibration_x64_stage2_prime",
+    "calibration_dir": null,
     "action_space": {
       "preset": "calibrated_x64_8"
     },
@@ -39,7 +39,7 @@
     ]
   },
   "training": {
-    "total_timesteps": 90000,
+    "total_timesteps": 9000,
     "ppo_kwargs": {
       "learning_rate": 0.00015,
       "n_steps": 2048,
@@ -55,7 +55,7 @@
     }
   },
   "evaluation": {
-    "n_episodes": 5
+    "n_episodes": 3
   },
   "baseline": {
     "reoptimize_freq": 10,

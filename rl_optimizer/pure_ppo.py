@@ -5,15 +5,12 @@ from collections import Counter
 import time
 from typing import Any, Callable, Dict
 
-import matplotlib
-import matplotlib.pyplot as plt
 import numpy as np
 import torch as th
 from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 from stable_baselines3.common.utils import set_random_seed
-matplotlib.use("Agg")
 from torch import nn
 
 from .state_space import StateSpace
@@ -263,65 +260,6 @@ class TrainingMonitorCallback(BaseCallback):
     def _on_training_end(self) -> None:
         """Finalize progress reporting at the end of training."""
         self._report_progress(force=True)
-
-    def plot_training_curves(self, save_path: str = None):
-        """Plot training curves."""
-        fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-
-        # 1. Episode reward curve.
-        ax = axes[0]
-        if len(self.timesteps) > 0:
-            ax.plot(self.timesteps, self.episode_rewards, alpha=0.6, label='Episode Reward')
-            # Moving-average smoothing.
-            if len(self.episode_rewards) >= 10:
-                window = min(50, len(self.episode_rewards) // 10)
-                smoothed = np.convolve(self.episode_rewards,
-                                     np.ones(window)/window, mode='valid')
-                smooth_steps = self.timesteps[window-1:]
-                ax.plot(smooth_steps, smoothed, 'r-', linewidth=2,
-                       label=f'Smoothed (window={window})')
-
-            # Trend line.
-            if len(self.episode_rewards) >= 20:
-                z = np.polyfit(self.timesteps, self.episode_rewards, 1)
-                p = np.poly1d(z)
-                ax.plot(self.timesteps, p(self.timesteps), 'g--', linewidth=2,
-                       label=f'Trend (slope={z[0]:.2e})')
-
-        ax.set_xlabel('Timesteps', fontsize=12)
-        ax.set_ylabel('Episode Reward', fontsize=12)
-        ax.set_title('Training Reward Curve', fontsize=14, fontweight='bold')
-        ax.legend()
-        ax.grid(True, alpha=0.3)
-
-        # 2. Episode length curve.
-        ax = axes[1]
-        if len(self.timesteps) > 0:
-            ax.plot(self.timesteps, self.episode_lengths, alpha=0.6, color='orange')
-            # Moving-average smoothing.
-            if len(self.episode_lengths) >= 10:
-                window = min(50, len(self.episode_lengths) // 10)
-                smoothed = np.convolve(self.episode_lengths,
-                                     np.ones(window)/window, mode='valid')
-                smooth_steps = self.timesteps[window-1:]
-                ax.plot(smooth_steps, smoothed, 'r-', linewidth=2,
-                       label=f'Smoothed')
-        ax.set_xlabel('Timesteps', fontsize=12)
-        ax.set_ylabel('Episode Length', fontsize=12)
-        ax.set_title('Episode Length Over Time', fontsize=14, fontweight='bold')
-        ax.legend()
-        ax.grid(True, alpha=0.3)
-
-        plt.tight_layout()
-
-        if save_path:
-            plt.savefig(save_path, dpi=300, bbox_inches='tight')
-            print(f"Saved training curves to: {save_path}")
-
-        plt.close()
-
-        return fig
-
 
 class ValidationCheckpointCallback(BaseCallback):
     """Keep the best deterministic PPO checkpoint on a validation env."""
@@ -1337,7 +1275,6 @@ class PurePPO:
     def train(
         self,
         callback=None,
-        save_plots_to: str = None,
         progress_label: str | None = None,
     ):
         """
@@ -1345,7 +1282,6 @@ class PurePPO:
 
         Args:
             callback: Additional callback or callback list.
-            save_plots_to: Optional path for training curves.
             progress_label: Label used in progress logs.
         """
         start_time = time.time()
@@ -1421,10 +1357,6 @@ class PurePPO:
             flush=True,
         )
         print(f"Final mean training reward: {recent_mean_reward:.4f}", flush=True)
-
-        # Plot training curves.
-        if save_plots_to:
-            self.monitor_callback.plot_training_curves(save_plots_to)
 
         return training_time
 

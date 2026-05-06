@@ -17,7 +17,7 @@
   "environment": {
     "episode_length": 60,
     "load_change_freq": 1,
-    "calibration_dir": "results/openwhisk_calibration_x64_stage2_prime",
+    "calibration_dir": null,
     "action_space": {
       "preset": "calibrated_x64_8"
     },

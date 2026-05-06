@@ -105,7 +105,7 @@ class ActionSpace:
         """Returns the resource configuration for one action id."""
         if action < 0 or action >= self.n_actions:
             raise ValueError(
-                f"动作ID必须在[0, {self.n_actions})范围内，得到: {action}"
+                f"Action id must be in [0, {self.n_actions}); received {action}"
             )
         return self.action_to_config[action]
 
@@ -229,15 +229,15 @@ class ActionSpace:
     def print_action_space(self) -> None:
         """Prints a compact summary of the current action space."""
         print("=" * 60)
-        print("动作空间信息")
+        print("Action Space")
         print("=" * 60)
-        print(f"总动作数: {self.n_actions}")
-        print(f"Memory选项: {self.MEMORY_OPTIONS}")
-        print(f"Architecture选项: {self.ARCHITECTURE_OPTIONS}")
-        print(f"Timeout选项: {self.TIMEOUT_OPTIONS}")
-        print("\n前10个配置:")
+        print(f"Total actions: {self.n_actions}")
+        print(f"Memory options: {self.MEMORY_OPTIONS}")
+        print(f"Architecture options: {self.ARCHITECTURE_OPTIONS}")
+        print(f"Timeout options: {self.TIMEOUT_OPTIONS}")
+        print("\nFirst configurations:")
         for index in range(min(10, self.n_actions)):
-            print(f"  动作{index}: {self.get_configuration(index)}")
+            print(f"  Action {index}: {self.get_configuration(index)}")
         print("  ...")
         print("=" * 60)
 
@@ -278,8 +278,8 @@ class ActionSpace:
         preset_name = preset or "full_48"
         if preset_name not in self.PRESETS:
             raise ValueError(
-                f"未知动作空间 preset: {preset_name}. "
-                f"可选值: {sorted(self.PRESETS.keys())}"
+                f"Unknown action-space preset: {preset_name}. "
+                f"Available presets: {sorted(self.PRESETS.keys())}"
             )
         preset_config = self.PRESETS[preset_name]
         return {
@@ -307,47 +307,47 @@ class ActionSpace:
     def _validate_configuration_options(self) -> None:
         """Validates that every configuration dimension is non-empty."""
         if not self.MEMORY_OPTIONS:
-            raise ValueError("动作空间至少需要一个 memory 选项")
+            raise ValueError("Action space requires at least one memory option")
         if not self.ARCHITECTURE_OPTIONS:
-            raise ValueError("动作空间至少需要一个 architecture 选项")
+            raise ValueError("Action space requires at least one architecture option")
         if not self.TIMEOUT_OPTIONS:
-            raise ValueError("动作空间至少需要一个 timeout 选项")
+            raise ValueError("Action space requires at least one timeout option")
 
 
 def test_action_space() -> None:
     """Runs a simple interactive self-test."""
-    print("\n测试动作空间\n")
+    print("\nTesting action space\n")
 
     action_space = ActionSpace()
     action_space.print_action_space()
 
-    print("\n随机采样5个动作:")
+    print("\nSampling five random actions:")
     for _ in range(5):
         action = action_space.sample()
-        print(f"  动作{action}: {action_space.get_configuration(action)}")
+        print(f"  Action {action}: {action_space.get_configuration(action)}")
 
-    print("\n测试编码/解码:")
+    print("\nTesting encode/decode:")
     action = min(10, action_space.n_actions - 1)
-    print(f"  原始动作: {action} -> {action_space.get_configuration(action)}")
+    print(f"  Original action: {action} -> {action_space.get_configuration(action)}")
     vector = action_space.encode_action(action)
-    print(f"  编码向量: {vector}")
+    print(f"  Encoded vector: {vector}")
     decoded_action = action_space.decode_action(vector)
     print(
-        "  解码动作: "
+        "  Decoded action: "
         f"{decoded_action} -> {action_space.get_configuration(decoded_action)}"
     )
 
-    print("\n测试动作掩码（最大内存1024MB）:")
+    print("\nTesting action mask with max_memory=1024:")
     mask = action_space.get_action_mask({"max_memory": 1024})
-    print(f"  可用动作数: {int(mask.sum())} / {action_space.n_actions}")
+    print(f"  Available actions: {int(mask.sum())} / {action_space.n_actions}")
 
-    print("\n测试相邻动作:")
+    print("\nTesting neighboring actions:")
     action = 0
-    print(f"  当前动作: {action} -> {action_space.get_configuration(action)}")
+    print(f"  Current action: {action} -> {action_space.get_configuration(action)}")
     nearby = action_space.get_nearby_actions(action, radius=1)
-    print(f"  相邻动作数: {len(nearby)}")
+    print(f"  Neighbor count: {len(nearby)}")
     for nearby_action in nearby[:5]:
-        print(f"    动作{nearby_action}: {action_space.get_configuration(nearby_action)}")
+        print(f"    Action {nearby_action}: {action_space.get_configuration(nearby_action)}")
 
 
 if __name__ == "__main__":

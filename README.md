@@ -1,28 +1,90 @@
 # CALO Experiments
 
-CALO (Code-Aware and Load-Aware Optimization) 实验框架，提取自 [serverless-benchmarks](https://github.com/...) 仓库。
+CALO Experiments is a standalone simulator release for code-aware and load-aware resource configuration of serverless functions. It contains the CALO Gymnasium environment, dynamic workload simulator, CodeBERT-based source feature extraction, PPO training path, and baseline policies used for simulator comparisons.
 
-包含：
+The repository is intentionally scoped to reproducible simulator experiments. It does not include manuscript asset generation, cloud deployment scaffolding, or large experiment outputs.
 
-- `rl_optimizer/` — 强化学习优化器核心（环境、状态/动作空间、PPO 训练、校准服务模型、工作负载模拟）
-- `calo_full_suite.py` — 全量评估套件入口（多 benchmark × 算法 × 种子的网格实验）
-- `run_dynamic_experiment.py` — 单次/小批量动态实验入口（支持 smoke test、断点续跑）
-- `scripts/` — 实验脚本（OpenWhisk 校准采集、结果绘图、真机验证、Azure 数据预处理）
-- `config/` — 配置（RL 实验配置、校准矩阵、平台部署配置）
-- `tools/` — SeBS 工具（OpenWhisk 准备等）
-- `dockerfiles/` — 函数 Docker 构建文件
+## Repository Layout
 
-## 快速开始
+- `rl_optimizer/`: simulator, state and action spaces, calibrated service model, PPO policy, and baselines.
+- `benchmarks/`: minimal SeBS-style function source trees used for code feature extraction.
+- `config/rl_experiments/`: runnable simulator configurations.
+- `run_dynamic_experiment.py`: primary CLI for smoke tests, single-seed experiments, resume, and result aggregation.
+- `calo_full_suite.py`: multi-seed wrapper that writes JSON and Markdown summaries only.
+
+## Requirements
+
+Use an isolated Python environment. Do not install dependencies into a global or base Conda environment.
+
+The tested path uses Python 3.11 or newer. The smoke test does not require downloading the CodeBERT model because it uses a lightweight state-space stub. Full CALO training requires `torch`, `transformers`, and access to a local or downloadable `microsoft/codebert-base` model.
+
+## Setup
 
 ```bash
-python-venv/bin/pip install -r requirements.txt
-python-venv/bin/python run_dynamic_experiment.py --config config/rl_experiments/full_suite.json --smoke-test --smoke-steps 2
+python -m venv python-venv
+. python-venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 ```
 
-## 实验数据
+## Smoke Test
 
-大规模实验结果（results/、archive/、external_data/）存放在 `../calo-experiment-data/`，与本仓库分离以减小体积。
+Run the simulator without PPO training or external calibration data:
 
-## 关联仓库
+```bash
+python run_dynamic_experiment.py \
+  --config config/rl_experiments/full_suite.json \
+  --smoke-test \
+  --smoke-steps 2 \
+  --disable-calibration
+```
 
-- `../serverless-benchmarks/` — SeBS 框架与 benchmark 函数实现
+Expected behavior: the command prints one `[Smoke]` line per benchmark and load pattern. It does not create plots.
+
+## Run One Dynamic Experiment
+
+This command trains CALO once per benchmark/load case for the seed selected from the config and writes JSON outputs under `outputs/dynamic_seed42`:
+
+```bash
+python run_dynamic_experiment.py \
+  --config config/rl_experiments/full_suite.json \
+  --output-dir outputs/dynamic_seed42 \
+  --seed 42 \
+  --disable-calibration
+```
+
+The main outputs are:
+
+- `dynamic_experiment_results.json`
+- `dynamic_experiment_results.partial.json`
+- `progress.json`
+- `feature_attribution_summary.json`, when feature attribution is enabled
+
+## Run the Multi-Seed Suite
+
+```bash
+python calo_full_suite.py \
+  --config config/rl_experiments/full_suite.json \
+  --output-dir outputs/full_suite \
+  --disable-calibration
+```
+
+The wrapper runs each seed into `outputs/full_suite/seed_<seed>/` and writes aggregate summaries to `outputs/full_suite/aggregate/aggregate_summary.json` and `aggregate_summary.md`.
+
+## Optional Data
+
+Large data is intentionally kept outside the repository.
+
+- OpenWhisk calibration tables can be supplied with `--override-calibration-dir <path>` or by setting `environment.calibration_dir` in a config.
+- Azure Functions traces are expected under `external_data/azure_functions/processed/` when using `config/rl_experiments/azure_trace_tuned.json`.
+- Runtime outputs should be written under `outputs/`, `results/`, or another ignored directory.
+
+When optional data is absent, use `--disable-calibration` and synthetic load patterns.
+
+## Output Policy
+
+This release writes machine-readable experiment artifacts only. Plotting scripts and plot export code have been removed from the repository.
+
+## License
+
+This project is released under the MIT License. See `LICENSE`.
