@@ -1,24 +1,31 @@
 # CALO Experiments
 
-CALO Experiments is a standalone simulator release for code-aware and load-aware resource configuration of serverless functions. It contains the CALO Gymnasium environment, dynamic workload simulator, CodeBERT-based source feature extraction, PPO training path, and baseline policies used for simulator comparisons.
+CALO Experiments provides a simulator and experiment framework for code-aware and
+load-aware resource configuration of serverless functions. It models dynamic
+workloads, warm-container reuse, cold starts, queueing, timeout failures, and
+latency-cost trade-offs under discrete memory, architecture, and timeout choices.
 
-The repository is intentionally scoped to reproducible simulator experiments. It does not include manuscript asset generation, cloud deployment scaffolding, or large experiment outputs.
+The framework includes a Gymnasium environment, CodeBERT-based source-code
+features, a PPO training path, and several baseline policies for controlled
+comparison.
 
-## Repository Layout
+## Features
 
-- `rl_optimizer/`: simulator, state and action spaces, calibrated service model, PPO policy, and baselines.
-- `benchmarks/`: minimal SeBS-style function source trees used for code feature extraction.
-- `config/rl_experiments/`: runnable simulator configurations.
-- `run_dynamic_experiment.py`: primary CLI for smoke tests, single-seed experiments, resume, and result aggregation.
-- `calo_full_suite.py`: multi-seed wrapper that writes JSON and Markdown summaries only.
+- Dynamic workload simulation with sine, spike, decay, random, and Azure
+  trace-driven load sources.
+- Stateful container-pool model for warm reuse, TTL eviction, cold starts, and
+  queueing.
+- Calibrated service-time model with optional OpenWhisk calibration tables and
+  LightGBM surrogate fallback.
+- Discrete resource-configuration action spaces for memory, CPU architecture,
+  and timeout.
+- PPO, online Bayesian optimization, greedy profiling, provider-default, and
+  random baselines.
+- JSON and Markdown experiment summaries for single-seed and multi-seed runs.
 
-## Requirements
+## Installation
 
-Use an isolated Python environment. Do not install dependencies into a global or base Conda environment.
-
-The tested path uses Python 3.11 or newer. The smoke test does not require downloading the CodeBERT model because it uses a lightweight state-space stub. Full CALO training requires `torch`, `transformers`, and access to a local or downloadable `microsoft/codebert-base` model.
-
-## Setup
+Use an isolated Python environment. Python 3.11 or newer is recommended.
 
 ```bash
 python -m venv python-venv
@@ -27,9 +34,13 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-## Smoke Test
+Full CALO training uses `torch`, `transformers`, and the
+`microsoft/codebert-base` model. The smoke test below uses a lightweight
+state-space stub and does not load CodeBERT.
 
-Run the simulator without PPO training or external calibration data:
+## Quick Smoke Test
+
+Run a short simulator check without PPO training or calibration files:
 
 ```bash
 python run_dynamic_experiment.py \
@@ -39,11 +50,13 @@ python run_dynamic_experiment.py \
   --disable-calibration
 ```
 
-Expected behavior: the command prints one `[Smoke]` line per benchmark and load pattern. It does not create plots.
+The command prints one `[Smoke]` line for each benchmark and load pattern. This
+is the fastest way to check that the simulator, workload generator, action space,
+and reward path are working.
 
-## Run One Dynamic Experiment
+## Run Experiments
 
-This command trains CALO once per benchmark/load case for the seed selected from the config and writes JSON outputs under `outputs/dynamic_seed42`:
+Run one dynamic experiment with the default configuration:
 
 ```bash
 python run_dynamic_experiment.py \
@@ -53,14 +66,7 @@ python run_dynamic_experiment.py \
   --disable-calibration
 ```
 
-The main outputs are:
-
-- `dynamic_experiment_results.json`
-- `dynamic_experiment_results.partial.json`
-- `progress.json`
-- `feature_attribution_summary.json`, when feature attribution is enabled
-
-## Run the Multi-Seed Suite
+Run the multi-seed suite:
 
 ```bash
 python calo_full_suite.py \
@@ -69,21 +75,81 @@ python calo_full_suite.py \
   --disable-calibration
 ```
 
-The wrapper runs each seed into `outputs/full_suite/seed_<seed>/` and writes aggregate summaries to `outputs/full_suite/aggregate/aggregate_summary.json` and `aggregate_summary.md`.
+Resume an interrupted run with `--resume`. Aggregate completed result
+directories with:
+
+```bash
+python run_dynamic_experiment.py \
+  --aggregate-results outputs/full_suite/seed_42 outputs/full_suite/seed_52 \
+  --aggregate-output-dir outputs/full_suite/aggregate
+```
+
+## Configuration
+
+Experiment settings live under `config/rl_experiments/`.
+
+- `full_suite.json` runs five benchmarks with synthetic load patterns.
+- `azure_trace_tuned.json` uses processed Azure Functions workload profiles.
+
+The main fields are:
+
+- `benchmarks`: benchmark names to evaluate.
+- `algorithms`: CALO and baseline policies to run.
+- `environment`: episode length, workload patterns, reward weights, action
+  space, and calibration options.
+- `training`: PPO update settings.
+- `evaluation`: number of evaluation episodes.
+- `reproducibility`: random seeds.
+
+The default `full_suite.json` uses the `calibrated_x64_8` action-space preset:
+
+```text
+{512, 1024, 2048, 3008} MB x {x64} x {120, 300} s
+```
+
+## Outputs
+
+Single-seed runs write result files under the selected `--output-dir`:
+
+- `dynamic_experiment_results.json`
+- `dynamic_experiment_results.partial.json`
+- `progress.json`
+- `feature_attribution_summary.json`, when feature attribution is enabled
+
+Multi-seed runs create one `seed_<seed>/` directory per seed and write aggregate
+summaries under `aggregate/`.
 
 ## Optional Data
 
-Large data is intentionally kept outside the repository.
+OpenWhisk calibration tables can be supplied with:
 
-- OpenWhisk calibration tables can be supplied with `--override-calibration-dir <path>` or by setting `environment.calibration_dir` in a config.
-- Azure Functions traces are expected under `external_data/azure_functions/processed/` when using `config/rl_experiments/azure_trace_tuned.json`.
-- Runtime outputs should be written under `outputs/`, `results/`, or another ignored directory.
+```bash
+python run_dynamic_experiment.py \
+  --config config/rl_experiments/full_suite.json \
+  --override-calibration-dir /path/to/calibration \
+  --output-dir outputs/calibrated_seed42 \
+  --seed 42
+```
 
-When optional data is absent, use `--disable-calibration` and synthetic load patterns.
+The Azure trace configuration expects processed files under:
 
-## Output Policy
+```text
+external_data/azure_functions/processed/
+```
 
-This release writes machine-readable experiment artifacts only. Plotting scripts and plot export code have been removed from the repository.
+Use `--disable-calibration` when calibration tables are unavailable.
+
+## Project Layout
+
+```text
+.
+├── benchmarks/              # SeBS-style benchmark source trees
+├── config/rl_experiments/   # Experiment configurations
+├── rl_optimizer/            # Simulator, state/action spaces, PPO, and baselines
+├── calo_full_suite.py       # Multi-seed experiment wrapper
+├── run_dynamic_experiment.py
+└── requirements.txt
+```
 
 ## License
 
