@@ -40,5 +40,6 @@
 
 ## 更新记录
 
+- **2026-07-18：** 重写公开 README 首页，突出 CALO 论文身份、核心结果与两条复现路径；将快速安装、离线 claim 校验和双架构 20-case smoke 提前，新增主协议速查表、精简 CLI 参考、工件目录、补充实验分组、证据边界与可直接使用的软件引用，删除原先前半页过密的长段说明。未新增 CI、发布 workflow 或内部工程材料。
 - **2026-07-18：** 进一步收窄公开代码面：移除未被 `calo` 入口使用的旧 baseline 层级、重复 greedy 实现和历史 compare 入口；将环境的真实 SeBS 配置改为显式可选参数，并把默认特征 benchmark 集合对齐到公开的五个 SeBS 基准。核心 PPO、Online BO、Default、Random、Greedy 路径及论文语义未改动。
 - **2026-07-18：** 整理 CALO TCC v1.0.0 科研复现仓库。统一 `calo` 命令，冻结 79 维状态、48-action 双架构主协议、CodeBERT revision、三种子配置及论文数值校验；公开内容包含复现实验代码、冻结配置、精简工件、核心测试、引用和许可说明，不包含 Azure 原始数据、OpenWhisk 采集链、日志、论文 PDF 或未经确认的 PPO checkpoint。
