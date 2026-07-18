@@ -1,0 +1,57 @@
+{
+  "primary_algorithm": "ppo",
+  "primary_display_name": "CALO (PPO)",
+  "sources": [
+    {
+      "label": "supplementary_embedding_32_seed42",
+      "seed": 42
+    },
+    {
+      "label": "supplementary_embedding_32_seed52",
+      "seed": 52
+    },
+    {
+      "label": "supplementary_embedding_32_seed62",
+      "seed": 62
+    }
+  ],
+  "single_algorithm": {
+    "overall": {
+      "total_comparisons": 3,
+      "seed_count": 3,
+      "mean_reward": -0.22636472947646627,
+      "std_reward": 0.19010913830164505,
+      "min_reward": -0.4870964419531418,
+      "max_reward": 0.034049005384158955
+    },
+    "cases": [
+      {
+        "benchmark": "110.dynamic-html",
+        "load_pattern": "spike",
+        "seed_count": 3,
+        "reward_mean": -0.06800556853325054,
+        "reward_std": 0.038157591367994056,
+        "reward_min": -0.11858258257799298,
+        "reward_max": -0.026423599440199983
+      },
+      {
+        "benchmark": "210.thumbnailer",
+        "load_pattern": "spike",
+        "seed_count": 3,
+        "reward_mean": -0.29965446350728747,
+        "reward_std": 0.09796754926678375,
+        "reward_min": -0.3864782156698015,
+        "reward_max": -0.16274024462475992
+      },
+      {
+        "benchmark": "411.image-recognition",
+        "load_pattern": "spike",
+        "seed_count": 3,
+        "reward_mean": -0.31143415638886085,
+        "reward_std": 0.2443051259079196,
+        "reward_min": -0.4870964419531418,
+        "reward_max": 0.034049005384158955
+      }
+    ]
+  }
+}

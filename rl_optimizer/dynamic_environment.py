@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from pathlib import Path
 from typing import Callable, Dict, Optional, Tuple
 
@@ -210,6 +211,55 @@ class DynamicLoadEnvironment(gym.Env):
             truncated = True
 
         return observation, reward, done, truncated, info
+
+    def probe_calibration(
+        self,
+        *,
+        action_id: int,
+        architecture: str,
+    ) -> Dict[str, float | int | str]:
+        """Read calibrated values for one explicit action without advancing state."""
+        action = int(action_id)
+        expected_architecture = str(architecture)
+        configuration = self.action_space_wrapper.get_configuration(action)
+        if configuration.architecture != expected_architecture:
+            raise ValueError(
+                f"Action {action} uses {configuration.architecture}, not "
+                f"{expected_architecture}."
+            )
+
+        model = self.service_model
+        rng_state = deepcopy(model.rng.bit_generator.state)
+        try:
+            warm_runtime_ms = model.sample_warm_runtime_ms(
+                self.base_env.benchmark,
+                configuration.memory_mb,
+                configuration.timeout_sec,
+                expected_architecture,
+            )
+            cold_overhead_ms = model.sample_cold_overhead_ms(
+                self.base_env.benchmark,
+                configuration.memory_mb,
+                configuration.timeout_sec,
+                expected_architecture,
+            )
+            ttl_sec = model.estimate_ttl_sec(
+                self.base_env.benchmark,
+                configuration.memory_mb,
+                configuration.timeout_sec,
+                expected_architecture,
+            )
+        finally:
+            model.rng.bit_generator.state = rng_state
+        return {
+            "action_id": action,
+            "architecture": expected_architecture,
+            "memory_mb": configuration.memory_mb,
+            "timeout_sec": configuration.timeout_sec,
+            "warm_runtime_ms": float(warm_runtime_ms),
+            "cold_overhead_ms": float(cold_overhead_ms),
+            "ttl_sec": float(ttl_sec),
+        }
 
     def _resolve_load_pattern(self, options: Dict) -> str:
         """Returns the current load-pattern label."""

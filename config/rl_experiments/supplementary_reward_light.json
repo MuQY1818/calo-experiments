@@ -1,27 +1,27 @@
 {
-  "description": "Default CALO simulator suite",
+  "description": "Accepted-paper reward sensitivity protocol with lighter failure and cold-start penalties",
+  "protocol_role": "supplementary",
+  "protocol_summary": {
+    "variant": "reward_light",
+    "action_preset": "calibrated_x64_8",
+    "architecture_scope": "x64",
+    "evidence_source": "accepted-paper reward sensitivity results"
+  },
   "benchmarks": [
-    "110.dynamic-html",
     "120.uploader",
-    "210.thumbnailer",
-    "311.compression",
     "411.image-recognition"
   ],
   "algorithms": [
     "ppo",
-    "bayes_opt_online",
-    "default",
-    "random",
-    "greedy"
+    "bayes_opt_online"
   ],
   "environment": {
     "episode_length": 60,
     "load_change_freq": 5,
-    "calibration_dir": null,
+    "calibration_dir": "artifacts/calibration/x64",
     "action_space": {
       "preset": "calibrated_x64_8"
     },
-    "code_feature_dim": 32,
     "switch_penalty": 0.02,
     "adaptation_penalty": 0.01,
     "normalize_reward": true,
@@ -29,22 +29,25 @@
       "latency": 0.7,
       "cost": 0.3
     },
+    "reward_penalties": {
+      "failure": 2.0,
+      "cold_start": 0.1,
+      "queue": 0.05
+    },
     "success_bonus": 0.7,
     "cost_normalization": "log",
     "load_patterns": [
-      "sine",
       "spike",
-      "decay",
       "random"
     ]
   },
   "training": {
-    "total_timesteps": 9000,
+    "total_timesteps": 15000,
     "ppo_kwargs": {
       "learning_rate": 0.00015,
-      "n_steps": 2048,
-      "batch_size": 256,
-      "n_epochs": 12,
+      "n_steps": 1024,
+      "batch_size": 128,
+      "n_epochs": 8,
       "gamma": 0.995,
       "gae_lambda": 0.97,
       "clip_range": 0.2,
@@ -55,7 +58,7 @@
     }
   },
   "evaluation": {
-    "n_episodes": 3
+    "n_episodes": 5
   },
   "baseline": {
     "reoptimize_freq": 10,
@@ -66,6 +69,12 @@
       42,
       52,
       62
-    ]
+    ],
+    "codebert": {
+      "model_name": "microsoft/codebert-base",
+      "revision": "3b0952feddeffad0063f274080e3c23d75e7eb39",
+      "cache_dir": ".cache/codebert_embeddings",
+      "cache_first": true
+    }
   }
 }

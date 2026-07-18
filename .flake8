@@ -1,0 +1,9 @@
+[flake8]
+max-line-length = 100
+extend-ignore = E203
+exclude = .git,.cache,artifacts,build,dist,python-venv
+per-file-ignores =
+    rl_optimizer/__init__.py:F401
+    rl_optimizer/lightgbm_service_surrogate.py:E501
+    rl_optimizer/pure_ppo.py:E129,E302
+    rl_optimizer/service_model.py:E501

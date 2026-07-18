@@ -28,7 +28,7 @@ class ServerlessFunctionEnv(gym.Env):
         self,
         benchmark: str,
         deployment: str = "local",
-        config_path: str = "config/example.json",
+        config_path: str | None = None,
         sebs_root: str = ".",
         max_steps: int = 100,
         reward_weights: Dict[str, float] | None = None,
@@ -260,6 +260,11 @@ class ServerlessFunctionEnv(gym.Env):
 
     def _execute_real(self, config) -> Dict[str, Any]:
         """Best-effort real execution path through SeBS."""
+        if self.config_path is None:
+            raise RuntimeError(
+                "Real SeBS execution requires an explicit config_path; "
+                "the public artifact does not provide a provider deployment config."
+            )
         cmd = [
             str(self.sebs_root / "sebs.py"),
             "benchmark",

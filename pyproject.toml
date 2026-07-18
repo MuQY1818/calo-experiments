@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "calo-experiments"
+version = "1.0.0"
+description = "Research artifact for CALO serverless resource configuration"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = [
+  "serverless",
+  "reinforcement learning",
+  "resource configuration",
+  "OpenWhisk",
+  "reproducible research",
+]
+authors = [
+  {name = "Donghong Xu"},
+  {name = "Weijue Bu"},
+  {name = "Zhouliang Ye"},
+  {name = "Shilong Wu"},
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+  "gymnasium>=1.0,<2",
+  "joblib>=1.3,<2",
+  "lightgbm>=4.0,<5",
+  "numpy>=1.26,<3",
+  "pandas>=2.0,<3",
+  "scikit-learn==1.8.0",
+  "scipy>=1.11,<2",
+  "stable-baselines3>=2.7.1,<3",
+  "torch>=2.0,<3",
+  "transformers>=4.40,<5",
+]
+
+[project.optional-dependencies]
+test = [
+  "build>=1.2,<2",
+]
+dev = [
+  "black==25.1.0",
+  "build>=1.2,<2",
+  "flake8==7.3.0",
+  "mypy==1.17.1",
+  "pandas-stubs>=2.2",
+  "types-setuptools>=80",
+]
+
+[project.scripts]
+calo = "rl_optimizer.cli:main"
+
+[project.urls]
+Repository = "https://github.com/MuQY1818/calo-experiments"
+Issues = "https://github.com/MuQY1818/calo-experiments/issues"
+
+[tool.setuptools]
+packages = ["rl_optimizer"]
+include-package-data = false
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+extend-exclude = '''
+^/rl_optimizer/(action_space|dynamic_environment|environment|lightgbm_service_surrogate|pure_ppo|service_model|workload_sources)\.py$
+'''

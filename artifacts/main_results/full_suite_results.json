@@ -1,0 +1,1062 @@
+{
+  "ppo": {
+    "110.dynamic-html": {
+      "sine": {
+        "mean_reward": 0.6743609503207885,
+        "std_reward": 0.0008807931627409677,
+        "mean_latency": 29.123247150844993,
+        "std_latency": 0.8246110924251548,
+        "mean_cost": 2.8150110447692593e-07,
+        "std_cost": 2.4607085625634692e-08,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": 0.6687893922272373,
+        "std_reward": 0.004264825213551685,
+        "mean_latency": 27.741898988087968,
+        "std_latency": 1.1142109762399452,
+        "mean_cost": 2.602957285881126e-07,
+        "std_cost": 2.59893159865273e-08,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": 0.6759099253215481,
+        "std_reward": 0.00030243885949321215,
+        "mean_latency": 27.87922122319539,
+        "std_latency": 0.7023087795912464,
+        "mean_cost": 2.624966447860465e-07,
+        "std_cost": 2.3823115580713687e-08,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": 0.6738638829338751,
+        "std_reward": 0.0005235652303894835,
+        "mean_latency": 29.109816841549343,
+        "std_latency": 0.7006551745057894,
+        "mean_cost": 2.4829438230098175e-07,
+        "std_cost": 1.423179779417814e-09,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "120.uploader": {
+      "sine": {
+        "mean_reward": 0.371749063429218,
+        "std_reward": 0.013734705798132145,
+        "mean_latency": 449.87090898301864,
+        "std_latency": 9.056187828525816,
+        "mean_cost": 2.1011474989841695e-06,
+        "std_cost": 1.3820478185765392e-06,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": 0.361857785222426,
+        "std_reward": 0.012551587555250307,
+        "mean_latency": 454.3804224310981,
+        "std_latency": 14.04503643054339,
+        "mean_cost": 7.009839187554059e-06,
+        "std_cost": 6.432317136812614e-06,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": 0.38284084373516897,
+        "std_reward": 0.0005556776579735532,
+        "mean_latency": 442.84553175184465,
+        "std_latency": 0.1833235143889337,
+        "mean_cost": 1.122596694105798e-06,
+        "std_cost": 3.819265441303415e-10,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": 0.339685884672517,
+        "std_reward": 0.00989804644795258,
+        "mean_latency": 461.6175241767035,
+        "std_latency": 1.653461866286001,
+        "mean_cost": 2.7666042310809443e-06,
+        "std_cost": 9.149354223495556e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "210.thumbnailer": {
+      "sine": {
+        "mean_reward": 0.6596076388294824,
+        "std_reward": 0.00032520928065931395,
+        "mean_latency": 46.73394792344836,
+        "std_latency": 0.4127668676710786,
+        "mean_cost": 9.93127171366521e-07,
+        "std_cost": 9.847504959138975e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": 0.6540304668187341,
+        "std_reward": 0.004796839039731157,
+        "mean_latency": 45.34910857306587,
+        "std_latency": 0.07556201100064742,
+        "mean_cost": 1.0025060762094047e-06,
+        "std_cost": 1.0033467903878408e-06,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": 0.6604938157215178,
+        "std_reward": 0.0002164922747471681,
+        "mean_latency": 45.82560287051731,
+        "std_latency": 0.31862330403667716,
+        "mean_cost": 9.886231987681844e-07,
+        "std_cost": 9.80797255430589e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": 0.6584194480356244,
+        "std_reward": 0.001056039688968459,
+        "mean_latency": 47.29784683651394,
+        "std_latency": 0.21577477231943917,
+        "mean_cost": 1.000849385472217e-06,
+        "std_cost": 9.939910095069257e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "311.compression": {
+      "sine": {
+        "mean_reward": 0.5071271122879571,
+        "std_reward": 0.004675029271389482,
+        "mean_latency": 246.39215006510415,
+        "std_latency": 9.91569858172502,
+        "mean_cost": 1.7835826027597553e-06,
+        "std_cost": 5.816136964422816e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": 0.4949823415029729,
+        "std_reward": 0.020628799289388412,
+        "mean_latency": 237.34666358100046,
+        "std_latency": 3.0812890932815855,
+        "mean_cost": 1.8757657619516977e-06,
+        "std_cost": 4.0163819902342477e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": 0.5085599009865397,
+        "std_reward": 0.003942427332942731,
+        "mean_latency": 244.97587007310653,
+        "std_latency": 9.610665014610106,
+        "mean_cost": 1.7027927841202955e-06,
+        "std_cost": 6.817349831124097e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": 0.5102631187196834,
+        "std_reward": 0.0006118326927988283,
+        "mean_latency": 239.98301801893444,
+        "std_latency": 0.8129601576188676,
+        "mean_cost": 2.1996402577113056e-06,
+        "std_cost": 6.972528961172092e-09,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "411.image-recognition": {
+      "sine": {
+        "mean_reward": 0.6447625513851623,
+        "std_reward": 0.0014564983422538915,
+        "mean_latency": 49.19978271484374,
+        "std_latency": 1.376943321268503,
+        "mean_cost": 1.0199980300108615e-06,
+        "std_cost": 2.294910351591454e-08,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": 0.6384633527412756,
+        "std_reward": 0.004372164651364072,
+        "mean_latency": 45.79097771962484,
+        "std_latency": 0.16434810670015473,
+        "mean_cost": 9.609622700029124e-07,
+        "std_cost": 3.3510172720593843e-09,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": 0.6458043876319896,
+        "std_reward": 0.00020839300222335566,
+        "mean_latency": 45.8104202609592,
+        "std_latency": 0.6117458717991181,
+        "mean_cost": 9.635085261708001e-07,
+        "std_cost": 1.0195789812614574e-08,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": 0.6441975438339346,
+        "std_reward": 0.0010043926247848673,
+        "mean_latency": 51.9501061545478,
+        "std_latency": 3.4949024807381504,
+        "mean_cost": 1.0656146068615471e-06,
+        "std_cost": 5.8319548685062106e-08,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    }
+  },
+  "bayes_opt_online": {
+    "110.dynamic-html": {
+      "sine": {
+        "mean_reward": 0.6723064320637556,
+        "std_reward": 0.00045926588443716,
+        "mean_latency": 31.958655685848658,
+        "std_latency": 0.5752294315493117,
+        "mean_cost": 7.192288303296361e-07,
+        "std_cost": 5.7319657770699575e-08,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": 0.6663992777050786,
+        "std_reward": 0.004146834280689195,
+        "mean_latency": 31.301622327168786,
+        "std_latency": 1.0122790356752418,
+        "mean_cost": 5.664497523285819e-07,
+        "std_cost": 2.1596562417453872e-08,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": 0.6723389536171732,
+        "std_reward": 0.0010462408583457427,
+        "mean_latency": 31.517854940626354,
+        "std_latency": 1.5802531231856074,
+        "mean_cost": 7.049692452041098e-07,
+        "std_cost": 4.5383942832753314e-08,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": 0.6717633169645251,
+        "std_reward": 0.0010304568897045038,
+        "mean_latency": 31.288423788282604,
+        "std_latency": 0.9145804068087989,
+        "mean_cost": 6.606501458211117e-07,
+        "std_cost": 1.0485139115857594e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "120.uploader": {
+      "sine": {
+        "mean_reward": 0.05989464438923733,
+        "std_reward": 0.17425746222210894,
+        "mean_latency": 629.1789949544271,
+        "std_latency": 107.9696358701104,
+        "mean_cost": 1.0091407977041755e-05,
+        "std_cost": 2.128940917429204e-06,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": 0.308269996830891,
+        "std_reward": 0.010449019757281044,
+        "mean_latency": 486.07206583658854,
+        "std_latency": 13.68630567026446,
+        "mean_cost": 6.2565831483930705e-06,
+        "std_cost": 3.361730594422363e-06,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": 0.26682334584304906,
+        "std_reward": 0.029481078570696106,
+        "mean_latency": 530.4541021728515,
+        "std_latency": 49.76606537918625,
+        "mean_cost": 9.283816874206726e-06,
+        "std_cost": 1.1055178666909814e-06,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": 0.33050286646151034,
+        "std_reward": 0.01373465230276609,
+        "mean_latency": 474.4859339057075,
+        "std_latency": 12.863491118488218,
+        "mean_cost": 6.217095167989505e-06,
+        "std_cost": 9.09068339500303e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "210.thumbnailer": {
+      "sine": {
+        "mean_reward": 0.643368915129548,
+        "std_reward": 0.0027943504416088863,
+        "mean_latency": 70.96844422658285,
+        "std_latency": 3.532081072380096,
+        "mean_cost": 1.3426193415474095e-06,
+        "std_cost": 2.1245548326073364e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": 0.6367042971488605,
+        "std_reward": 0.0029282924287485166,
+        "mean_latency": 70.21281484815809,
+        "std_latency": 2.357248230989147,
+        "mean_cost": 1.0238142995275566e-06,
+        "std_cost": 3.578754500468989e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": 0.6444292943967178,
+        "std_reward": 0.0018079300002879124,
+        "mean_latency": 70.43746781243219,
+        "std_latency": 2.5418749005604306,
+        "mean_cost": 8.627326548409858e-07,
+        "std_cost": 1.5629785438605661e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": 0.6443062915369345,
+        "std_reward": 0.0013927311527748589,
+        "mean_latency": 68.74795368194579,
+        "std_latency": 4.088166873852907,
+        "mean_cost": 1.7383025541385503e-06,
+        "std_cost": 2.832275083817522e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "311.compression": {
+      "sine": {
+        "mean_reward": 0.44551279180322073,
+        "std_reward": 0.021128469940300577,
+        "mean_latency": 340.6128308105469,
+        "std_latency": 34.05040412826452,
+        "mean_cost": 5.2119469052058775e-06,
+        "std_cost": 1.1603582372496104e-06,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": 0.42194883804434014,
+        "std_reward": 0.014917800629245597,
+        "mean_latency": 368.1759417385526,
+        "std_latency": 25.340379006960678,
+        "mean_cost": 5.409694783035472e-06,
+        "std_cost": 1.0657853927892574e-06,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": 0.4412796287771545,
+        "std_reward": 0.015095299980154272,
+        "mean_latency": 346.67939388699006,
+        "std_latency": 25.353036300575,
+        "mean_cost": 5.732166287089057e-06,
+        "std_cost": 1.4769454216047132e-06,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": 0.42347715869297176,
+        "std_reward": 0.009034127642410895,
+        "mean_latency": 374.11714886135525,
+        "std_latency": 13.796881445949147,
+        "mean_cost": 5.161689795790557e-06,
+        "std_cost": 1.1386305130268605e-06,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "411.image-recognition": {
+      "sine": {
+        "mean_reward": 0.584011729886952,
+        "std_reward": 0.023992288789087452,
+        "mean_latency": 126.62595688290067,
+        "std_latency": 30.636715887092734,
+        "mean_cost": 2.381609192209705e-06,
+        "std_cost": 3.179618904162165e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": 0.5699596775562875,
+        "std_reward": 0.04251709836364936,
+        "mean_latency": 123.56977291531034,
+        "std_latency": 33.51271040663996,
+        "mean_cost": 2.41472586013616e-06,
+        "std_cost": 1.0904580138712651e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": 0.5851351237759643,
+        "std_reward": 0.0122357966213344,
+        "mean_latency": 127.74101844363742,
+        "std_latency": 18.779997547128012,
+        "mean_cost": 2.370317346086874e-06,
+        "std_cost": 2.5686514352189295e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": 0.5732900579027695,
+        "std_reward": 0.0398713359187524,
+        "mean_latency": 141.8757283698188,
+        "std_latency": 45.55872769153995,
+        "mean_cost": 2.6183731435164896e-06,
+        "std_cost": 2.281989012985974e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    }
+  },
+  "default": {
+    "110.dynamic-html": {
+      "sine": {
+        "mean_reward": -0.7717503875979735,
+        "std_reward": 0.009794392409113024,
+        "mean_latency": 1636.5598039860197,
+        "std_latency": 8.124526760142011,
+        "mean_cost": 1.3838025504766292e-05,
+        "std_cost": 6.770425752219129e-08,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": -0.33809898264800786,
+        "std_reward": 0.03799362018850723,
+        "mean_latency": 1056.1905521604751,
+        "std_latency": 43.34241029867662,
+        "mean_cost": 8.999383310784499e-06,
+        "std_cost": 3.619202160092558e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": -0.3591973660592209,
+        "std_reward": 0.016036150754917714,
+        "mean_latency": 1104.8408333778382,
+        "std_latency": 65.90506585994173,
+        "mean_cost": 9.40702540892365e-06,
+        "std_cost": 5.492101046209095e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": -0.6534508377237427,
+        "std_reward": 0.008749962043290212,
+        "mean_latency": 1559.2284877967834,
+        "std_latency": 48.95427992763884,
+        "mean_cost": 1.319337439244666e-05,
+        "std_cost": 4.0763894780329196e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "120.uploader": {
+      "sine": {
+        "mean_reward": -0.41627362180654154,
+        "std_reward": 0.01401121816191941,
+        "mean_latency": 1326.8964790852863,
+        "std_latency": 12.519185576658387,
+        "mean_cost": 1.1257492677335295e-05,
+        "std_cost": 1.0432679255027831e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": -0.34675182298627183,
+        "std_reward": 0.02366505001161006,
+        "mean_latency": 1129.7127662828234,
+        "std_latency": 41.508366690782026,
+        "mean_cost": 9.61206973013557e-06,
+        "std_cost": 3.469589183479384e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": -0.40666454154176446,
+        "std_reward": 0.0038693585993385,
+        "mean_latency": 1180.7678456285264,
+        "std_latency": 46.21297111167175,
+        "mean_cost": 1.0039751791737218e-05,
+        "std_cost": 3.8510895306465254e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": -0.44087595294933507,
+        "std_reward": 0.06554151624115645,
+        "mean_latency": 1340.861125318739,
+        "std_latency": 12.572183125203269,
+        "mean_cost": 1.1373642870087982e-05,
+        "std_cost": 1.0499289265389505e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "210.thumbnailer": {
+      "sine": {
+        "mean_reward": -0.9425786256890665,
+        "std_reward": 0.013426456843792636,
+        "mean_latency": 1932.148843981425,
+        "std_latency": 31.55416041779204,
+        "mean_cost": 1.6301272854472396e-05,
+        "std_cost": 2.629519208982491e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": -0.5069236332079998,
+        "std_reward": 0.038041326803764486,
+        "mean_latency": 1269.4378497356838,
+        "std_latency": 44.03239989618449,
+        "mean_cost": 1.077644781421188e-05,
+        "std_cost": 3.67165834649753e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": -0.5293613327981178,
+        "std_reward": 0.022010973805920753,
+        "mean_latency": 1312.8411737908257,
+        "std_latency": 52.22470097851056,
+        "mean_cost": 1.1140365235557208e-05,
+        "std_cost": 4.352066965588016e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": -0.9292859873349778,
+        "std_reward": 0.03133120980825927,
+        "mean_latency": 1936.0338002904257,
+        "std_latency": 13.705039530831472,
+        "mean_cost": 1.633342497282481e-05,
+        "std_cost": 1.144795595473661e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "311.compression": {
+      "sine": {
+        "mean_reward": -0.1547328821851958,
+        "std_reward": 0.03707041293369792,
+        "mean_latency": 1040.6757963222929,
+        "std_latency": 20.855469913918224,
+        "mean_cost": 8.872315712677746e-06,
+        "std_cost": 1.7379604245378297e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": -0.10319173768433508,
+        "std_reward": 0.026094219037029867,
+        "mean_latency": 847.8531509738499,
+        "std_latency": 37.69048347569637,
+        "mean_cost": 7.263234877478277e-06,
+        "std_cost": 3.14820175090441e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": -0.1335756972070309,
+        "std_reward": 0.005179187186534969,
+        "mean_latency": 895.7914053344726,
+        "std_latency": 43.498146248692755,
+        "mean_cost": 7.664943331443888e-06,
+        "std_cost": 3.6248519892947785e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": -0.1939869123456195,
+        "std_reward": 0.07032626671383335,
+        "mean_latency": 1067.3879537455243,
+        "std_latency": 24.167016855757332,
+        "mean_cost": 9.09469517005669e-06,
+        "std_cost": 2.011098481606383e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "411.image-recognition": {
+      "sine": {
+        "mean_reward": 0.2969053613158429,
+        "std_reward": 0.029085669025990243,
+        "mean_latency": 394.0151218159993,
+        "std_latency": 25.58767116935364,
+        "mean_cost": 3.4834660001100326e-06,
+        "std_cost": 2.1323098471808354e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": 0.29017698016384424,
+        "std_reward": 0.013459968025844876,
+        "mean_latency": 375.3360234875149,
+        "std_latency": 19.006970558855116,
+        "mean_cost": 3.3255841798841684e-06,
+        "std_cost": 1.5960656412590307e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": 0.30465077602782564,
+        "std_reward": 0.04943203117946579,
+        "mean_latency": 377.5585849041409,
+        "std_latency": 0.8208524269732708,
+        "mean_cost": 3.346327824955451e-06,
+        "std_cost": 6.840353515006994e-09,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": 0.2615200774724182,
+        "std_reward": 0.025464048780651314,
+        "mean_latency": 427.0911355166965,
+        "std_latency": 17.380811995151003,
+        "mean_cost": 3.758877639054643e-06,
+        "std_cost": 1.4510604978901817e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    }
+  },
+  "random": {
+    "110.dynamic-html": {
+      "sine": {
+        "mean_reward": 0.6272183919822137,
+        "std_reward": 0.025716111727840437,
+        "mean_latency": 77.0049262216356,
+        "std_latency": 24.17178759524428,
+        "mean_cost": 1.2715087417013315e-06,
+        "std_cost": 3.624237230789064e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": 0.6051480156729939,
+        "std_reward": 0.03079553821612095,
+        "mean_latency": 75.39716154098511,
+        "std_latency": 27.118629103409422,
+        "mean_cost": 1.2298398172561065e-06,
+        "std_cost": 3.525644831906481e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": 0.6286655511341842,
+        "std_reward": 0.027038292473697337,
+        "mean_latency": 69.12229592959086,
+        "std_latency": 24.52881352130902,
+        "mean_cost": 1.1722804893565808e-06,
+        "std_cost": 3.206106303439219e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": 0.60013247468645,
+        "std_reward": 0.04550698730589513,
+        "mean_latency": 95.30172139697605,
+        "std_latency": 34.53695514700205,
+        "mean_cost": 1.493900687610979e-06,
+        "std_cost": 3.908225857773977e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "120.uploader": {
+      "sine": {
+        "mean_reward": -2.3251500754982124,
+        "std_reward": 0.22913137054263474,
+        "mean_latency": 2569.598117879232,
+        "std_latency": 185.2682482694901,
+        "mean_cost": 3.368823946061639e-05,
+        "std_cost": 4.076128286113205e-06,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": -1.387784434073246,
+        "std_reward": 0.15101490426895406,
+        "mean_latency": 2053.1845550198027,
+        "std_latency": 70.6282424545267,
+        "mean_cost": 2.4501058609934666e-05,
+        "std_cost": 1.020939402260655e-06,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": -2.2995816097547706,
+        "std_reward": 0.24420899600315313,
+        "mean_latency": 2567.679488118489,
+        "std_latency": 202.59574957897013,
+        "mean_cost": 3.2164978263785495e-05,
+        "std_cost": 2.6750761914698527e-06,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": -1.8531040285603382,
+        "std_reward": 0.17119124874303784,
+        "mean_latency": 2396.140604281956,
+        "std_latency": 183.79792556956497,
+        "mean_cost": 3.0918494369542615e-05,
+        "std_cost": 4.646955480740517e-06,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "210.thumbnailer": {
+      "sine": {
+        "mean_reward": 0.5401620674825026,
+        "std_reward": 0.007747635051314643,
+        "mean_latency": 198.70812884436714,
+        "std_latency": 5.774991451371182,
+        "mean_cost": 2.709408155302147e-06,
+        "std_cost": 7.521845752532619e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": 0.5334675026132252,
+        "std_reward": 0.00912389672074259,
+        "mean_latency": 187.54888606177437,
+        "std_latency": 17.54847884066336,
+        "mean_cost": 2.516469533399383e-06,
+        "std_cost": 6.829942474874014e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": 0.5406147906783457,
+        "std_reward": 0.006745970540902342,
+        "mean_latency": 184.4410292731391,
+        "std_latency": 18.48525265283722,
+        "mean_cost": 2.4703547685413065e-06,
+        "std_cost": 6.859074107371638e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": 0.5146027857115869,
+        "std_reward": 0.02840141930410739,
+        "mean_latency": 209.45523460388185,
+        "std_latency": 7.47477709099976,
+        "mean_cost": 2.8026100454149453e-06,
+        "std_cost": 7.405132808810725e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "311.compression": {
+      "sine": {
+        "mean_reward": 0.3435309745315685,
+        "std_reward": 0.027757130855560967,
+        "mean_latency": 445.9253580050998,
+        "std_latency": 33.622885991492645,
+        "mean_cost": 6.466028989267316e-06,
+        "std_cost": 3.616500668343469e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": 0.3597824536204599,
+        "std_reward": 0.026416122842744867,
+        "mean_latency": 427.6518703715006,
+        "std_latency": 34.29401046947687,
+        "mean_cost": 6.278407114134804e-06,
+        "std_cost": 2.894189302382198e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": 0.36450404323200286,
+        "std_reward": 0.02437178281724431,
+        "mean_latency": 428.4128025648329,
+        "std_latency": 37.1221596280936,
+        "mean_cost": 6.275190403610193e-06,
+        "std_cost": 2.839935567456536e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": 0.31632538624610435,
+        "std_reward": 0.05248259035375552,
+        "mean_latency": 462.0083216857909,
+        "std_latency": 35.94528007346588,
+        "mean_cost": 6.980953921748146e-06,
+        "std_cost": 7.112840006562559e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "411.image-recognition": {
+      "sine": {
+        "mean_reward": -152.5968506975349,
+        "std_reward": 34.07805294804996,
+        "mean_latency": 214231.1493098153,
+        "std_latency": 48753.061133554766,
+        "mean_cost": 0.0007842343840302923,
+        "std_cost": 0.0001555863275951346,
+        "mean_success_rate": 0.42777777777777776,
+        "std_success_rate": 0.1021376461713902
+      },
+      "spike": {
+        "mean_reward": -152.59331065393033,
+        "std_reward": 34.079210566204054,
+        "mean_latency": 214151.63855804867,
+        "std_latency": 48790.18976682489,
+        "mean_cost": 0.0007826995235954351,
+        "std_cost": 0.00015691062390676942,
+        "mean_success_rate": 0.42777777777777776,
+        "std_success_rate": 0.1021376461713902
+      },
+      "decay": {
+        "mean_reward": -152.2491660892613,
+        "std_reward": 34.18431334603681,
+        "mean_latency": 213930.60794440378,
+        "std_latency": 48948.652125338594,
+        "mean_cost": 0.0007785583265666043,
+        "std_cost": 0.0001604012880942366,
+        "mean_success_rate": 0.42777777777777776,
+        "std_success_rate": 0.1021376461713902
+      },
+      "random": {
+        "mean_reward": -152.5630713778885,
+        "std_reward": 34.09534252933129,
+        "mean_latency": 214582.9350522783,
+        "std_latency": 48460.622570683576,
+        "mean_cost": 0.0007922915545584096,
+        "std_cost": 0.0001493165306748078,
+        "mean_success_rate": 0.42777777777777776,
+        "std_success_rate": 0.1021376461713902
+      }
+    }
+  },
+  "greedy": {
+    "110.dynamic-html": {
+      "sine": {
+        "mean_reward": -0.780416786087768,
+        "std_reward": 0.004847706167352307,
+        "mean_latency": 1665.0531498548717,
+        "std_latency": 8.884100953217379,
+        "mean_cost": 1.4075470727258715e-05,
+        "std_cost": 7.403446855855719e-08,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": -0.3323750793532218,
+        "std_reward": 0.027785563101114356,
+        "mean_latency": 1056.358054186503,
+        "std_latency": 38.158391784158994,
+        "mean_cost": 9.000778974363282e-06,
+        "std_cost": 3.1829466628062346e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": -0.34835802339150607,
+        "std_reward": 0.005656929766847564,
+        "mean_latency": 1098.0879777844746,
+        "std_latency": 47.69096331016938,
+        "mean_cost": 9.35075138856847e-06,
+        "std_cost": 3.974256085804303e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": -0.657597470407306,
+        "std_reward": 0.01849455245802945,
+        "mean_latency": 1588.4631647597416,
+        "std_latency": 49.07893298038509,
+        "mean_cost": 1.343699751951514e-05,
+        "std_cost": 4.0867754142712023e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "120.uploader": {
+      "sine": {
+        "mean_reward": -0.4236375086897324,
+        "std_reward": 0.029009085028290568,
+        "mean_latency": 1311.9841130574544,
+        "std_latency": 20.897447042904123,
+        "mean_cost": 1.113322268540489e-05,
+        "std_cost": 1.741457267419764e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": -0.33990709634374155,
+        "std_reward": 0.024731687952484923,
+        "mean_latency": 1131.6743016560874,
+        "std_latency": 38.05817955350913,
+        "mean_cost": 9.628415765140139e-06,
+        "std_cost": 3.181828823108504e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": -0.40669654184493037,
+        "std_reward": 0.0077364567582414775,
+        "mean_latency": 1182.2096564059786,
+        "std_latency": 47.14624050491443,
+        "mean_cost": 1.005176684935173e-05,
+        "std_cost": 3.928862545061666e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": -0.44511521953315203,
+        "std_reward": 0.06962931572363433,
+        "mean_latency": 1337.6613789537219,
+        "std_latency": 9.12413930763254,
+        "mean_cost": 1.1346978306947777e-05,
+        "std_cost": 7.583124677863781e-08,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "210.thumbnailer": {
+      "sine": {
+        "mean_reward": 0.1678571814462733,
+        "std_reward": 0.024736447266395324,
+        "mean_latency": 542.9034570821126,
+        "std_latency": 20.174795751700902,
+        "mean_cost": 1.829681764446731e-05,
+        "std_cost": 6.724942547343804e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": 0.17417428596933907,
+        "std_reward": 0.02334501384530636,
+        "mean_latency": 480.18677759806314,
+        "std_latency": 18.712741501105224,
+        "mean_cost": 1.6204035595516565e-05,
+        "std_cost": 6.246559225388882e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": 0.14605498699726893,
+        "std_reward": 0.002300139633744055,
+        "mean_latency": 507.28626479678695,
+        "std_latency": 19.728530627852237,
+        "mean_cost": 1.7109575727292597e-05,
+        "std_cost": 6.576190290721178e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": 0.1519509033159726,
+        "std_reward": 0.017699010156040768,
+        "mean_latency": 570.6942871899075,
+        "std_latency": 32.950040768474125,
+        "mean_cost": 1.9222958433905055e-05,
+        "std_cost": 1.0985238560778219e-06,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "311.compression": {
+      "sine": {
+        "mean_reward": -0.1367845685785966,
+        "std_reward": 0.03181053018411348,
+        "mean_latency": 984.0353950161403,
+        "std_latency": 25.237632955823635,
+        "mean_cost": 1.6600622639089125e-05,
+        "std_cost": 4.206277468288409e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": -0.08417917078342096,
+        "std_reward": 0.028496453921184613,
+        "mean_latency": 819.2742106119791,
+        "std_latency": 39.55622069846706,
+        "mean_cost": 1.3852375135583215e-05,
+        "std_cost": 6.602829529420662e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": -0.11904425457420985,
+        "std_reward": 0.0015330280982231758,
+        "mean_latency": 861.5135340881347,
+        "std_latency": 37.59390542728572,
+        "mean_cost": 1.4558587599822203e-05,
+        "std_cost": 6.265663633977522e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": -0.15242492905463223,
+        "std_reward": 0.05361066726475985,
+        "mean_latency": 1001.0990808783637,
+        "std_latency": 25.450002896711688,
+        "mean_cost": 1.688479581642039e-05,
+        "std_cost": 4.244817719633529e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    },
+    "411.image-recognition": {
+      "sine": {
+        "mean_reward": 0.640001809983807,
+        "std_reward": 0.000830286254421034,
+        "mean_latency": 54.49602434794108,
+        "std_latency": 1.1939210145257109,
+        "mean_cost": 2.868039860004501e-06,
+        "std_cost": 5.845249920722325e-08,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "spike": {
+        "mean_reward": 0.6334383778377641,
+        "std_reward": 0.0046951526598981025,
+        "mean_latency": 51.21651423560249,
+        "std_latency": 0.49767340276305466,
+        "mean_cost": 2.705257943489414e-06,
+        "std_cost": 2.550517459048741e-08,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "decay": {
+        "mean_reward": 0.6412121113653183,
+        "std_reward": 0.00022780563052492346,
+        "mean_latency": 51.130712343851734,
+        "std_latency": 0.4172287759135088,
+        "mean_cost": 2.7032794610527667e-06,
+        "std_cost": 2.042686809618226e-08,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      },
+      "random": {
+        "mean_reward": 0.6374290172857681,
+        "std_reward": 0.001595185742062503,
+        "mean_latency": 57.740006069607205,
+        "std_latency": 3.182599304582626,
+        "mean_cost": 3.0266378813495163e-06,
+        "std_cost": 1.5587691649703618e-07,
+        "mean_success_rate": 1.0,
+        "std_success_rate": 0.0
+      }
+    }
+  }
+}

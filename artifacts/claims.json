@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "artifact_version": "1.0.0",
+  "paper": {
+    "title": "Code-Aware and Load-Aware Resource Configuration for Serverless Functions via Deep Reinforcement Learning",
+    "venue": "IEEE Transactions on Cloud Computing",
+    "status": "accepted"
+  },
+  "model_contract": {
+    "state_components": {
+      "code_embedding": 32,
+      "load_features": 10,
+      "function_category": 5,
+      "performance_history": 5,
+      "configuration_context": 27
+    },
+    "expected_state_dimension": 79,
+    "action_catalog": {
+      "memory_mb": [
+        128,
+        256,
+        512,
+        1024,
+        2048,
+        3008
+      ],
+      "architecture": [
+        "x64",
+        "arm64"
+      ],
+      "timeout_sec": [
+        60,
+        120,
+        300,
+        900
+      ]
+    },
+    "expected_action_count": 48
+  },
+  "main_comparison": {
+    "source": "main_results/full_suite_results.json",
+    "case_count_per_algorithm": 20,
+    "tail_fraction": 0.1,
+    "algorithms": {
+      "ppo": {
+        "mean_reward": 0.5687884703178826,
+        "median_reward": 0.6444800476095485,
+        "cvar10_reward": 0.3507718349474715,
+        "mean_latency_ms": 163.46120331690045,
+        "mean_cost_usd": 1.4804873071641269e-06
+      },
+      "bayes_opt_online": {
+        "mean_reward": 0.5130861319263471,
+        "median_reward": 0.5786508938948608,
+        "cvar10_reward": 0.16335899511614319,
+        "mean_latency_ms": 223.8011063044866,
+        "mean_cost_usd": 3.5384096652219596e-06
+      }
+    },
+    "seed_reward_deltas": [
+      {
+        "seed": 42,
+        "source": "main_results/seed_42.json",
+        "expected": 0.061244837419124565
+      },
+      {
+        "seed": 52,
+        "source": "main_results/seed_52.json",
+        "expected": 0.049344107206728216
+      },
+      {
+        "seed": 62,
+        "source": "main_results/seed_62.json",
+        "expected": 0.05651807054875391
+      }
+    ]
+  },
+  "fixed_validation": {
+    "source": "openwhisk_fixed_validation/targets.json",
+    "target_count": 120,
+    "deployable_count": 112,
+    "median_warm_abs_rel_error_pct": 13.892465745319104,
+    "median_cold_abs_rel_error_pct": 29.024021727078896,
+    "ranking_source": "openwhisk_fixed_validation/ranking_summary.json",
+    "ranking_sha256": "b11f0451be88bd20840e773010e8d7299cfa9851f9925416817d294050c8ff43",
+    "ranking_overall": [
+      {
+        "metric": "warm_latency",
+        "benchmark_count": 5,
+        "top1_match_rate": 0.0,
+        "mean_top2_overlap": 0.4,
+        "mean_spearman": -0.2204552429667519
+      },
+      {
+        "metric": "cold_latency",
+        "benchmark_count": 5,
+        "top1_match_rate": 0.0,
+        "mean_top2_overlap": 0.0,
+        "mean_spearman": -0.03165728900255754
+      },
+      {
+        "metric": "warm_reward",
+        "benchmark_count": 5,
+        "top1_match_rate": 0.0,
+        "mean_top2_overlap": 0.4,
+        "mean_spearman": -0.20569820971867006
+      },
+      {
+        "metric": "cold_reward",
+        "benchmark_count": 5,
+        "top1_match_rate": 0.0,
+        "mean_top2_overlap": 0.0,
+        "mean_spearman": -0.01278260869565218
+      }
+    ]
+  },
+  "focused_replay": {
+    "case_count": 8,
+    "mean_raw_reward_delta_vs_default": 0.4830711729111618,
+    "mean_raw_reward_delta_vs_online_bo": 0.5318820586259196,
+    "steady_state_delta_vs_default": 0.48928852483848173,
+    "steady_state_delta_vs_online_bo": 0.54587240152493,
+    "mean_p95_reduction_vs_online_bo_ms": 766.6161231250002,
+    "cases": [
+      {
+        "case_id": "311_surge_seed42",
+        "benchmark": "311.compression",
+        "load_pattern": "surge",
+        "seed": 42,
+        "steps": 40,
+        "summary": "replay/311_surge_seed42/summary.json",
+        "workload": "replay/311_surge_seed42/workload_sequence.json",
+        "summary_sha256": "96bf50fb65f942e2095b90de648b166dd8fbd945f2ce501a497e82acf67ac3be",
+        "protocol_sha256": "fcf156d7096a37e22a3a7220a5e763cd38ea74c73d31d28d0f08125a420ca1b3",
+        "workload_sha256": "36b010215a9383ba904208db20e6e5407d831b6af9675ca46a8241a8e98fe00d"
+      },
+      {
+        "case_id": "311_surge_seed52",
+        "benchmark": "311.compression",
+        "load_pattern": "surge",
+        "seed": 52,
+        "steps": 40,
+        "summary": "replay/311_surge_seed52/summary.json",
+        "workload": "replay/311_surge_seed52/workload_sequence.json",
+        "summary_sha256": "5dd8187a8d9314f1a34bbdd3f3565642d294445971a8cc44af843bbe14ac541c",
+        "protocol_sha256": "fcf156d7096a37e22a3a7220a5e763cd38ea74c73d31d28d0f08125a420ca1b3",
+        "workload_sha256": "b1262d3c0062d859b4daa9a3b0af402626c58469705dd45fe79c23ce036a26eb"
+      },
+      {
+        "case_id": "411_decay_seed42",
+        "benchmark": "411.image-recognition",
+        "load_pattern": "decay",
+        "seed": 42,
+        "steps": 40,
+        "summary": "replay/411_decay_seed42/summary.json",
+        "workload": "replay/411_decay_seed42/workload_sequence.json",
+        "summary_sha256": "73914a557eda6dc6acc34e4a7012a290067e9abf570a67a385636dba8a11f85e",
+        "protocol_sha256": "10022a8c358e1890042f8d13d22c946b4cade24dce913073d4c18a7099d90133",
+        "workload_sha256": "d6d79e2c164ce92fbf8186e35c40e67fbd9a3fba4766b8bbf8cd202f7a836b7b"
+      },
+      {
+        "case_id": "411_decay_seed52",
+        "benchmark": "411.image-recognition",
+        "load_pattern": "decay",
+        "seed": 52,
+        "steps": 40,
+        "summary": "replay/411_decay_seed52/summary.json",
+        "workload": "replay/411_decay_seed52/workload_sequence.json",
+        "summary_sha256": "4ad0862a7a9e30329fc4d7cced9d094e9d34ace67f16a037cd1973ca986f00fb",
+        "protocol_sha256": "10022a8c358e1890042f8d13d22c946b4cade24dce913073d4c18a7099d90133",
+        "workload_sha256": "cd21e28556edecba2357b40a0c57478042ae35cffb4699ad11ae980be47847f1"
+      },
+      {
+        "case_id": "411_random_seed52",
+        "benchmark": "411.image-recognition",
+        "load_pattern": "random",
+        "seed": 52,
+        "steps": 40,
+        "summary": "replay/411_random_seed52/summary.json",
+        "workload": "replay/411_random_seed52/workload_sequence.json",
+        "summary_sha256": "9f5d866290073e92a44476a5188b4bc3d2d9622728f56f764f4abc0f81711c8f",
+        "protocol_sha256": "10022a8c358e1890042f8d13d22c946b4cade24dce913073d4c18a7099d90133",
+        "workload_sha256": "6fbcb25cdfc299a74dee148ed385c216031ec476a76c860d0da3a5bd68e4589d"
+      },
+      {
+        "case_id": "411_random_seed62",
+        "benchmark": "411.image-recognition",
+        "load_pattern": "random",
+        "seed": 62,
+        "steps": 40,
+        "summary": "replay/411_random_seed62/summary.json",
+        "workload": "replay/411_random_seed62/workload_sequence.json",
+        "summary_sha256": "d6d51f495f0e3abfed5d94008b55ce1c85c00773ee94c4faaa61a0cb626f7b59",
+        "protocol_sha256": "10022a8c358e1890042f8d13d22c946b4cade24dce913073d4c18a7099d90133",
+        "workload_sha256": "48a26a01bc56dce86d823f8b31b2da892d28b7f03e0307f0d2535fdb609629f9"
+      },
+      {
+        "case_id": "411_surge_seed42",
+        "benchmark": "411.image-recognition",
+        "load_pattern": "surge",
+        "seed": 42,
+        "steps": 40,
+        "summary": "replay/411_surge_seed42/summary.json",
+        "workload": "replay/411_surge_seed42/workload_sequence.json",
+        "summary_sha256": "8a6108802b370ee132bf4f9f035a9bbb5cbdb7516412450a1fde1888101e697d",
+        "protocol_sha256": "5f230fbac6a62945bf695a8950532d3f71aa2862c3d119cbbb0bd2ef502e5752",
+        "workload_sha256": "e60d6f77e2f44dd805a37ef72b57bab9cafb056954b1b9a7b903f947fd472ca5"
+      },
+      {
+        "case_id": "411_surge_seed52",
+        "benchmark": "411.image-recognition",
+        "load_pattern": "surge",
+        "seed": 52,
+        "steps": 40,
+        "summary": "replay/411_surge_seed52/summary.json",
+        "workload": "replay/411_surge_seed52/workload_sequence.json",
+        "summary_sha256": "5151bce07ef3ef894074a690ea20f092e16183b3e3ea0ce9b21fca4b4000b2c6",
+        "protocol_sha256": "b6e43c7069c6c80650e2e57bfa763677bc139bf68a3c777d9b0268c13ef481bc",
+        "workload_sha256": "5aef9f5f60eaeec1363aaccc68790f80daabdfbf9ff47ccf2b796b048f930dc4"
+      }
+    ]
+  },
+  "tolerances": {
+    "floating_point_absolute": 1e-09,
+    "paper_display_reward": 5e-05,
+    "paper_display_latency_ms": 0.005
+  },
+  "attribution": {
+    "source": "supplementary/feature_attribution/aggregate_summary.json",
+    "case_count": 9,
+    "cases": [
+      {
+        "case_id": "110_dynamic_html_spike_seed42",
+        "benchmark": "110.dynamic-html",
+        "seed": 42
+      },
+      {
+        "case_id": "210_thumbnailer_spike_seed42",
+        "benchmark": "210.thumbnailer",
+        "seed": 42
+      },
+      {
+        "case_id": "411_image_recognition_spike_seed42",
+        "benchmark": "411.image-recognition",
+        "seed": 42
+      },
+      {
+        "case_id": "110_dynamic_html_spike_seed52",
+        "benchmark": "110.dynamic-html",
+        "seed": 52
+      },
+      {
+        "case_id": "210_thumbnailer_spike_seed52",
+        "benchmark": "210.thumbnailer",
+        "seed": 52
+      },
+      {
+        "case_id": "411_image_recognition_spike_seed52",
+        "benchmark": "411.image-recognition",
+        "seed": 52
+      },
+      {
+        "case_id": "110_dynamic_html_spike_seed62",
+        "benchmark": "110.dynamic-html",
+        "seed": 62
+      },
+      {
+        "case_id": "210_thumbnailer_spike_seed62",
+        "benchmark": "210.thumbnailer",
+        "seed": 62
+      },
+      {
+        "case_id": "411_image_recognition_spike_seed62",
+        "benchmark": "411.image-recognition",
+        "seed": 62
+      }
+    ],
+    "expected_group_means": {
+      "code": 0.011613232405793253,
+      "load": 0.013571376871105559,
+      "category": 0.008748165188246107,
+      "history": 0.019457751825942962,
+      "context": 0.018369381049157432
+    },
+    "expected_single_means": {
+      "history_cold_start_rate": 0.005274004897363679,
+      "history_latency_variance": 0.027657686863133548,
+      "history_mean_cost": 0.01680262286066048,
+      "history_mean_latency": 0.014773494242267683,
+      "history_success_rate": 0.023773131426892934,
+      "avg_response_time": 0.009029226149266828,
+      "burst_indicator": 0.013869814682650932,
+      "cold_start_probability": 0.013380501228304871,
+      "container_warmth": 0.009425043479776418,
+      "current_qps": 0.010029356746409427,
+      "load_volatility": 0.00902531345374251,
+      "peak_concurrency": 0.013333572711604283,
+      "qps_trend": 0.01174006099168848
+    },
+    "top_k": 6
+  }
+}

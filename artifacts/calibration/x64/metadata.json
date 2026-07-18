@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "architecture": "x64",
+  "source_type": "aggregated_openwhisk_measurements",
+  "benchmark_count": 5,
+  "action_catalog": {
+    "memory_mb": [128, 256, 512, 1024, 2048, 3008],
+    "architecture": ["x64"],
+    "timeout_sec": [60, 120, 300, 900]
+  },
+  "profiles": {
+    "warm": {"file": "warm_profile.csv", "row_count": 120},
+    "cold": {"file": "cold_profile.csv", "row_count": 362},
+    "burst": {"file": "burst_profile.csv", "row_count": 360}
+  },
+  "surrogate_directory": "lightgbm_service",
+  "excluded_private_data": [
+    "per-invocation records",
+    "collection logs",
+    "deployment configuration",
+    "host metadata"
+  ]
+}

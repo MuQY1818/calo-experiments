@@ -30,6 +30,7 @@ ENV/
 .coverage
 .coverage.*
 htmlcov/
+coverage.xml
 
 # Local configuration and editor files
 .env
@@ -47,10 +48,22 @@ archive/
 cache/
 external_data/
 embeddings/
+*.partial.json
+*.tmp
 *.log
 *.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.pdf
 core
 core.*
+
+# Local model caches
+.huggingface/
+hf-cache/
 
 # OpenWhisk and local service volumes
 minio-volume/

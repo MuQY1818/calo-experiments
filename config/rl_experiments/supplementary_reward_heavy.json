@@ -1,23 +1,24 @@
 {
-  "description": "CALO Azure trace-driven simulator configuration",
+  "description": "Accepted-paper reward sensitivity protocol with heavier failure and cold-start penalties",
+  "protocol_role": "supplementary",
+  "protocol_summary": {
+    "variant": "reward_heavy",
+    "action_preset": "calibrated_x64_8",
+    "architecture_scope": "x64",
+    "evidence_source": "accepted-paper reward sensitivity results"
+  },
   "benchmarks": [
-    "110.dynamic-html",
     "120.uploader",
-    "210.thumbnailer",
-    "311.compression",
     "411.image-recognition"
   ],
   "algorithms": [
     "ppo",
-    "bayes_opt_online",
-    "default",
-    "random",
-    "greedy"
+    "bayes_opt_online"
   ],
   "environment": {
     "episode_length": 60,
-    "load_change_freq": 1,
-    "calibration_dir": null,
+    "load_change_freq": 5,
+    "calibration_dir": "artifacts/calibration/x64",
     "action_space": {
       "preset": "calibrated_x64_8"
     },
@@ -28,27 +29,25 @@
       "latency": 0.7,
       "cost": 0.3
     },
+    "reward_penalties": {
+      "failure": 5.0,
+      "cold_start": 0.4,
+      "queue": 0.2
+    },
     "success_bonus": 0.7,
     "cost_normalization": "log",
     "load_patterns": [
-      "azure_trace"
-    ],
-    "workload_source": "azure_trace",
-    "azure_profile_path": "external_data/azure_functions/processed/azure_functions_2019_topk_minute_profiles.csv",
-    "azure_summary_path": "external_data/azure_functions/processed/azure_functions_2019_function_summary.csv",
-    "azure_top_k": 200,
-    "azure_profile_selection": "benchmark_aware",
-    "azure_selection_pool_size": 12,
-    "azure_arrival_scale": 1.0,
-    "azure_max_arrivals_per_step": 64
+      "spike",
+      "random"
+    ]
   },
   "training": {
-    "total_timesteps": 90000,
+    "total_timesteps": 15000,
     "ppo_kwargs": {
       "learning_rate": 0.00015,
-      "n_steps": 2048,
-      "batch_size": 256,
-      "n_epochs": 12,
+      "n_steps": 1024,
+      "batch_size": 128,
+      "n_epochs": 8,
       "gamma": 0.995,
       "gae_lambda": 0.97,
       "clip_range": 0.2,
@@ -70,6 +69,12 @@
       42,
       52,
       62
-    ]
+    ],
+    "codebert": {
+      "model_name": "microsoft/codebert-base",
+      "revision": "3b0952feddeffad0063f274080e3c23d75e7eb39",
+      "cache_dir": ".cache/codebert_embeddings",
+      "cache_first": true
+    }
   }
 }

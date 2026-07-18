@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "artifact_version": "1.0.0",
+  "release_scope": "Accepted-paper cached outputs and measurement-grounded calibration data",
+  "assets": [
+    {
+      "path": "artifacts/calibration/{x64,arm64}",
+      "source_id": "dual-architecture OpenWhisk calibration measurements",
+      "transformation": "Retained aggregated warm, cold, and burst profiles plus architecture-specific LightGBM surrogates; removed invocation-level records, logs, figures, deployment files, timestamps, and host metadata."
+    },
+    {
+      "path": "artifacts/main_results",
+      "source_id": "three-seed full-48 CALO experiment outputs (42, 52, and 62)",
+      "transformation": "Retained final simulator JSON and aggregate tables; omitted partial results, checkpoints, plots, and run logs."
+    },
+    {
+      "path": "artifacts/supplementary",
+      "source_id": "load-only, embedding, feature-attribution, and reward-sensitivity aggregates",
+      "transformation": "Retained aggregate JSON only and removed non-public source paths."
+    },
+    {
+      "path": "artifacts/openwhisk_fixed_validation",
+      "source_id": "five-benchmark x64 fixed-configuration OpenWhisk validation",
+      "transformation": "Retained target-level numeric summaries and ranking aggregates; removed function deployment names, caches, logs, tables, and infrastructure data."
+    },
+    {
+      "path": "artifacts/replay",
+      "source_id": "eight focused accepted-paper adaptive-stress cases",
+      "transformation": "Retained aggregate policy metrics, pairwise comparisons, protocol parameters, and workload sequences; removed deployed function names, per-step invocation records, runtime logs, and plots."
+    }
+  ],
+  "evidence_boundaries": {
+    "simulator": "The five-benchmark full-48 policy comparison is simulator-based and uses both x64 and ARM64 measurement calibration.",
+    "fixed_openwhisk": "The fixed sweep contains 120 x64 targets, of which 112 produced complete warm and cold captures.",
+    "adaptive_replay": "The real-platform online evidence is limited to the eight released focused replay cases.",
+    "not_released": "The Azure trace corpus, raw OpenWhisk invocations, deployment collection chain, historical archives, paper PDF, and unconfirmed PPO checkpoints are not part of v1.0.0."
+  },
+  "integrity_manifest": "artifacts/SHA256SUMS"
+}

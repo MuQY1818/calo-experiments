@@ -2,236 +2,11 @@
 
 import numpy as np
 from typing import Dict, Optional, List, Iterable
-from collections import deque
 
-from .llm_analyzer import CodeBERTAnalyzer, BenchmarkFeatureExtractor
+from .benchmark_features import BenchmarkFeatureExtractor
+from .codebert_analyzer import CodeBERTAnalyzer
 from .load_monitor import LoadMonitor
-
-
-class FunctionCategory:
-    """Function-category enumeration."""
-    WEBAPPS = 0
-    MULTIMEDIA = 1
-    UTILITIES = 2
-    INFERENCE = 3
-    SCIENTIFIC = 4
-
-    @staticmethod
-    def from_benchmark_name(name: str) -> int:
-        """Infer the function category from the benchmark name."""
-        prefix = name[0]
-        if prefix == '1':
-            return FunctionCategory.WEBAPPS
-        elif prefix == '2':
-            return FunctionCategory.MULTIMEDIA
-        elif prefix == '3':
-            return FunctionCategory.UTILITIES
-        elif prefix == '4':
-            return FunctionCategory.INFERENCE
-        elif prefix == '5':
-            return FunctionCategory.SCIENTIFIC
-        else:
-            return FunctionCategory.WEBAPPS
-
-    @staticmethod
-    def to_onehot(category: int) -> np.ndarray:
-        """Convert the category id to a one-hot vector."""
-        onehot = np.zeros(5, dtype=np.float32)
-        onehot[category] = 1.0
-        return onehot
-
-
-class PerformanceHistory:
-    """Rolling performance history."""
-
-    def __init__(self, max_history: int = 100):
-        """
-        Initialize the performance history buffer.
-
-        Args:
-            max_history: Maximum number of records to keep.
-        """
-        self.max_history = max_history
-
-        # Latency history.
-        self.latencies = deque(maxlen=max_history)
-
-        # Cost history.
-        self.costs = deque(maxlen=max_history)
-
-        # Success flags.
-        self.successes = deque(maxlen=max_history)
-
-        # Cold-start flags.
-        self.cold_starts = deque(maxlen=max_history)
-
-    def record(
-        self,
-        latency: float,
-        cost: float,
-        success: float | bool,
-        cold_start: float | bool,
-    ):
-        """
-        Record one execution result.
-
-        Args:
-            latency: Latency in milliseconds.
-            cost: Cost in USD.
-            success: Success indicator or rate.
-            cold_start: Cold-start indicator or rate.
-        """
-        self.latencies.append(latency)
-        self.costs.append(cost)
-        self.successes.append(float(success))
-        self.cold_starts.append(float(cold_start))
-
-    def extract_features(self) -> np.ndarray:
-        """
-        Extract the 5-dimensional history feature vector.
-
-        Returns:
-            Five-dimensional NumPy array.
-        """
-        features = np.zeros(5, dtype=np.float32)
-
-        if len(self.latencies) == 0:
-            return features
-
-        # 1. Mean latency normalized to [0, 1] with a 10000 ms cap.
-        features[0] = min(1.0, np.mean(self.latencies) / 10000.0)
-
-        # 2. Mean cost normalized to [0, 1] with a 0.01 USD cap.
-        features[1] = min(1.0, np.mean(self.costs) / 0.01)
-
-        # 3. Success rate.
-        features[2] = np.mean(self.successes)
-
-        # 4. Cold-start rate.
-        features[3] = np.mean(self.cold_starts)
-
-        # 5. Normalized latency variance.
-        if len(self.latencies) > 1:
-            variance = np.var(self.latencies)
-            features[4] = min(1.0, variance / (1000.0 ** 2))
-        else:
-            features[4] = 0.0
-
-        return features
-
-    def reset(self):
-        """Reset the stored history."""
-        self.latencies.clear()
-        self.costs.clear()
-        self.successes.clear()
-        self.cold_starts.clear()
-
-
-class ConfigurationContext:
-    """Configuration and execution context."""
-
-    def __init__(self):
-        """Initialize the configuration context."""
-        # Current configuration.
-        self.memory_mb = 128
-        self.architecture = 'x64'  # 'x64' or 'arm64'
-        self.timeout_sec = 60
-
-        # Resource utilization sampled from the simulator.
-        self.cpu_utilization = 0.0
-        self.memory_utilization = 0.0
-
-        # Execution counters.
-        self.total_invocations = 0
-        self.failed_invocations = 0
-
-    def set_configuration(self, memory_mb: int, architecture: str, timeout_sec: int):
-        """Set the active resource configuration."""
-        self.memory_mb = memory_mb
-        self.architecture = architecture
-        self.timeout_sec = timeout_sec
-
-    def update_utilization(self, cpu: float, memory: float):
-        """Update simulated resource-utilization signals."""
-        self.cpu_utilization = cpu
-        self.memory_utilization = memory
-
-    def record_invocation(self, success: float | bool, count: int = 1):
-        """Record one invocation batch."""
-        count = max(0, int(count))
-        if count == 0:
-            return
-
-        self.total_invocations += count
-        success_rate = float(success)
-        success_rate = float(np.clip(success_rate, 0.0, 1.0))
-        failed_invocations = int(round(count * (1.0 - success_rate)))
-        self.failed_invocations += min(count, max(0, failed_invocations))
-
-    def extract_features(self) -> np.ndarray:
-        """
-        Extract the 27-dimensional context feature vector.
-
-        Returns:
-            Twenty-seven-dimensional NumPy array.
-        """
-        features = np.zeros(27, dtype=np.float32)
-
-        # 1-6. Memory configuration one-hot encoding.
-        # [128, 256, 512, 1024, 2048, 3008]
-        memory_options = [128, 256, 512, 1024, 2048, 3008]
-        if self.memory_mb in memory_options:
-            features[memory_options.index(self.memory_mb)] = 1.0
-        else:
-            # Fall back to the nearest supported bucket.
-            idx = np.argmin([abs(self.memory_mb - m) for m in memory_options])
-            features[idx] = 1.0
-
-        # 7-8. Architecture one-hot encoding.
-        # [x64, arm64]
-        if self.architecture == 'x64':
-            features[6] = 1.0
-        else:
-            features[7] = 1.0
-
-        # 9-12. Timeout configuration one-hot encoding.
-        # [60, 120, 300, 900]
-        timeout_options = [60, 120, 300, 900]
-        if self.timeout_sec in timeout_options:
-            features[8 + timeout_options.index(self.timeout_sec)] = 1.0
-        else:
-            idx = np.argmin([abs(self.timeout_sec - t) for t in timeout_options])
-            features[8 + idx] = 1.0
-
-        # 13. CPU utilization.
-        features[12] = np.clip(self.cpu_utilization, 0.0, 1.0)
-
-        # 14. Memory utilization.
-        features[13] = np.clip(self.memory_utilization, 0.0, 1.0)
-
-        # 15. Total invocations in normalized log scale.
-        if self.total_invocations > 0:
-            features[14] = min(1.0, np.log10(self.total_invocations) / 5.0)
-        else:
-            features[14] = 0.0
-
-        # 16. Failure rate.
-        if self.total_invocations > 0:
-            features[15] = self.failed_invocations / self.total_invocations
-        else:
-            features[15] = 0.0
-
-        # 17-27. Reserved dimensions for future extensions such as
-        # network latency, disk IO, dependency health, region, or cost budget.
-
-        return features
-
-    def reset(self):
-        """Reset dynamic context counters."""
-        self.total_invocations = 0
-        self.failed_invocations = 0
-        self.cpu_utilization = 0.0
-        self.memory_utilization = 0.0
+from .state_components import ConfigurationContext, FunctionCategory, PerformanceHistory
 
 
 class StateSpace:
@@ -301,7 +76,7 @@ class StateSpace:
     def __init__(
         self,
         codebert_analyzer: Optional[CodeBERTAnalyzer] = None,
-        sebs_root: str = '.',
+        sebs_root: str = ".",
         enable_code_features: bool = True,
         enable_function_category: bool = True,
         code_feature_dim: int = DEFAULT_CODE_FEATURE_DIM,
@@ -340,8 +115,7 @@ class StateSpace:
                     embed_dim=self.code_feature_dim
                 )
             self.feature_extractor = BenchmarkFeatureExtractor(
-                sebs_root=sebs_root,
-                analyzer=self.codebert_analyzer
+                sebs_root=sebs_root, analyzer=self.codebert_analyzer
             )
 
         # State-space subcomponents.
@@ -354,7 +128,7 @@ class StateSpace:
         self.function_category: Optional[int] = None
         self.simulation_time_sec = 0.0
 
-    def set_function(self, benchmark_name: str):
+    def set_function(self, benchmark_name: str) -> None:
         """
         Set the benchmark function to optimize.
 
@@ -374,9 +148,7 @@ class StateSpace:
                 )
             extracted = self.feature_extractor.extract_single_benchmark(benchmark_name)
             if extracted is None:
-                raise ValueError(
-                    f"Failed to extract code features for benchmark: {benchmark_name}"
-                )
+                raise ValueError(f"Failed to extract code features for benchmark: {benchmark_name}")
             self.code_features = np.asarray(extracted, dtype=np.float32)
         else:
             self.code_features = np.zeros(self.code_feature_dim, dtype=np.float32)
@@ -393,7 +165,7 @@ class StateSpace:
         print(f"  - Function category enabled: {self.enable_function_category}")
         print(f"  - Category: {self.function_category}")
 
-    def set_function_from_code(self, code: str, category: int):
+    def set_function_from_code(self, code: str, category: int) -> None:
         """
         Set function features directly from source code.
 
@@ -438,6 +210,8 @@ class StateSpace:
         """
         if self.code_features is None:
             raise ValueError("Call set_function() before extract_state().")
+        if self.function_category is None:
+            raise ValueError("Function category is not initialized.")
 
         # 1. LLM code features.
         llm_features = self.code_features
@@ -458,13 +232,9 @@ class StateSpace:
         context_features = self.config_context.extract_features()
 
         # Concatenate all state components.
-        state = np.concatenate([
-            llm_features,
-            load_features,
-            category_features,
-            history_features,
-            context_features
-        ])
+        state = np.concatenate(
+            [llm_features, load_features, category_features, history_features, context_features]
+        )
 
         assert (
             state.shape[0] == self.total_dim
@@ -479,23 +249,33 @@ class StateSpace:
         Returns:
             Dictionary of state sub-vectors.
         """
+        if self.code_features is None or self.function_category is None:
+            raise ValueError("Call set_function() before get_state_breakdown().")
         return {
-            'llm_features': self.code_features,
-            'load_features': self.load_monitor.extract_features(),
-            'category_features': (
+            "llm_features": self.code_features,
+            "load_features": self.load_monitor.extract_features(),
+            "category_features": (
                 FunctionCategory.to_onehot(self.function_category)
                 if self.enable_function_category
                 else np.zeros(self.CATEGORY_DIM, dtype=np.float32)
             ),
-            'history_features': self.performance_history.extract_features(),
-            'context_features': self.config_context.extract_features(),
+            "history_features": self.performance_history.extract_features(),
+            "context_features": self.config_context.extract_features(),
         }
 
-    def update_load(self, is_cold_start: bool = False, timestamp: Optional[float] = None):
+    def update_load(
+        self,
+        is_cold_start: bool = False,
+        timestamp: Optional[float] = None,
+    ) -> None:
         """Update load-monitor statistics."""
         self.load_monitor.record_request(is_cold_start, timestamp=timestamp)
 
-    def update_response(self, response_time: float, timestamp: Optional[float] = None):
+    def update_response(
+        self,
+        response_time: float,
+        timestamp: Optional[float] = None,
+    ) -> None:
         """Update observed response-time statistics."""
         self.load_monitor.record_response(response_time, timestamp=timestamp)
 
@@ -521,25 +301,30 @@ class StateSpace:
         success: float | bool,
         cold_start: float | bool,
         invocation_count: int = 1,
-    ):
+    ) -> None:
         """Update performance history and invocation counters."""
         self.performance_history.record(latency, cost, success, cold_start)
         self.config_context.record_invocation(success, count=invocation_count)
 
-    def update_configuration(self, memory_mb: int, architecture: str, timeout_sec: int):
+    def update_configuration(
+        self,
+        memory_mb: int,
+        architecture: str,
+        timeout_sec: int,
+    ) -> None:
         """Update the current resource configuration."""
         self.config_context.set_configuration(memory_mb, architecture, timeout_sec)
 
-    def update_utilization(self, cpu: float, memory: float):
+    def update_utilization(self, cpu: float, memory: float) -> None:
         """Update resource-utilization signals."""
         self.config_context.update_utilization(cpu, memory)
 
-    def set_simulation_time(self, current_time_sec: float):
+    def set_simulation_time(self, current_time_sec: float) -> None:
         """Update the simulated time seen by the load monitor."""
         self.simulation_time_sec = float(current_time_sec)
         self.load_monitor.set_current_time(self.simulation_time_sec)
 
-    def reset(self):
+    def reset(self) -> None:
         """Reset all dynamic state while keeping cached code features."""
         self.load_monitor.reset()
         self.performance_history.reset()

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "architecture": "x64",
+  "format": "joblib",
+  "library": "lightgbm",
+  "serialization_environment": {
+    "scikit_learn": "1.8.0"
+  },
+  "test_size": 0.2,
+  "random_state": 42,
+  "models": {
+    "warm_mean_model": {"file": "warm_mean_model.joblib", "rows": 474, "mae": 126.68614594302215, "rmse": 319.73296754372876},
+    "warm_p95_model": {"file": "warm_p95_model.joblib", "rows": 112, "mae": 1553.3915577399387, "rmse": 6167.792869180701},
+    "cold_overhead_mean_model": {"file": "cold_overhead_mean_model.joblib", "rows": 99, "mae": 8913.302298412067, "rmse": 10100.001028899516},
+    "cold_overhead_p95_model": {"file": "cold_overhead_p95_model.joblib", "rows": 56, "mae": 7969.272452920332, "rmse": 9280.770674394204},
+    "burst_slowdown_mean_model": {"file": "burst_slowdown_mean_model.joblib", "rows": 3661, "mae": 1.7645404865368328, "rmse": 6.468727955579511},
+    "burst_slowdown_p95_model": {"file": "burst_slowdown_p95_model.joblib", "rows": 336, "mae": 5.090527120855374, "rmse": 15.706173904842114}
+  }
+}

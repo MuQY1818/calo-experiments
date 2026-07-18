@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "case_id": "311_surge_seed42",
+  "evidence_role": "focused_real_platform_replay",
+  "benchmark": "311.compression",
+  "load_pattern": "surge",
+  "seed": 42,
+  "steps": 40,
+  "protocol": {
+    "total_timesteps": 16384,
+    "max_real_invocations_per_step": 16,
+    "real_invoke_mode": "parallel",
+    "enforce_feasible_actions": true,
+    "initial_prime_repetitions": 16,
+    "initial_prime_lookahead_steps": 24,
+    "reconfiguration_prime_repetitions": 4,
+    "policy_order_mode": "rotate_by_case",
+    "stabilize_actions": true,
+    "stabilization_min_dwell_steps": 3,
+    "stabilization_downgrade_patience": 3,
+    "stabilization_load_drop_threshold": 0.85,
+    "default_anchor": true,
+    "default_anchor_release_patience": 2,
+    "default_anchor_min_arrivals": 10,
+    "default_anchor_load_ratio_threshold": 1.35,
+    "default_anchor_min_burstiness": 1.55,
+    "default_anchor_min_step": 2
+  },
+  "results": [
+    {
+      "policy": "default",
+      "display_name": "Default",
+      "mean_raw_reward": 0.40500157119209534,
+      "cumulative_raw_reward": 16.200062847683814,
+      "mean_latency_ms": 326.78274592230684,
+      "mean_p95_latency_ms": 417.67541,
+      "mean_cost_usd": 2.9231949957316556e-06,
+      "mean_success_rate": 1,
+      "mean_cold_start_rate": 0,
+      "feasible_action_count": 24,
+      "action_space_size": 24,
+      "steady_state": {
+        "step_count": 39,
+        "mean_raw_reward": 0.4020392326463354,
+        "mean_latency_ms": 328.6792650485198,
+        "mean_p95_latency_ms": 421.8364653846153,
+        "mean_cost_usd": 2.938999353392083e-06,
+        "mean_success_rate": 1,
+        "mean_cold_start_rate": 0
+      }
+    },
+    {
+      "policy": "ppo",
+      "display_name": "CALO (PPO)",
+      "mean_raw_reward": 0.407954545570589,
+      "cumulative_raw_reward": 16.31818182282356,
+      "mean_latency_ms": 325.1157163552073,
+      "mean_p95_latency_ms": 413.4628112500001,
+      "mean_cost_usd": 2.909303054888667e-06,
+      "mean_success_rate": 1,
+      "mean_cold_start_rate": 0,
+      "feasible_action_count": 24,
+      "action_space_size": 24,
+      "steady_state": {
+        "step_count": 39,
+        "mean_raw_reward": 0.40511368273464116,
+        "mean_latency_ms": 326.85688856944336,
+        "mean_p95_latency_ms": 417.4508833333334,
+        "mean_cost_usd": 2.923812852360171e-06,
+        "mean_success_rate": 1,
+        "mean_cold_start_rate": 0
+      }
+    },
+    {
+      "policy": "bayes_opt_online",
+      "display_name": "Online BO",
+      "mean_raw_reward": -0.46898336899722787,
+      "cumulative_raw_reward": -18.759334759889114,
+      "mean_latency_ms": 675.3038551645229,
+      "mean_p95_latency_ms": 1610.281305,
+      "mean_cost_usd": 1.3025432639771203e-05,
+      "mean_success_rate": 0.990625,
+      "mean_cold_start_rate": 0.005,
+      "feasible_action_count": 24,
+      "action_space_size": 24,
+      "steady_state": {
+        "step_count": 39,
+        "mean_raw_reward": -0.49414718063584884,
+        "mean_latency_ms": 685.9541377755792,
+        "mean_p95_latency_ms": 1644.7959538461541,
+        "mean_cost_usd": 1.3132116080774737e-05,
+        "mean_success_rate": 0.9903846153846154,
+        "mean_cold_start_rate": 0.005128205128205128
+      }
+    }
+  ],
+  "pairwise": [
+    {
+      "primary_policy": "ppo",
+      "baseline_policy": "default",
+      "mean_raw_reward_delta": 0.002952974378493678,
+      "cumulative_raw_reward_delta": 0.11811897513974756,
+      "mean_p95_latency_delta_ms": -4.212598749999927,
+      "mean_cost_delta_usd": -1.3891940842988759e-08,
+      "mean_success_rate_delta": 0,
+      "steady_state_mean_raw_reward_delta": 0.003074450088305758,
+      "steady_state_mean_p95_latency_delta_ms": -4.385582051281858
+    },
+    {
+      "primary_policy": "ppo",
+      "baseline_policy": "bayes_opt_online",
+      "mean_raw_reward_delta": 0.8769379145678169,
+      "cumulative_raw_reward_delta": 35.077516582712676,
+      "mean_p95_latency_delta_ms": -1196.81849375,
+      "mean_cost_delta_usd": -1.0116129584882537e-05,
+      "mean_success_rate_delta": 0.009375000000000022,
+      "steady_state_mean_raw_reward_delta": 0.8992608633704899,
+      "steady_state_mean_p95_latency_delta_ms": -1227.3450705128207
+    }
+  ]
+}

@@ -1,0 +1,2846 @@
+{
+  "schema_version": 2,
+  "primary_algorithm": "ppo",
+  "primary_display_name": "CALO",
+  "protocol": {
+    "method": "counterfactual_mean_masking",
+    "case_count": 9,
+    "benchmarks": [
+      "110.dynamic-html",
+      "210.thumbnailer",
+      "411.image-recognition"
+    ],
+    "load_pattern": "spike",
+    "seeds": [
+      42,
+      52,
+      62
+    ],
+    "state_dimension": 79,
+    "group_dimensions": {
+      "code": 32,
+      "load": 10,
+      "category": 5,
+      "history": 5,
+      "context": 27
+    },
+    "aggregation": "mean_absolute_reward_shift_over_nine_cases",
+    "single_feature_filter": {
+      "included_groups": [
+        "load",
+        "history"
+      ],
+      "excluded_features": [
+        "day_of_week",
+        "hour_of_day"
+      ],
+      "top_k": 6
+    }
+  },
+  "sources": [
+    {
+      "label": "feature_attribution_seed42",
+      "seed": 42,
+      "raw_result_sha256": "22f97e2cb36f6424ec38275b2dd43d1d1b0f40a24ee649dea5e59103cabf42e4"
+    },
+    {
+      "label": "feature_attribution_seed52",
+      "seed": 52,
+      "raw_result_sha256": "54e3abb6138e63a853d07b13bc2c34f76a08b7b1b04fcd6523274cf88d5c17f0"
+    },
+    {
+      "label": "feature_attribution_seed62",
+      "seed": 62,
+      "raw_result_sha256": "bb129d223c18b958cd9a7b63514cc5a51ab6cf28ab236d1a1e36a41823043c62"
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "110_dynamic_html_spike_seed42",
+      "benchmark": "110.dynamic-html",
+      "load_pattern": "spike",
+      "seed": 42,
+      "source_label": "feature_attribution_seed42",
+      "baseline_mean_reward": -0.07116074960085651,
+      "group_importance": [
+        {
+          "name": "code",
+          "group": "code",
+          "n_dims": 32,
+          "reward_drop": -0.0004150343100888937,
+          "absolute_reward_shift": 0.0004150343100888937
+        },
+        {
+          "name": "load",
+          "group": "load",
+          "n_dims": 10,
+          "reward_drop": 0.014163469452702776,
+          "absolute_reward_shift": 0.014163469452702776
+        },
+        {
+          "name": "category",
+          "group": "category",
+          "n_dims": 5,
+          "reward_drop": 0.01016380748967717,
+          "absolute_reward_shift": 0.01016380748967717
+        },
+        {
+          "name": "history",
+          "group": "history",
+          "n_dims": 5,
+          "reward_drop": -0.0008482498556917351,
+          "absolute_reward_shift": 0.0008482498556917351
+        },
+        {
+          "name": "context",
+          "group": "context",
+          "n_dims": 27,
+          "reward_drop": 0.002367651273023519,
+          "absolute_reward_shift": 0.002367651273023519
+        }
+      ],
+      "single_feature_importance": [
+        {
+          "name": "category_inference",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.015547711584728938,
+          "absolute_reward_shift": 0.015547711584728938
+        },
+        {
+          "name": "category_multimedia",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.011990846949742076,
+          "absolute_reward_shift": 0.011990846949742076
+        },
+        {
+          "name": "category_scientific",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.0032143378819844276,
+          "absolute_reward_shift": 0.0032143378819844276
+        },
+        {
+          "name": "category_utilities",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.014022307113805185,
+          "absolute_reward_shift": 0.014022307113805185
+        },
+        {
+          "name": "category_webapps",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.0032556593124453553,
+          "absolute_reward_shift": 0.0032556593124453553
+        },
+        {
+          "name": "arch_arm64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.016921222195225433,
+          "absolute_reward_shift": 0.016921222195225433
+        },
+        {
+          "name": "arch_x64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.01496571786086405,
+          "absolute_reward_shift": 0.01496571786086405
+        },
+        {
+          "name": "cpu_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.008060909787814999,
+          "absolute_reward_shift": 0.008060909787814999
+        },
+        {
+          "name": "failure_rate",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.010362963667018943,
+          "absolute_reward_shift": 0.010362963667018943
+        },
+        {
+          "name": "invocation_volume",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.011622480303605492,
+          "absolute_reward_shift": 0.011622480303605492
+        },
+        {
+          "name": "memory_1024mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.01729435613900089,
+          "absolute_reward_shift": 0.01729435613900089
+        },
+        {
+          "name": "memory_128mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.019727143167448433,
+          "absolute_reward_shift": 0.019727143167448433
+        },
+        {
+          "name": "memory_2048mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.01051548523766245,
+          "absolute_reward_shift": 0.01051548523766245
+        },
+        {
+          "name": "memory_256mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.011117919205293633,
+          "absolute_reward_shift": 0.011117919205293633
+        },
+        {
+          "name": "memory_3008mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.017521784392965978,
+          "absolute_reward_shift": 0.017521784392965978
+        },
+        {
+          "name": "memory_512mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.00987020964664738,
+          "absolute_reward_shift": 0.00987020964664738
+        },
+        {
+          "name": "memory_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.004967563047112364,
+          "absolute_reward_shift": 0.004967563047112364
+        },
+        {
+          "name": "timeout_120s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.020629814469493996,
+          "absolute_reward_shift": 0.020629814469493996
+        },
+        {
+          "name": "timeout_300s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.02047860494039097,
+          "absolute_reward_shift": 0.02047860494039097
+        },
+        {
+          "name": "timeout_60s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.008721446743961817,
+          "absolute_reward_shift": 0.008721446743961817
+        },
+        {
+          "name": "timeout_900s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.02577406914916168,
+          "absolute_reward_shift": 0.02577406914916168
+        },
+        {
+          "name": "history_cold_start_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.009565117019118358,
+          "absolute_reward_shift": 0.009565117019118358
+        },
+        {
+          "name": "history_latency_variance",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.021942673530675375,
+          "absolute_reward_shift": 0.021942673530675375
+        },
+        {
+          "name": "history_mean_cost",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.014479216514703408,
+          "absolute_reward_shift": 0.014479216514703408
+        },
+        {
+          "name": "history_mean_latency",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.015709498924452822,
+          "absolute_reward_shift": 0.015709498924452822
+        },
+        {
+          "name": "history_success_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.014271506325143471,
+          "absolute_reward_shift": 0.014271506325143471
+        },
+        {
+          "name": "avg_response_time",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.017954943310577107,
+          "absolute_reward_shift": 0.017954943310577107
+        },
+        {
+          "name": "burst_indicator",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.024546046461428328,
+          "absolute_reward_shift": 0.024546046461428328
+        },
+        {
+          "name": "cold_start_probability",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.007402502950066586,
+          "absolute_reward_shift": 0.007402502950066586
+        },
+        {
+          "name": "container_warmth",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.014558647978521314,
+          "absolute_reward_shift": 0.014558647978521314
+        },
+        {
+          "name": "current_qps",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.01845729839136029,
+          "absolute_reward_shift": 0.01845729839136029
+        },
+        {
+          "name": "day_of_week",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.020267322977007007,
+          "absolute_reward_shift": 0.020267322977007007
+        },
+        {
+          "name": "hour_of_day",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.0012350915633288495,
+          "absolute_reward_shift": 0.0012350915633288495
+        },
+        {
+          "name": "load_volatility",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.005464338926956802,
+          "absolute_reward_shift": 0.005464338926956802
+        },
+        {
+          "name": "peak_concurrency",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.017395250941784735,
+          "absolute_reward_shift": 0.017395250941784735
+        },
+        {
+          "name": "qps_trend",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.008581106785065032,
+          "absolute_reward_shift": 0.008581106785065032
+        }
+      ]
+    },
+    {
+      "case_id": "210_thumbnailer_spike_seed42",
+      "benchmark": "210.thumbnailer",
+      "load_pattern": "spike",
+      "seed": 42,
+      "source_label": "feature_attribution_seed42",
+      "baseline_mean_reward": -0.2071174212339578,
+      "group_importance": [
+        {
+          "name": "code",
+          "group": "code",
+          "n_dims": 32,
+          "reward_drop": -0.02093418075378295,
+          "absolute_reward_shift": 0.02093418075378295
+        },
+        {
+          "name": "load",
+          "group": "load",
+          "n_dims": 10,
+          "reward_drop": -0.035169351696617834,
+          "absolute_reward_shift": 0.035169351696617834
+        },
+        {
+          "name": "category",
+          "group": "category",
+          "n_dims": 5,
+          "reward_drop": -0.009743036223759466,
+          "absolute_reward_shift": 0.009743036223759466
+        },
+        {
+          "name": "history",
+          "group": "history",
+          "n_dims": 5,
+          "reward_drop": -0.032694041496940135,
+          "absolute_reward_shift": 0.032694041496940135
+        },
+        {
+          "name": "context",
+          "group": "context",
+          "n_dims": 27,
+          "reward_drop": -0.021440085532190872,
+          "absolute_reward_shift": 0.021440085532190872
+        }
+      ],
+      "single_feature_importance": [
+        {
+          "name": "category_inference",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.02617353398819891,
+          "absolute_reward_shift": 0.02617353398819891
+        },
+        {
+          "name": "category_multimedia",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.034726391350338365,
+          "absolute_reward_shift": 0.034726391350338365
+        },
+        {
+          "name": "category_scientific",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.02669583233410691,
+          "absolute_reward_shift": 0.02669583233410691
+        },
+        {
+          "name": "category_utilities",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.022954544300833823,
+          "absolute_reward_shift": 0.022954544300833823
+        },
+        {
+          "name": "category_webapps",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.03100544396907806,
+          "absolute_reward_shift": 0.03100544396907806
+        },
+        {
+          "name": "arch_arm64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.02146845459231836,
+          "absolute_reward_shift": 0.02146845459231836
+        },
+        {
+          "name": "arch_x64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.018909314490666768,
+          "absolute_reward_shift": 0.018909314490666768
+        },
+        {
+          "name": "cpu_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.032805586384046126,
+          "absolute_reward_shift": 0.032805586384046126
+        },
+        {
+          "name": "failure_rate",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.02983695207689316,
+          "absolute_reward_shift": 0.02983695207689316
+        },
+        {
+          "name": "invocation_volume",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.006539862727438145,
+          "absolute_reward_shift": 0.006539862727438145
+        },
+        {
+          "name": "memory_1024mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.03535056922915872,
+          "absolute_reward_shift": 0.03535056922915872
+        },
+        {
+          "name": "memory_128mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.008337314188683248,
+          "absolute_reward_shift": 0.008337314188683248
+        },
+        {
+          "name": "memory_2048mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.022422983481767328,
+          "absolute_reward_shift": 0.022422983481767328
+        },
+        {
+          "name": "memory_256mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.027391502644923543,
+          "absolute_reward_shift": 0.027391502644923543
+        },
+        {
+          "name": "memory_3008mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.029471331607719198,
+          "absolute_reward_shift": 0.029471331607719198
+        },
+        {
+          "name": "memory_512mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.006241093167188377,
+          "absolute_reward_shift": 0.006241093167188377
+        },
+        {
+          "name": "memory_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.019495457578736414,
+          "absolute_reward_shift": 0.019495457578736414
+        },
+        {
+          "name": "timeout_120s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.021477651143989474,
+          "absolute_reward_shift": 0.021477651143989474
+        },
+        {
+          "name": "timeout_300s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.018613707975794008,
+          "absolute_reward_shift": 0.018613707975794008
+        },
+        {
+          "name": "timeout_60s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.021077305182753747,
+          "absolute_reward_shift": 0.021077305182753747
+        },
+        {
+          "name": "timeout_900s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.029222450151742685,
+          "absolute_reward_shift": 0.029222450151742685
+        },
+        {
+          "name": "history_cold_start_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": -0.0025807681017296913,
+          "absolute_reward_shift": 0.0025807681017296913
+        },
+        {
+          "name": "history_latency_variance",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": -0.03531847121280121,
+          "absolute_reward_shift": 0.03531847121280121
+        },
+        {
+          "name": "history_mean_cost",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": -0.026934033546738873,
+          "absolute_reward_shift": 0.026934033546738873
+        },
+        {
+          "name": "history_mean_latency",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": -0.02511943849033113,
+          "absolute_reward_shift": 0.02511943849033113
+        },
+        {
+          "name": "history_success_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": -0.013761266115888987,
+          "absolute_reward_shift": 0.013761266115888987
+        },
+        {
+          "name": "avg_response_time",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.015119835035590501,
+          "absolute_reward_shift": 0.015119835035590501
+        },
+        {
+          "name": "burst_indicator",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.028610443834361343,
+          "absolute_reward_shift": 0.028610443834361343
+        },
+        {
+          "name": "cold_start_probability",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.02459864205688192,
+          "absolute_reward_shift": 0.02459864205688192
+        },
+        {
+          "name": "container_warmth",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.028146091276795793,
+          "absolute_reward_shift": 0.028146091276795793
+        },
+        {
+          "name": "current_qps",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.010387494646505568,
+          "absolute_reward_shift": 0.010387494646505568
+        },
+        {
+          "name": "day_of_week",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.03643857771717027,
+          "absolute_reward_shift": 0.03643857771717027
+        },
+        {
+          "name": "hour_of_day",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.017430394745632738,
+          "absolute_reward_shift": 0.017430394745632738
+        },
+        {
+          "name": "load_volatility",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.012929500167061292,
+          "absolute_reward_shift": 0.012929500167061292
+        },
+        {
+          "name": "peak_concurrency",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.021238370268997248,
+          "absolute_reward_shift": 0.021238370268997248
+        },
+        {
+          "name": "qps_trend",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.015948080302180645,
+          "absolute_reward_shift": 0.015948080302180645
+        }
+      ]
+    },
+    {
+      "case_id": "411_image_recognition_spike_seed42",
+      "benchmark": "411.image-recognition",
+      "load_pattern": "spike",
+      "seed": 42,
+      "source_label": "feature_attribution_seed42",
+      "baseline_mean_reward": -0.5252021084213672,
+      "group_importance": [
+        {
+          "name": "code",
+          "group": "code",
+          "n_dims": 32,
+          "reward_drop": -0.022116266010228536,
+          "absolute_reward_shift": 0.022116266010228536
+        },
+        {
+          "name": "load",
+          "group": "load",
+          "n_dims": 10,
+          "reward_drop": -0.023509541202499484,
+          "absolute_reward_shift": 0.023509541202499484
+        },
+        {
+          "name": "category",
+          "group": "category",
+          "n_dims": 5,
+          "reward_drop": 0.005274190700263914,
+          "absolute_reward_shift": 0.005274190700263914
+        },
+        {
+          "name": "history",
+          "group": "history",
+          "n_dims": 5,
+          "reward_drop": -0.021457658041313943,
+          "absolute_reward_shift": 0.021457658041313943
+        },
+        {
+          "name": "context",
+          "group": "context",
+          "n_dims": 27,
+          "reward_drop": 0.009112750931939306,
+          "absolute_reward_shift": 0.009112750931939306
+        }
+      ],
+      "single_feature_importance": [
+        {
+          "name": "category_inference",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.00223217692803368,
+          "absolute_reward_shift": 0.00223217692803368
+        },
+        {
+          "name": "category_multimedia",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.018423731887331707,
+          "absolute_reward_shift": 0.018423731887331707
+        },
+        {
+          "name": "category_scientific",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.0005131487010591185,
+          "absolute_reward_shift": 0.0005131487010591185
+        },
+        {
+          "name": "category_utilities",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.02110548481721941,
+          "absolute_reward_shift": 0.02110548481721941
+        },
+        {
+          "name": "category_webapps",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.03768344500052828,
+          "absolute_reward_shift": 0.03768344500052828
+        },
+        {
+          "name": "arch_arm64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.005524895995514867,
+          "absolute_reward_shift": 0.005524895995514867
+        },
+        {
+          "name": "arch_x64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.021383547970159844,
+          "absolute_reward_shift": 0.021383547970159844
+        },
+        {
+          "name": "cpu_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.0035062522350279846,
+          "absolute_reward_shift": 0.0035062522350279846
+        },
+        {
+          "name": "failure_rate",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.014899912959551398,
+          "absolute_reward_shift": 0.014899912959551398
+        },
+        {
+          "name": "invocation_volume",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.0155055546133408,
+          "absolute_reward_shift": 0.0155055546133408
+        },
+        {
+          "name": "memory_1024mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.016533288679748348,
+          "absolute_reward_shift": 0.016533288679748348
+        },
+        {
+          "name": "memory_128mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0017481326946504616,
+          "absolute_reward_shift": 0.0017481326946504616
+        },
+        {
+          "name": "memory_2048mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.02900378872923204,
+          "absolute_reward_shift": 0.02900378872923204
+        },
+        {
+          "name": "memory_256mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.015616397281228878,
+          "absolute_reward_shift": 0.015616397281228878
+        },
+        {
+          "name": "memory_3008mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.025067052324733163,
+          "absolute_reward_shift": 0.025067052324733163
+        },
+        {
+          "name": "memory_512mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.04121506727530877,
+          "absolute_reward_shift": 0.04121506727530877
+        },
+        {
+          "name": "memory_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.011497875065402563,
+          "absolute_reward_shift": 0.011497875065402563
+        },
+        {
+          "name": "timeout_120s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.01121477193694942,
+          "absolute_reward_shift": 0.01121477193694942
+        },
+        {
+          "name": "timeout_300s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.020300041712239647,
+          "absolute_reward_shift": 0.020300041712239647
+        },
+        {
+          "name": "timeout_60s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.007834635688505287,
+          "absolute_reward_shift": 0.007834635688505287
+        },
+        {
+          "name": "timeout_900s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.01635348490651689,
+          "absolute_reward_shift": 0.01635348490651689
+        },
+        {
+          "name": "history_cold_start_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": -0.004675752933581689,
+          "absolute_reward_shift": 0.004675752933581689
+        },
+        {
+          "name": "history_latency_variance",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": -0.025568191395304196,
+          "absolute_reward_shift": 0.025568191395304196
+        },
+        {
+          "name": "history_mean_cost",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": -0.020755510090005425,
+          "absolute_reward_shift": 0.020755510090005425
+        },
+        {
+          "name": "history_mean_latency",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": -0.025773042966801663,
+          "absolute_reward_shift": 0.025773042966801663
+        },
+        {
+          "name": "history_success_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": -0.024258717723476098,
+          "absolute_reward_shift": 0.024258717723476098
+        },
+        {
+          "name": "avg_response_time",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.004810196506855435,
+          "absolute_reward_shift": 0.004810196506855435
+        },
+        {
+          "name": "burst_indicator",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.021222444808525975,
+          "absolute_reward_shift": 0.021222444808525975
+        },
+        {
+          "name": "cold_start_probability",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.020224722934241046,
+          "absolute_reward_shift": 0.020224722934241046
+        },
+        {
+          "name": "container_warmth",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.006945691230188511,
+          "absolute_reward_shift": 0.006945691230188511
+        },
+        {
+          "name": "current_qps",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.03204543495025136,
+          "absolute_reward_shift": 0.03204543495025136
+        },
+        {
+          "name": "day_of_week",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.028865158667653323,
+          "absolute_reward_shift": 0.028865158667653323
+        },
+        {
+          "name": "hour_of_day",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.025799405750858928,
+          "absolute_reward_shift": 0.025799405750858928
+        },
+        {
+          "name": "load_volatility",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.006107749409607233,
+          "absolute_reward_shift": 0.006107749409607233
+        },
+        {
+          "name": "peak_concurrency",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.03493154707957513,
+          "absolute_reward_shift": 0.03493154707957513
+        },
+        {
+          "name": "qps_trend",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.009688147738839747,
+          "absolute_reward_shift": 0.009688147738839747
+        }
+      ]
+    },
+    {
+      "case_id": "110_dynamic_html_spike_seed52",
+      "benchmark": "110.dynamic-html",
+      "load_pattern": "spike",
+      "seed": 52,
+      "source_label": "feature_attribution_seed52",
+      "baseline_mean_reward": -0.018662919801120767,
+      "group_importance": [
+        {
+          "name": "code",
+          "group": "code",
+          "n_dims": 32,
+          "reward_drop": 0.014211016623855446,
+          "absolute_reward_shift": 0.014211016623855446
+        },
+        {
+          "name": "load",
+          "group": "load",
+          "n_dims": 10,
+          "reward_drop": 0.008434277296558955,
+          "absolute_reward_shift": 0.008434277296558955
+        },
+        {
+          "name": "category",
+          "group": "category",
+          "n_dims": 5,
+          "reward_drop": 0.007784663955054692,
+          "absolute_reward_shift": 0.007784663955054692
+        },
+        {
+          "name": "history",
+          "group": "history",
+          "n_dims": 5,
+          "reward_drop": 0.0037862336508247205,
+          "absolute_reward_shift": 0.0037862336508247205
+        },
+        {
+          "name": "context",
+          "group": "context",
+          "n_dims": 27,
+          "reward_drop": 0.003888399752680162,
+          "absolute_reward_shift": 0.003888399752680162
+        }
+      ],
+      "single_feature_importance": [
+        {
+          "name": "category_inference",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.01057569425629945,
+          "absolute_reward_shift": 0.01057569425629945
+        },
+        {
+          "name": "category_multimedia",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.004692502591244728,
+          "absolute_reward_shift": 0.004692502591244728
+        },
+        {
+          "name": "category_scientific",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.004987436900952338,
+          "absolute_reward_shift": 0.004987436900952338
+        },
+        {
+          "name": "category_utilities",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.017078592273912264,
+          "absolute_reward_shift": 0.017078592273912264
+        },
+        {
+          "name": "category_webapps",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.007509153135709719,
+          "absolute_reward_shift": 0.007509153135709719
+        },
+        {
+          "name": "arch_arm64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.017462386683555556,
+          "absolute_reward_shift": 0.017462386683555556
+        },
+        {
+          "name": "arch_x64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.010837901777074818,
+          "absolute_reward_shift": 0.010837901777074818
+        },
+        {
+          "name": "cpu_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.01489944886979254,
+          "absolute_reward_shift": 0.01489944886979254
+        },
+        {
+          "name": "failure_rate",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.00016136193918324382,
+          "absolute_reward_shift": 0.00016136193918324382
+        },
+        {
+          "name": "invocation_volume",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.007776059296397957,
+          "absolute_reward_shift": 0.007776059296397957
+        },
+        {
+          "name": "memory_1024mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.01624152597104469,
+          "absolute_reward_shift": 0.01624152597104469
+        },
+        {
+          "name": "memory_128mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0050873314125972,
+          "absolute_reward_shift": 0.0050873314125972
+        },
+        {
+          "name": "memory_2048mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0016838641687508676,
+          "absolute_reward_shift": 0.0016838641687508676
+        },
+        {
+          "name": "memory_256mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.003670356064124948,
+          "absolute_reward_shift": 0.003670356064124948
+        },
+        {
+          "name": "memory_3008mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0026597689725734106,
+          "absolute_reward_shift": 0.0026597689725734106
+        },
+        {
+          "name": "memory_512mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 6.462137325188161e-05,
+          "absolute_reward_shift": 6.462137325188161e-05
+        },
+        {
+          "name": "memory_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.0002850774618885707,
+          "absolute_reward_shift": 0.0002850774618885707
+        },
+        {
+          "name": "timeout_120s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.019735948292777132,
+          "absolute_reward_shift": 0.019735948292777132
+        },
+        {
+          "name": "timeout_300s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.013753693784965736,
+          "absolute_reward_shift": 0.013753693784965736
+        },
+        {
+          "name": "timeout_60s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.022769539652375,
+          "absolute_reward_shift": 0.022769539652375
+        },
+        {
+          "name": "timeout_900s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.016547743019760815,
+          "absolute_reward_shift": 0.016547743019760815
+        },
+        {
+          "name": "history_cold_start_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.0034357714098686223,
+          "absolute_reward_shift": 0.0034357714098686223
+        },
+        {
+          "name": "history_latency_variance",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.005627020972484735,
+          "absolute_reward_shift": 0.005627020972484735
+        },
+        {
+          "name": "history_mean_cost",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.013508701329599387,
+          "absolute_reward_shift": 0.013508701329599387
+        },
+        {
+          "name": "history_mean_latency",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.01307090825557921,
+          "absolute_reward_shift": 0.01307090825557921
+        },
+        {
+          "name": "history_success_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.003349031868141429,
+          "absolute_reward_shift": 0.003349031868141429
+        },
+        {
+          "name": "avg_response_time",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.01224072873961008,
+          "absolute_reward_shift": 0.01224072873961008
+        },
+        {
+          "name": "burst_indicator",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.011363763922426204,
+          "absolute_reward_shift": 0.011363763922426204
+        },
+        {
+          "name": "cold_start_probability",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -5.98736191271404e-05,
+          "absolute_reward_shift": 5.98736191271404e-05
+        },
+        {
+          "name": "container_warmth",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.0037149249221292147,
+          "absolute_reward_shift": 0.0037149249221292147
+        },
+        {
+          "name": "current_qps",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.0008221930796204757,
+          "absolute_reward_shift": 0.0008221930796204757
+        },
+        {
+          "name": "day_of_week",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.003701979542638706,
+          "absolute_reward_shift": 0.003701979542638706
+        },
+        {
+          "name": "hour_of_day",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.0032924628558903893,
+          "absolute_reward_shift": 0.0032924628558903893
+        },
+        {
+          "name": "load_volatility",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.015510851519517359,
+          "absolute_reward_shift": 0.015510851519517359
+        },
+        {
+          "name": "peak_concurrency",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.0048199042505113684,
+          "absolute_reward_shift": 0.0048199042505113684
+        },
+        {
+          "name": "qps_trend",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.014964327562452917,
+          "absolute_reward_shift": 0.014964327562452917
+        }
+      ]
+    },
+    {
+      "case_id": "210_thumbnailer_spike_seed52",
+      "benchmark": "210.thumbnailer",
+      "load_pattern": "spike",
+      "seed": 52,
+      "source_label": "feature_attribution_seed52",
+      "baseline_mean_reward": -0.3287810569263548,
+      "group_importance": [
+        {
+          "name": "code",
+          "group": "code",
+          "n_dims": 32,
+          "reward_drop": 0.02017176307789942,
+          "absolute_reward_shift": 0.02017176307789942
+        },
+        {
+          "name": "load",
+          "group": "load",
+          "n_dims": 10,
+          "reward_drop": 0.007203523353501495,
+          "absolute_reward_shift": 0.007203523353501495
+        },
+        {
+          "name": "category",
+          "group": "category",
+          "n_dims": 5,
+          "reward_drop": 0.0017674768706699706,
+          "absolute_reward_shift": 0.0017674768706699706
+        },
+        {
+          "name": "history",
+          "group": "history",
+          "n_dims": 5,
+          "reward_drop": 0.0008289806319360382,
+          "absolute_reward_shift": 0.0008289806319360382
+        },
+        {
+          "name": "context",
+          "group": "context",
+          "n_dims": 27,
+          "reward_drop": -0.016096205121721052,
+          "absolute_reward_shift": 0.016096205121721052
+        }
+      ],
+      "single_feature_importance": [
+        {
+          "name": "category_inference",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.0006352470012174205,
+          "absolute_reward_shift": 0.0006352470012174205
+        },
+        {
+          "name": "category_multimedia",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.008053999292691405,
+          "absolute_reward_shift": 0.008053999292691405
+        },
+        {
+          "name": "category_scientific",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.0032743508167565327,
+          "absolute_reward_shift": 0.0032743508167565327
+        },
+        {
+          "name": "category_utilities",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.0032664582675902554,
+          "absolute_reward_shift": 0.0032664582675902554
+        },
+        {
+          "name": "category_webapps",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.005743104133788646,
+          "absolute_reward_shift": 0.005743104133788646
+        },
+        {
+          "name": "arch_arm64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.018746972184331967,
+          "absolute_reward_shift": 0.018746972184331967
+        },
+        {
+          "name": "arch_x64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.017422019417138557,
+          "absolute_reward_shift": 0.017422019417138557
+        },
+        {
+          "name": "cpu_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0037307105635407956,
+          "absolute_reward_shift": 0.0037307105635407956
+        },
+        {
+          "name": "failure_rate",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.015578689032613058,
+          "absolute_reward_shift": 0.015578689032613058
+        },
+        {
+          "name": "invocation_volume",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.001475804365414335,
+          "absolute_reward_shift": 0.001475804365414335
+        },
+        {
+          "name": "memory_1024mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.019633058072425935,
+          "absolute_reward_shift": 0.019633058072425935
+        },
+        {
+          "name": "memory_128mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.005836142877660377,
+          "absolute_reward_shift": 0.005836142877660377
+        },
+        {
+          "name": "memory_2048mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.003619125287245395,
+          "absolute_reward_shift": 0.003619125287245395
+        },
+        {
+          "name": "memory_256mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.004271147192622116,
+          "absolute_reward_shift": 0.004271147192622116
+        },
+        {
+          "name": "memory_3008mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0062144309071833215,
+          "absolute_reward_shift": 0.0062144309071833215
+        },
+        {
+          "name": "memory_512mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.00782776142939784,
+          "absolute_reward_shift": 0.00782776142939784
+        },
+        {
+          "name": "memory_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.001972857447931131,
+          "absolute_reward_shift": 0.001972857447931131
+        },
+        {
+          "name": "timeout_120s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.009266793850539468,
+          "absolute_reward_shift": 0.009266793850539468
+        },
+        {
+          "name": "timeout_300s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.014636914355149688,
+          "absolute_reward_shift": 0.014636914355149688
+        },
+        {
+          "name": "timeout_60s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.01741945607734524,
+          "absolute_reward_shift": 0.01741945607734524
+        },
+        {
+          "name": "timeout_900s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.01046921838359699,
+          "absolute_reward_shift": 0.01046921838359699
+        },
+        {
+          "name": "history_cold_start_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.009332540830095215,
+          "absolute_reward_shift": 0.009332540830095215
+        },
+        {
+          "name": "history_latency_variance",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": -0.02433836347035817,
+          "absolute_reward_shift": 0.02433836347035817
+        },
+        {
+          "name": "history_mean_cost",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.0033474813021900363,
+          "absolute_reward_shift": 0.0033474813021900363
+        },
+        {
+          "name": "history_mean_latency",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": -0.014221838187988278,
+          "absolute_reward_shift": 0.014221838187988278
+        },
+        {
+          "name": "history_success_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.02581578274265317,
+          "absolute_reward_shift": 0.02581578274265317
+        },
+        {
+          "name": "avg_response_time",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.0027352919393154873,
+          "absolute_reward_shift": 0.0027352919393154873
+        },
+        {
+          "name": "burst_indicator",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.0037656501175460932,
+          "absolute_reward_shift": 0.0037656501175460932
+        },
+        {
+          "name": "cold_start_probability",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.021440024423488302,
+          "absolute_reward_shift": 0.021440024423488302
+        },
+        {
+          "name": "container_warmth",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.0038364172647735173,
+          "absolute_reward_shift": 0.0038364172647735173
+        },
+        {
+          "name": "current_qps",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.006853760629046413,
+          "absolute_reward_shift": 0.006853760629046413
+        },
+        {
+          "name": "day_of_week",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.003945890876861369,
+          "absolute_reward_shift": 0.003945890876861369
+        },
+        {
+          "name": "hour_of_day",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.01954068044069751,
+          "absolute_reward_shift": 0.01954068044069751
+        },
+        {
+          "name": "load_volatility",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.012282370630345707,
+          "absolute_reward_shift": 0.012282370630345707
+        },
+        {
+          "name": "peak_concurrency",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.007790700167180475,
+          "absolute_reward_shift": 0.007790700167180475
+        },
+        {
+          "name": "qps_trend",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.01969346515359177,
+          "absolute_reward_shift": 0.01969346515359177
+        }
+      ]
+    },
+    {
+      "case_id": "411_image_recognition_spike_seed52",
+      "benchmark": "411.image-recognition",
+      "load_pattern": "spike",
+      "seed": 52,
+      "source_label": "feature_attribution_seed52",
+      "baseline_mean_reward": 0.05731995029996506,
+      "group_importance": [
+        {
+          "name": "code",
+          "group": "code",
+          "n_dims": 32,
+          "reward_drop": -0.0050793613333050824,
+          "absolute_reward_shift": 0.0050793613333050824
+        },
+        {
+          "name": "load",
+          "group": "load",
+          "n_dims": 10,
+          "reward_drop": 0.0020406920545551696,
+          "absolute_reward_shift": 0.0020406920545551696
+        },
+        {
+          "name": "category",
+          "group": "category",
+          "n_dims": 5,
+          "reward_drop": 0.014611254263898497,
+          "absolute_reward_shift": 0.014611254263898497
+        },
+        {
+          "name": "history",
+          "group": "history",
+          "n_dims": 5,
+          "reward_drop": 0.012025445268165652,
+          "absolute_reward_shift": 0.012025445268165652
+        },
+        {
+          "name": "context",
+          "group": "context",
+          "n_dims": 27,
+          "reward_drop": 0.004877557853900379,
+          "absolute_reward_shift": 0.004877557853900379
+        }
+      ],
+      "single_feature_importance": [
+        {
+          "name": "category_inference",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.0027455931548852133,
+          "absolute_reward_shift": 0.0027455931548852133
+        },
+        {
+          "name": "category_multimedia",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.006415043849937518,
+          "absolute_reward_shift": 0.006415043849937518
+        },
+        {
+          "name": "category_scientific",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.0028481414976515088,
+          "absolute_reward_shift": 0.0028481414976515088
+        },
+        {
+          "name": "category_utilities",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.004666909820712592,
+          "absolute_reward_shift": 0.004666909820712592
+        },
+        {
+          "name": "category_webapps",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.007704434966376322,
+          "absolute_reward_shift": 0.007704434966376322
+        },
+        {
+          "name": "arch_arm64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.00865538350082419,
+          "absolute_reward_shift": 0.00865538350082419
+        },
+        {
+          "name": "arch_x64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.007158074694666269,
+          "absolute_reward_shift": 0.007158074694666269
+        },
+        {
+          "name": "cpu_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.005078179624189466,
+          "absolute_reward_shift": 0.005078179624189466
+        },
+        {
+          "name": "failure_rate",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.010947294590456208,
+          "absolute_reward_shift": 0.010947294590456208
+        },
+        {
+          "name": "invocation_volume",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0023727493994594173,
+          "absolute_reward_shift": 0.0023727493994594173
+        },
+        {
+          "name": "memory_1024mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.00793491529334088,
+          "absolute_reward_shift": 0.00793491529334088
+        },
+        {
+          "name": "memory_128mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.006958248226478142,
+          "absolute_reward_shift": 0.006958248226478142
+        },
+        {
+          "name": "memory_2048mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.010307933106601108,
+          "absolute_reward_shift": 0.010307933106601108
+        },
+        {
+          "name": "memory_256mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0003688607769086749,
+          "absolute_reward_shift": 0.0003688607769086749
+        },
+        {
+          "name": "memory_3008mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.010479025537444127,
+          "absolute_reward_shift": 0.010479025537444127
+        },
+        {
+          "name": "memory_512mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.003016268745531174,
+          "absolute_reward_shift": 0.003016268745531174
+        },
+        {
+          "name": "memory_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.010086650483816822,
+          "absolute_reward_shift": 0.010086650483816822
+        },
+        {
+          "name": "timeout_120s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0018909145138569644,
+          "absolute_reward_shift": 0.0018909145138569644
+        },
+        {
+          "name": "timeout_300s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0065944449095083485,
+          "absolute_reward_shift": 0.0065944449095083485
+        },
+        {
+          "name": "timeout_60s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -5.7316976729046565e-05,
+          "absolute_reward_shift": 5.7316976729046565e-05
+        },
+        {
+          "name": "timeout_900s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0011817456602971205,
+          "absolute_reward_shift": 0.0011817456602971205
+        },
+        {
+          "name": "history_cold_start_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.005721686155498049,
+          "absolute_reward_shift": 0.005721686155498049
+        },
+        {
+          "name": "history_latency_variance",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.0006444612668173935,
+          "absolute_reward_shift": 0.0006444612668173935
+        },
+        {
+          "name": "history_mean_cost",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.012891719485752663,
+          "absolute_reward_shift": 0.012891719485752663
+        },
+        {
+          "name": "history_mean_latency",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.01320335939023589,
+          "absolute_reward_shift": 0.01320335939023589
+        },
+        {
+          "name": "history_success_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.009635561426647454,
+          "absolute_reward_shift": 0.009635561426647454
+        },
+        {
+          "name": "avg_response_time",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.004446669537757707,
+          "absolute_reward_shift": 0.004446669537757707
+        },
+        {
+          "name": "burst_indicator",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.005160406009419069,
+          "absolute_reward_shift": 0.005160406009419069
+        },
+        {
+          "name": "cold_start_probability",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.01351917068117088,
+          "absolute_reward_shift": 0.01351917068117088
+        },
+        {
+          "name": "container_warmth",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.009490063008131822,
+          "absolute_reward_shift": 0.009490063008131822
+        },
+        {
+          "name": "current_qps",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.004882037157844271,
+          "absolute_reward_shift": 0.004882037157844271
+        },
+        {
+          "name": "day_of_week",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.006402558641411697,
+          "absolute_reward_shift": 0.006402558641411697
+        },
+        {
+          "name": "hour_of_day",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.018110982139093457,
+          "absolute_reward_shift": 0.018110982139093457
+        },
+        {
+          "name": "load_volatility",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.0027192092301668858,
+          "absolute_reward_shift": 0.0027192092301668858
+        },
+        {
+          "name": "peak_concurrency",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.006814149769300129,
+          "absolute_reward_shift": 0.006814149769300129
+        },
+        {
+          "name": "qps_trend",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.011362922272389026,
+          "absolute_reward_shift": 0.011362922272389026
+        }
+      ]
+    },
+    {
+      "case_id": "110_dynamic_html_spike_seed62",
+      "benchmark": "110.dynamic-html",
+      "load_pattern": "spike",
+      "seed": 62,
+      "source_label": "feature_attribution_seed62",
+      "baseline_mean_reward": -0.14815806353270689,
+      "group_importance": [
+        {
+          "name": "code",
+          "group": "code",
+          "n_dims": 32,
+          "reward_drop": 0.004499651858559356,
+          "absolute_reward_shift": 0.004499651858559356
+        },
+        {
+          "name": "load",
+          "group": "load",
+          "n_dims": 10,
+          "reward_drop": 0.007412556487313815,
+          "absolute_reward_shift": 0.007412556487313815
+        },
+        {
+          "name": "category",
+          "group": "category",
+          "n_dims": 5,
+          "reward_drop": 0.007074982568721189,
+          "absolute_reward_shift": 0.007074982568721189
+        },
+        {
+          "name": "history",
+          "group": "history",
+          "n_dims": 5,
+          "reward_drop": 0.08122190767459211,
+          "absolute_reward_shift": 0.08122190767459211
+        },
+        {
+          "name": "context",
+          "group": "context",
+          "n_dims": 27,
+          "reward_drop": 0.09133131696848079,
+          "absolute_reward_shift": 0.09133131696848079
+        }
+      ],
+      "single_feature_importance": [
+        {
+          "name": "category_inference",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.0037334066346701444,
+          "absolute_reward_shift": 0.0037334066346701444
+        },
+        {
+          "name": "category_multimedia",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.00912493205781062,
+          "absolute_reward_shift": 0.00912493205781062
+        },
+        {
+          "name": "category_scientific",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.004183782900001071,
+          "absolute_reward_shift": 0.004183782900001071
+        },
+        {
+          "name": "category_utilities",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.013435398002721477,
+          "absolute_reward_shift": 0.013435398002721477
+        },
+        {
+          "name": "category_webapps",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.002356112844697472,
+          "absolute_reward_shift": 0.002356112844697472
+        },
+        {
+          "name": "arch_arm64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.009289277000540747,
+          "absolute_reward_shift": 0.009289277000540747
+        },
+        {
+          "name": "arch_x64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0028267063314678653,
+          "absolute_reward_shift": 0.0028267063314678653
+        },
+        {
+          "name": "cpu_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0008766108922252658,
+          "absolute_reward_shift": 0.0008766108922252658
+        },
+        {
+          "name": "failure_rate",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.016393419379477303,
+          "absolute_reward_shift": 0.016393419379477303
+        },
+        {
+          "name": "invocation_volume",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.0047822563614806635,
+          "absolute_reward_shift": 0.0047822563614806635
+        },
+        {
+          "name": "memory_1024mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.000802733237704939,
+          "absolute_reward_shift": 0.000802733237704939
+        },
+        {
+          "name": "memory_128mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.005710487354423116,
+          "absolute_reward_shift": 0.005710487354423116
+        },
+        {
+          "name": "memory_2048mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.11190961002559696,
+          "absolute_reward_shift": 0.11190961002559696
+        },
+        {
+          "name": "memory_256mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.0019813408931103615,
+          "absolute_reward_shift": 0.0019813408931103615
+        },
+        {
+          "name": "memory_3008mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.014368176802441873,
+          "absolute_reward_shift": 0.014368176802441873
+        },
+        {
+          "name": "memory_512mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0012362992358239677,
+          "absolute_reward_shift": 0.0012362992358239677
+        },
+        {
+          "name": "memory_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.007997630411550716,
+          "absolute_reward_shift": 0.007997630411550716
+        },
+        {
+          "name": "timeout_120s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.020191826778086175,
+          "absolute_reward_shift": 0.020191826778086175
+        },
+        {
+          "name": "timeout_300s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.016143751064828238,
+          "absolute_reward_shift": 0.016143751064828238
+        },
+        {
+          "name": "timeout_60s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.000662531508938663,
+          "absolute_reward_shift": 0.000662531508938663
+        },
+        {
+          "name": "timeout_900s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.008154303734916962,
+          "absolute_reward_shift": 0.008154303734916962
+        },
+        {
+          "name": "history_cold_start_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": -0.004442488678396528,
+          "absolute_reward_shift": 0.004442488678396528
+        },
+        {
+          "name": "history_latency_variance",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.1141666488803274,
+          "absolute_reward_shift": 0.1141666488803274
+        },
+        {
+          "name": "history_mean_cost",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.01321158159433905,
+          "absolute_reward_shift": 0.01321158159433905
+        },
+        {
+          "name": "history_mean_latency",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.0039021579918480653,
+          "absolute_reward_shift": 0.0039021579918480653
+        },
+        {
+          "name": "history_success_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.10545654189234827,
+          "absolute_reward_shift": 0.10545654189234827
+        },
+        {
+          "name": "avg_response_time",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.01574095881970447,
+          "absolute_reward_shift": 0.01574095881970447
+        },
+        {
+          "name": "burst_indicator",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.009417497653839646,
+          "absolute_reward_shift": 0.009417497653839646
+        },
+        {
+          "name": "cold_start_probability",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.009236792887651696,
+          "absolute_reward_shift": 0.009236792887651696
+        },
+        {
+          "name": "container_warmth",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.005387956942506961,
+          "absolute_reward_shift": 0.005387956942506961
+        },
+        {
+          "name": "current_qps",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.006800949046506993,
+          "absolute_reward_shift": 0.006800949046506993
+        },
+        {
+          "name": "day_of_week",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.004088361133008339,
+          "absolute_reward_shift": 0.004088361133008339
+        },
+        {
+          "name": "hour_of_day",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.005495574031151723,
+          "absolute_reward_shift": 0.005495574031151723
+        },
+        {
+          "name": "load_volatility",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.0070435586920118975,
+          "absolute_reward_shift": 0.0070435586920118975
+        },
+        {
+          "name": "peak_concurrency",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.0022592040080798292,
+          "absolute_reward_shift": 0.0022592040080798292
+        },
+        {
+          "name": "qps_trend",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.002135989049539211,
+          "absolute_reward_shift": 0.002135989049539211
+        }
+      ]
+    },
+    {
+      "case_id": "210_thumbnailer_spike_seed62",
+      "benchmark": "210.thumbnailer",
+      "load_pattern": "spike",
+      "seed": 62,
+      "source_label": "feature_attribution_seed62",
+      "baseline_mean_reward": -0.38810324565445786,
+      "group_importance": [
+        {
+          "name": "code",
+          "group": "code",
+          "n_dims": 32,
+          "reward_drop": 0.01151433956421033,
+          "absolute_reward_shift": 0.01151433956421033
+        },
+        {
+          "name": "load",
+          "group": "load",
+          "n_dims": 10,
+          "reward_drop": 0.00957921795979949,
+          "absolute_reward_shift": 0.00957921795979949
+        },
+        {
+          "name": "category",
+          "group": "category",
+          "n_dims": 5,
+          "reward_drop": 0.0066780944774958995,
+          "absolute_reward_shift": 0.0066780944774958995
+        },
+        {
+          "name": "history",
+          "group": "history",
+          "n_dims": 5,
+          "reward_drop": -0.019652294389795433,
+          "absolute_reward_shift": 0.019652294389795433
+        },
+        {
+          "name": "context",
+          "group": "context",
+          "n_dims": 27,
+          "reward_drop": -0.007648592519126252,
+          "absolute_reward_shift": 0.007648592519126252
+        }
+      ],
+      "single_feature_importance": [
+        {
+          "name": "category_inference",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.008903835342301047,
+          "absolute_reward_shift": 0.008903835342301047
+        },
+        {
+          "name": "category_multimedia",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.023772501409439872,
+          "absolute_reward_shift": 0.023772501409439872
+        },
+        {
+          "name": "category_scientific",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.012331301520611793,
+          "absolute_reward_shift": 0.012331301520611793
+        },
+        {
+          "name": "category_utilities",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.02362605998385403,
+          "absolute_reward_shift": 0.02362605998385403
+        },
+        {
+          "name": "category_webapps",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 6.203324222675555e-05,
+          "absolute_reward_shift": 6.203324222675555e-05
+        },
+        {
+          "name": "arch_arm64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.002344084048918116,
+          "absolute_reward_shift": 0.002344084048918116
+        },
+        {
+          "name": "arch_x64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0016692423802306955,
+          "absolute_reward_shift": 0.0016692423802306955
+        },
+        {
+          "name": "cpu_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0009717725555805634,
+          "absolute_reward_shift": 0.0009717725555805634
+        },
+        {
+          "name": "failure_rate",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.008910417492477563,
+          "absolute_reward_shift": 0.008910417492477563
+        },
+        {
+          "name": "invocation_volume",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.004306565776274418,
+          "absolute_reward_shift": 0.004306565776274418
+        },
+        {
+          "name": "memory_1024mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0069501010639732574,
+          "absolute_reward_shift": 0.0069501010639732574
+        },
+        {
+          "name": "memory_128mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.011140693544002989,
+          "absolute_reward_shift": 0.011140693544002989
+        },
+        {
+          "name": "memory_2048mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.00830726931650383,
+          "absolute_reward_shift": 0.00830726931650383
+        },
+        {
+          "name": "memory_256mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.009376397616875198,
+          "absolute_reward_shift": 0.009376397616875198
+        },
+        {
+          "name": "memory_3008mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.014558104389635229,
+          "absolute_reward_shift": 0.014558104389635229
+        },
+        {
+          "name": "memory_512mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.018919932687212038,
+          "absolute_reward_shift": 0.018919932687212038
+        },
+        {
+          "name": "memory_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.014755599516614981,
+          "absolute_reward_shift": 0.014755599516614981
+        },
+        {
+          "name": "timeout_120s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.009365915382744339,
+          "absolute_reward_shift": 0.009365915382744339
+        },
+        {
+          "name": "timeout_300s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.0013184606826815992,
+          "absolute_reward_shift": 0.0013184606826815992
+        },
+        {
+          "name": "timeout_60s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.003392695212737995,
+          "absolute_reward_shift": 0.003392695212737995
+        },
+        {
+          "name": "timeout_900s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.00592963504119004,
+          "absolute_reward_shift": 0.00592963504119004
+        },
+        {
+          "name": "history_cold_start_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": -0.003478622529466513,
+          "absolute_reward_shift": 0.003478622529466513
+        },
+        {
+          "name": "history_latency_variance",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.009564512804292935,
+          "absolute_reward_shift": 0.009564512804292935
+        },
+        {
+          "name": "history_mean_cost",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": -0.013021281523087735,
+          "absolute_reward_shift": 0.013021281523087735
+        },
+        {
+          "name": "history_mean_latency",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.010182941162328929,
+          "absolute_reward_shift": 0.010182941162328929
+        },
+        {
+          "name": "history_success_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": -0.011875733931911547,
+          "absolute_reward_shift": 0.011875733931911547
+        },
+        {
+          "name": "avg_response_time",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.0009405791623061099,
+          "absolute_reward_shift": 0.0009405791623061099
+        },
+        {
+          "name": "burst_indicator",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.015331961240371006,
+          "absolute_reward_shift": 0.015331961240371006
+        },
+        {
+          "name": "cold_start_probability",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.014690309242640032,
+          "absolute_reward_shift": 0.014690309242640032
+        },
+        {
+          "name": "container_warmth",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.009366791606025604,
+          "absolute_reward_shift": 0.009366791606025604
+        },
+        {
+          "name": "current_qps",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.005814356350015926,
+          "absolute_reward_shift": 0.005814356350015926
+        },
+        {
+          "name": "day_of_week",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.012049182827060967,
+          "absolute_reward_shift": 0.012049182827060967
+        },
+        {
+          "name": "hour_of_day",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.00018268119980097142,
+          "absolute_reward_shift": 0.00018268119980097142
+        },
+        {
+          "name": "load_volatility",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.00963679579031057,
+          "absolute_reward_shift": 0.00963679579031057
+        },
+        {
+          "name": "peak_concurrency",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.02018890141270968,
+          "absolute_reward_shift": 0.02018890141270968
+        },
+        {
+          "name": "qps_trend",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.009164943392550307,
+          "absolute_reward_shift": 0.009164943392550307
+        }
+      ]
+    },
+    {
+      "case_id": "411_image_recognition_spike_seed62",
+      "benchmark": "411.image-recognition",
+      "load_pattern": "spike",
+      "seed": 62,
+      "source_label": "feature_attribution_seed62",
+      "baseline_mean_reward": -0.4943734626741738,
+      "group_importance": [
+        {
+          "name": "code",
+          "group": "code",
+          "n_dims": 32,
+          "reward_drop": -0.005577478120209256,
+          "absolute_reward_shift": 0.005577478120209256
+        },
+        {
+          "name": "load",
+          "group": "load",
+          "n_dims": 10,
+          "reward_drop": 0.014629762336401009,
+          "absolute_reward_shift": 0.014629762336401009
+        },
+        {
+          "name": "category",
+          "group": "category",
+          "n_dims": 5,
+          "reward_drop": 0.015635980144674155,
+          "absolute_reward_shift": 0.015635980144674155
+        },
+        {
+          "name": "history",
+          "group": "history",
+          "n_dims": 5,
+          "reward_drop": 0.0026049554242268957,
+          "absolute_reward_shift": 0.0026049554242268957
+        },
+        {
+          "name": "context",
+          "group": "context",
+          "n_dims": 27,
+          "reward_drop": 0.008561869489354557,
+          "absolute_reward_shift": 0.008561869489354557
+        }
+      ],
+      "single_feature_importance": [
+        {
+          "name": "category_inference",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.007591426437555615,
+          "absolute_reward_shift": 0.007591426437555615
+        },
+        {
+          "name": "category_multimedia",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.004742212670085233,
+          "absolute_reward_shift": 0.004742212670085233
+        },
+        {
+          "name": "category_scientific",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.007567629614519733,
+          "absolute_reward_shift": 0.007567629614519733
+        },
+        {
+          "name": "category_utilities",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": -0.002043010158426062,
+          "absolute_reward_shift": 0.002043010158426062
+        },
+        {
+          "name": "category_webapps",
+          "group": "category",
+          "n_dims": 1,
+          "reward_drop": 0.02544563309066672,
+          "absolute_reward_shift": 0.02544563309066672
+        },
+        {
+          "name": "arch_arm64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0037994933634694084,
+          "absolute_reward_shift": 0.0037994933634694084
+        },
+        {
+          "name": "arch_x64",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.018527518109835217,
+          "absolute_reward_shift": 0.018527518109835217
+        },
+        {
+          "name": "cpu_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.017775736085353433,
+          "absolute_reward_shift": 0.017775736085353433
+        },
+        {
+          "name": "failure_rate",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.006939060629673532,
+          "absolute_reward_shift": 0.006939060629673532
+        },
+        {
+          "name": "invocation_volume",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0013364180062436226,
+          "absolute_reward_shift": 0.0013364180062436226
+        },
+        {
+          "name": "memory_1024mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.0015759562533615434,
+          "absolute_reward_shift": 0.0015759562533615434
+        },
+        {
+          "name": "memory_128mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.004824200218527808,
+          "absolute_reward_shift": 0.004824200218527808
+        },
+        {
+          "name": "memory_2048mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.02524712993395395,
+          "absolute_reward_shift": 0.02524712993395395
+        },
+        {
+          "name": "memory_256mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.015319219744894697,
+          "absolute_reward_shift": 0.015319219744894697
+        },
+        {
+          "name": "memory_3008mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.006330326004194919,
+          "absolute_reward_shift": 0.006330326004194919
+        },
+        {
+          "name": "memory_512mb",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.003017473490201039,
+          "absolute_reward_shift": 0.003017473490201039
+        },
+        {
+          "name": "memory_utilization",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.011233107487148786,
+          "absolute_reward_shift": 0.011233107487148786
+        },
+        {
+          "name": "timeout_120s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.012144258777492034,
+          "absolute_reward_shift": 0.012144258777492034
+        },
+        {
+          "name": "timeout_300s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.015457143680856156,
+          "absolute_reward_shift": 0.015457143680856156
+        },
+        {
+          "name": "timeout_60s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": 0.008808302114936106,
+          "absolute_reward_shift": 0.008808302114936106
+        },
+        {
+          "name": "timeout_900s",
+          "group": "context",
+          "n_dims": 1,
+          "reward_drop": -0.005490812441223958,
+          "absolute_reward_shift": 0.005490812441223958
+        },
+        {
+          "name": "history_cold_start_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.00423329641851844,
+          "absolute_reward_shift": 0.00423329641851844
+        },
+        {
+          "name": "history_latency_variance",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.011748838235140502,
+          "absolute_reward_shift": 0.011748838235140502
+        },
+        {
+          "name": "history_mean_cost",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.03307408035952775,
+          "absolute_reward_shift": 0.03307408035952775
+        },
+        {
+          "name": "history_mean_latency",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.011778262810843154,
+          "absolute_reward_shift": 0.011778262810843154
+        },
+        {
+          "name": "history_success_rate",
+          "group": "history",
+          "n_dims": 1,
+          "reward_drop": 0.00553404081582598,
+          "absolute_reward_shift": 0.00553404081582598
+        },
+        {
+          "name": "avg_response_time",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.0072738322916845455,
+          "absolute_reward_shift": 0.0072738322916845455
+        },
+        {
+          "name": "burst_indicator",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.005410118095940719,
+          "absolute_reward_shift": 0.005410118095940719
+        },
+        {
+          "name": "cold_start_probability",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.00925247225947623,
+          "absolute_reward_shift": 0.00925247225947623
+        },
+        {
+          "name": "container_warmth",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.0033788070889150257,
+          "absolute_reward_shift": 0.0033788070889150257
+        },
+        {
+          "name": "current_qps",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.004200686466533543,
+          "absolute_reward_shift": 0.004200686466533543
+        },
+        {
+          "name": "day_of_week",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.022471795012518503,
+          "absolute_reward_shift": 0.022471795012518503
+        },
+        {
+          "name": "hour_of_day",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 1.623924295734991e-05,
+          "absolute_reward_shift": 1.623924295734991e-05
+        },
+        {
+          "name": "load_volatility",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.009533446717704841,
+          "absolute_reward_shift": 0.009533446717704841
+        },
+        {
+          "name": "peak_concurrency",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": -0.004564126506299948,
+          "absolute_reward_shift": 0.004564126506299948
+        },
+        {
+          "name": "qps_trend",
+          "group": "load",
+          "n_dims": 1,
+          "reward_drop": 0.01412156666858766,
+          "absolute_reward_shift": 0.01412156666858766
+        }
+      ]
+    }
+  ],
+  "aggregate": {
+    "group_importance": [
+      {
+        "name": "history",
+        "mean_absolute_reward_shift": 0.019457751825942962,
+        "case_count": 9
+      },
+      {
+        "name": "context",
+        "mean_absolute_reward_shift": 0.018369381049157432,
+        "case_count": 9
+      },
+      {
+        "name": "load",
+        "mean_absolute_reward_shift": 0.013571376871105559,
+        "case_count": 9
+      },
+      {
+        "name": "code",
+        "mean_absolute_reward_shift": 0.011613232405793253,
+        "case_count": 9
+      },
+      {
+        "name": "category",
+        "mean_absolute_reward_shift": 0.008748165188246107,
+        "case_count": 9
+      }
+    ],
+    "single_feature_importance": [
+      {
+        "name": "history_latency_variance",
+        "mean_absolute_reward_shift": 0.027657686863133548,
+        "case_count": 9
+      },
+      {
+        "name": "history_success_rate",
+        "mean_absolute_reward_shift": 0.023773131426892934,
+        "case_count": 9
+      },
+      {
+        "name": "history_mean_cost",
+        "mean_absolute_reward_shift": 0.01680262286066048,
+        "case_count": 9
+      },
+      {
+        "name": "history_mean_latency",
+        "mean_absolute_reward_shift": 0.014773494242267683,
+        "case_count": 9
+      },
+      {
+        "name": "burst_indicator",
+        "mean_absolute_reward_shift": 0.013869814682650932,
+        "case_count": 9
+      },
+      {
+        "name": "cold_start_probability",
+        "mean_absolute_reward_shift": 0.013380501228304871,
+        "case_count": 9
+      },
+      {
+        "name": "peak_concurrency",
+        "mean_absolute_reward_shift": 0.013333572711604283,
+        "case_count": 9
+      },
+      {
+        "name": "qps_trend",
+        "mean_absolute_reward_shift": 0.01174006099168848,
+        "case_count": 9
+      },
+      {
+        "name": "current_qps",
+        "mean_absolute_reward_shift": 0.010029356746409427,
+        "case_count": 9
+      },
+      {
+        "name": "container_warmth",
+        "mean_absolute_reward_shift": 0.009425043479776418,
+        "case_count": 9
+      },
+      {
+        "name": "avg_response_time",
+        "mean_absolute_reward_shift": 0.009029226149266828,
+        "case_count": 9
+      },
+      {
+        "name": "load_volatility",
+        "mean_absolute_reward_shift": 0.00902531345374251,
+        "case_count": 9
+      },
+      {
+        "name": "history_cold_start_rate",
+        "mean_absolute_reward_shift": 0.005274004897363679,
+        "case_count": 9
+      }
+    ]
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "primary_algorithm": "ppo",
+  "primary_display_name": "CALO (PPO)",
+  "sources": [
+    {
+      "label": "supplementary_load_only_seed42",
+      "seed": 42
+    },
+    {
+      "label": "supplementary_load_only_seed52",
+      "seed": 52
+    },
+    {
+      "label": "supplementary_load_only_seed62",
+      "seed": 62
+    }
+  ],
+  "baselines": {
+    "ppo_load_only": {
+      "baseline_display_name": "Load-Only PPO",
+      "overall": {
+        "total_comparisons": 15,
+        "primary_wins": 11,
+        "win_rate_pct": 73.33333333333333,
+        "mean_raw_reward_delta": 0.08550612379596631,
+        "median_relative_improvement_pct": 3.9174776452013305,
+        "best_raw_reward_delta": 0.7495610761753981,
+        "worst_raw_reward_delta": -0.3405008113764552,
+        "small_baseline_cases": 1
+      },
+      "cases": [
+        {
+          "benchmark": "110.dynamic-html",
+          "load_pattern": "spike",
+          "seed_count": 3,
+          "primary_reward_mean": -0.21180152651211892,
+          "primary_reward_std": 0.007574695765119969,
+          "baseline_reward_mean": -0.21851800632505403,
+          "baseline_reward_std": 0.0014418916497674716,
+          "mean_raw_reward_delta": 0.006716479812935096,
+          "median_relative_improvement_pct": 1.2667316198656724,
+          "wins": 2,
+          "small_baseline_cases": 0
+        },
+        {
+          "benchmark": "120.uploader",
+          "load_pattern": "spike",
+          "seed_count": 3,
+          "primary_reward_mean": -0.15828958439860205,
+          "primary_reward_std": 0.11395306645356142,
+          "baseline_reward_mean": -0.04598471170845517,
+          "baseline_reward_std": 0.04747805416524728,
+          "mean_raw_reward_delta": -0.11230487269014688,
+          "median_relative_improvement_pct": -3.7403389433018526,
+          "wins": 1,
+          "small_baseline_cases": 1
+        },
+        {
+          "benchmark": "210.thumbnailer",
+          "load_pattern": "spike",
+          "seed_count": 3,
+          "primary_reward_mean": -0.0204607178965651,
+          "primary_reward_std": 0.21022302564763992,
+          "baseline_reward_mean": -0.2889398030561923,
+          "baseline_reward_std": 0.09833639674299353,
+          "mean_raw_reward_delta": 0.2684790851596272,
+          "median_relative_improvement_pct": 119.56598370038785,
+          "wins": 3,
+          "small_baseline_cases": 0
+        },
+        {
+          "benchmark": "311.compression",
+          "load_pattern": "spike",
+          "seed_count": 3,
+          "primary_reward_mean": -0.04037209763547333,
+          "primary_reward_std": 0.13786548212277935,
+          "baseline_reward_mean": -0.048911583002171154,
+          "baseline_reward_std": 0.15683868538163534,
+          "mean_raw_reward_delta": 0.008539485366697824,
+          "median_relative_improvement_pct": 0.24019880040876432,
+          "wins": 2,
+          "small_baseline_cases": 0
+        },
+        {
+          "benchmark": "411.image-recognition",
+          "load_pattern": "spike",
+          "seed_count": 3,
+          "primary_reward_mean": -0.2163016592861975,
+          "primary_reward_std": 0.35059569637552246,
+          "baseline_reward_mean": -0.47240210061691573,
+          "baseline_reward_std": 0.0020626683571400104,
+          "mean_raw_reward_delta": 0.25610044133071824,
+          "median_relative_improvement_pct": 3.9174776452013305,
+          "wins": 3,
+          "small_baseline_cases": 0
+        }
+      ]
+    }
+  }
+}

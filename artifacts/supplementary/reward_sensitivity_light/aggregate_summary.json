@@ -1,0 +1,87 @@
+{
+  "primary_algorithm": "ppo",
+  "primary_display_name": "CALO (PPO)",
+  "sources": [
+    {
+      "label": "supplementary_reward_sensitivity_light_seed42",
+      "seed": 42
+    },
+    {
+      "label": "supplementary_reward_sensitivity_light_seed52",
+      "seed": 52
+    },
+    {
+      "label": "supplementary_reward_sensitivity_light_seed62",
+      "seed": 62
+    }
+  ],
+  "baselines": {
+    "bayes_opt_online": {
+      "baseline_display_name": "Bayes Opt",
+      "overall": {
+        "total_comparisons": 12,
+        "primary_wins": 8,
+        "win_rate_pct": 66.66666666666666,
+        "mean_raw_reward_delta": 0.13881828022443432,
+        "median_relative_improvement_pct": 123.82041795156002,
+        "best_raw_reward_delta": 0.4128121028551519,
+        "worst_raw_reward_delta": -0.03191616173434675,
+        "small_baseline_cases": 5
+      },
+      "cases": [
+        {
+          "benchmark": "120.uploader",
+          "load_pattern": "spike",
+          "seed_count": 3,
+          "primary_reward_mean": 0.26035304993020175,
+          "primary_reward_std": 0.0173319637137418,
+          "baseline_reward_mean": 0.0176675018334303,
+          "baseline_reward_std": 0.023386749177934336,
+          "mean_raw_reward_delta": 0.24268554809677143,
+          "median_relative_improvement_pct": 1393.4653753899695,
+          "wins": 3,
+          "small_baseline_cases": 3
+        },
+        {
+          "benchmark": "120.uploader",
+          "load_pattern": "random",
+          "seed_count": 3,
+          "primary_reward_mean": 0.22058908926184898,
+          "primary_reward_std": 0.01928429443022366,
+          "baseline_reward_mean": -0.07238414856164668,
+          "baseline_reward_std": 0.07699986193588554,
+          "mean_raw_reward_delta": 0.29297323782349566,
+          "median_relative_improvement_pct": 845.4375531059334,
+          "wins": 3,
+          "small_baseline_cases": 2
+        },
+        {
+          "benchmark": "411.image-recognition",
+          "load_pattern": "spike",
+          "seed_count": 3,
+          "primary_reward_mean": 0.39087493522047606,
+          "primary_reward_std": 0.023709818052245462,
+          "baseline_reward_mean": 0.3883237244671815,
+          "baseline_reward_std": 0.04888706276351328,
+          "mean_raw_reward_delta": 0.0025512107532945825,
+          "median_relative_improvement_pct": -0.6083780592980091,
+          "wins": 1,
+          "small_baseline_cases": 0
+        },
+        {
+          "benchmark": "411.image-recognition",
+          "load_pattern": "random",
+          "seed_count": 3,
+          "primary_reward_mean": 0.3814377164761888,
+          "primary_reward_std": 0.0422662834148953,
+          "baseline_reward_mean": 0.3643745922520132,
+          "baseline_reward_std": 0.028171369331448173,
+          "mean_raw_reward_delta": 0.017063124224175608,
+          "median_relative_improvement_pct": -0.7288133748593069,
+          "wins": 1,
+          "small_baseline_cases": 0
+        }
+      ]
+    }
+  }
+}

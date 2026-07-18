@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+title: "CALO Experiments"
+abstract: >-
+  Reproducibility artifact for code-aware and load-aware resource
+  configuration of serverless functions using deep reinforcement learning.
+type: software
+authors:
+  - family-names: Xu
+    given-names: Donghong
+  - family-names: Bu
+    given-names: Weijue
+  - family-names: Ye
+    given-names: Zhouliang
+  - family-names: Wu
+    given-names: Shilong
+version: 1.0.0
+repository-code: "https://github.com/MuQY1818/calo-experiments"
+url: "https://github.com/MuQY1818/calo-experiments"
+license: MIT
+keywords:
+  - serverless computing
+  - reinforcement learning
+  - resource configuration
+  - OpenWhisk
+  - reproducible research
